@@ -1,0 +1,39 @@
+.entrada-grafico {
+    height: 50px;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #888888;
+}
+
+.subtitulo {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #888888;
+}
+
+.container-grafico, .legenda {
+    display: flex;
+}
+
+.legenda {
+    align-items: center;
+    .cor-legenda {
+        display: block;
+        border: 1px solid #888888;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+    }
+}
+
+.container-grafico {
+    border: 1px solid #888888;
+}
+
+.pontilhado {
+    flex: 1;
+    border-bottom: 1px dashed #dddddd;
+}

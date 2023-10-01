@@ -1,0 +1,27 @@
+.topbar {
+    padding: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    border-bottom: 1px solid #dddddd;
+}
+
+.campo-pesquisa {
+    width: 25vw;
+    min-width: 100px;
+    max-width: 200px;
+}
+
+.separador {
+    flex: 1;
+}
+
+.botao-menu {
+    display: none;
+}
+
+@media screen and (max-width: 320px) {
+    .botao-menu {
+        display: block;
+    }
+}

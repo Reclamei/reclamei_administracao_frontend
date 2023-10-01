@@ -1,0 +1,18 @@
+:root {
+    --cor-tema-principal-matiz: 48deg;
+    --cor-tema-principal-saturacao: 93%;
+    --cor-tema-principal-luminosidade: 62%;
+    --cor-tema-auxiliar-matiz: calc(var(--cor-tema-principal-matiz) - 7deg);
+    --cor-tema-auxiliar-saturacao: calc(var(--cor-tema-principal-saturacao) + 7%);
+    --cor-tema-auxiliar-luminosidade: calc(var(--cor-tema-principal-luminosidade) - 12%);
+    --cor-tema-auxiliar-matiz: calc(var(--cor-tema-principal-matiz) - 7deg);
+    --cor-tema-auxiliar-saturacao: calc(var(--cor-tema-principal-saturacao) + 7%);
+    --cor-tema-auxiliar-luminosidade: calc(var(--cor-tema-principal-luminosidade) - 12%);
+    --cor-tema-extra-matiz: calc(var(--cor-tema-principal-matiz) - 16deg);
+    --cor-tema-extra-saturacao: calc(var(--cor-tema-principal-saturacao) - 53%);
+    --cor-tema-extra-luminosidade: calc(var(--cor-tema-principal-luminosidade) + 30%);
+
+    --cor-tema-principal: hsl(var(--cor-tema-principal-matiz), var(--cor-tema-principal-saturacao), var(--cor-tema-principal-luminosidade));
+    --cor-tema-auxiliar: hsl(var(--cor-tema-auxiliar-matiz), var(--cor-tema-auxiliar-saturacao), var(--cor-tema-auxiliar-luminosidade));
+    --cor-tema-extra: hsl(var(--cor-tema-extra-matiz), var(--cor-tema-extra-saturacao), var(--cor-tema-extra-luminosidade));
+}

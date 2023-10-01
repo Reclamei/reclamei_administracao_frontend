@@ -1,0 +1,10 @@
+<div class="viewport-base layout-1">
+    <app-menu class="menu" [esconderMenuMobile]="esconderMenuMobile" (aoEsconderMenu)="esconderMenuMobile = true"></app-menu>
+    <div class="viewport-content">
+        <app-topbar (aoExibirMenu)="esconderMenuMobile = false"></app-topbar>
+        <div class="application-content">
+            <ng-content></ng-content>
+        </div>
+        <app-footer></app-footer>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="topbar">
+    <button pButton type="button" icon="pi pi-bars" class="p-button-rounded p-button-warning p-button-text botao-menu" (click)="aoExibirMenu.emit()"></button>
+    <div class="separador"></div>
+    <span class="p-input-icon-right">
+        <i class="pi pi-search"></i>
+        <input type="text" class="campo-pesquisa" pInputText placeholder="Pesquisar reclamações" />
+    </span>
+    <button pButton type="button" icon="pi pi-bell" class="p-button-rounded p-button-warning p-button-text ml-2" (click)="painelNotif.toggle($event)"></button>
+    <p-overlayPanel #painelNotif>
+        <ng-template pTemplate>
+            <span>Ainda não há<br />notificações.</span>
+        </ng-template>
+    </p-overlayPanel>
+</div>
