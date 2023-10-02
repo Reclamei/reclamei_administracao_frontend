@@ -1,7 +1,12 @@
 <div class="p-2">
     <p-card>
-        <h1 class="traco">Reclamações</h1>
-        <p-table [value]="reclamacoes" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} resultados.">
+        <div class="flex">
+            <h1 class="traco flex-1">Reclamações</h1>
+            <div class>
+                <p-dropdown [options]="opcoesFiltroReclamacoes" [(ngModel)]="statusReclamacoes" (ngModelChange)="filtrarReclamacoes()"></p-dropdown>
+            </div>
+        </div>
+        <p-table [value]="reclamacoesFiltradas" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} resultados.">
             <ng-template pTemplate="header">
                 <tr>
                     <th></th>
@@ -29,6 +34,7 @@
     </p-card>
 </div>
 <p-dialog header="Localização" [(visible)]="modalLocalizacaoVisivel" [modal]="true" [draggable]="false" [resizable]="false">
-    <iframe *ngIf="urlAsseguradaMaps" width="640px" height="480px" style="border:0" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" [src]="urlAsseguradaMaps">
-</iframe>
+    <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa">
+        <map-marker [position]="centralizarMapa"></map-marker>
+    </google-map>
 </p-dialog>

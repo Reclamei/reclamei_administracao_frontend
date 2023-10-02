@@ -10,6 +10,7 @@ import { AuthService } from "./services/auth.service";
 import { MessageService } from "primeng/api";
 import { AuthGuard } from "./guards/auth.guard";
 import { GraficoBarraComponent } from './components/grafico-barra/grafico-barra.component';
+import { GOOGLE_IMPORTS } from "./imports/google.imports";
 
 const MODULE_PUBLIC: any[] = [
     ViewportComponent,
@@ -30,12 +31,14 @@ const MODULE_PRIVATE: any[] = [
     imports: [
         ANGULAR_IMPORTS,
         PRIMENG_IMPORTS,
-        FULLCALENDAR_IMPORTS
+        FULLCALENDAR_IMPORTS,
+        GOOGLE_IMPORTS
     ],
     exports: [
         MODULE_PUBLIC,
         ANGULAR_IMPORTS,
-        PRIMENG_IMPORTS
+        PRIMENG_IMPORTS,
+        GOOGLE_IMPORTS
     ],
     providers: [
         AuthService,
