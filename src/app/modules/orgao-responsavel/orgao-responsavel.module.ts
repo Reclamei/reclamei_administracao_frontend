@@ -5,11 +5,13 @@ import { OrgaoResponsavelRoutingModule } from './orgao-responsavel-routing.modul
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
 import { ReclamacoesComponent } from './pages/reclamacoes/reclamacoes.component';
+import { ReclamacoesTableComponent } from './pages/reclamacoes/reclamacoes-table/reclamacoes-table.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         ReclamacoesComponent,
+        ReclamacoesTableComponent,
         RelatoriosComponent
     ],
     imports: [

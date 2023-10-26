@@ -9,9 +9,9 @@ import { GraficoBarraModel } from 'src/app/shared/models/grafico/grafico-barra.m
 })
 export class DashboardComponent {
     public reclamacoesTotal: number = 243;
-    public reclamacoesRespondidas: number = 13;
+    public reclamacoesRespondidas: number = 100;
     public reclamacoesSemResposta: number = 227;
-    public reclamacoesResolvidas: number = 3;
+    public reclamacoesResolvidas: number = 50;
     public graficoBarraResolvidas: GraficoBarraModel = this.inicializarGraficoResolvidas();
     public graficoBarraRespondidas: GraficoBarraModel = this.inicializarGraficoRespondidas();
 
@@ -19,15 +19,15 @@ export class DashboardComponent {
 
     private inicializarGraficoResolvidas(): GraficoBarraModel {
         return new GraficoBarraModel('Percentual de Resoluções', '', [
-            new EntradaSimples('Resolvidas', "#D9FDD9", this.reclamacoesResolvidas),
-            new EntradaSimples('Não Resolvidas', "#FF5353", (this.reclamacoesTotal - this.reclamacoesResolvidas))
+            new EntradaSimples('Resolvidas', "#D9FDD9", "#90CD93", this.reclamacoesResolvidas),
+            new EntradaSimples('Não Resolvidas', "#FF8980", "#FF5353", (this.reclamacoesTotal - this.reclamacoesResolvidas))
         ]);
     }
 
     private inicializarGraficoRespondidas(): GraficoBarraModel {
         return new GraficoBarraModel('Percentual de Respostas', '', [
-            new EntradaSimples('Respondidas', "#FDF3DC", this.reclamacoesRespondidas),
-            new EntradaSimples('Não Respondidas', "#FF5353", (this.reclamacoesTotal - (this.reclamacoesResolvidas + this.reclamacoesRespondidas)))
+            new EntradaSimples('Respondidas', "#FDF3DC", "#F9AE61", this.reclamacoesRespondidas),
+            new EntradaSimples('Não Respondidas', "#FF8980", "#FF5353", (this.reclamacoesTotal - (this.reclamacoesResolvidas + this.reclamacoesRespondidas)))
         ]);
     }
 }

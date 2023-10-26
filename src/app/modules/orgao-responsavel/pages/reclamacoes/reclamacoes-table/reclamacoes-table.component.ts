@@ -1,18 +1,16 @@
 import { Component } from "@angular/core";
-import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { SelectItem } from "primeng/api";
-import { MapsConstants } from "src/app/shared/constants/maps";
 import { ReclamacaoModel } from "src/app/shared/models/aplicacao/reclamacao.model";
 import { StatusReclamacaoEnum } from "src/app/shared/models/aplicacao/status-reclamacao.enum";
 import { ReclamacaoService } from "src/app/shared/services/reclamacao.service";
 
 @Component({
-    selector: 'app-reclamacoes',
-    templateUrl: './reclamacoes.component.html',
-    styleUrls: ['./reclamacoes.component.scss']
+    selector: 'app-reclamacoes-table',
+    templateUrl: './reclamacoes-table.component.html',
+    styleUrls: ['./reclamacoes-table.component.scss']
 })
 
-export class ReclamacoesComponent {
+export class ReclamacoesTableComponent {
     public reclamacoes: ReclamacaoModel[] = [];
     public reclamacoesFiltradas: ReclamacaoModel[] = [];
     public modalLocalizacaoVisivel = false;

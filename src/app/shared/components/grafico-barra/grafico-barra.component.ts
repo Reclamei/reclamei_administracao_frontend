@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { GraficoBarraModel } from '../../models/grafico/grafico-barra.model';
 import { EntradaSimples } from '../../models/grafico/entrada-monovalor.model';
 
@@ -7,17 +7,37 @@ import { EntradaSimples } from '../../models/grafico/entrada-monovalor.model';
     templateUrl: './grafico-barra.component.html',
     styleUrls: ['./grafico-barra.component.scss']
 })
-export class GraficoBarraComponent {
+export class GraficoBarraComponent implements OnInit {
     @Input() public configuracaoGrafico: GraficoBarraModel;
 
-    public calcularPorcentagem(entrada: number): number {
-        // TODO: isso não é performático (pode-se detectar a mudança de dados externa e recalcular o total somente nesses momentos)
-        return entrada / this.configuracaoGrafico.entradas.map((entrada: EntradaSimples) => entrada.valor).reduce(
-            (valorAtual: number, valorAnterior: number) => valorAtual + valorAnterior
-        );
-    }
+    data: any;
 
-    public calcularPorcentagemTextual(valor: number): string {
-        return Math.round(this.calcularPorcentagem(valor) * 10000) / 100 + '%';
+    options: any;
+
+    ngOnInit() {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+
+        this.data = {
+            labels: this.configuracaoGrafico.entradas.map(item => item.titulo),
+            datasets: [
+                {
+                    data: this.configuracaoGrafico.entradas.map((entrada: EntradaSimples) => entrada.valor),
+                    backgroundColor: this.configuracaoGrafico.entradas.map(item => item.cor),
+                    hoverBackgroundColor: this.configuracaoGrafico.entradas.map(item => item.hoverColor)
+                }
+            ]
+        };
+
+        this.options = {
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        color: textColor
+                    }
+                }
+            }
+        };
     }
 }

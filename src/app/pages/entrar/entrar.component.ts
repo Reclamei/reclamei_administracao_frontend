@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { MapeamentoRota } from 'src/app/shared/constants/mapeamento-rota';
 import { PrimengFactory } from 'src/app/shared/factories/primeng.factory';
-import { UsuarioModel } from 'src/app/shared/models/aplicacao/usuario.model';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+
 
 @Component({
     selector: 'app-entrar',
@@ -19,10 +19,10 @@ export class EntrarComponent implements OnInit {
     public formularioRegistro: FormGroup;
     public formularioEsqueceuSenha: FormGroup;
     private mapaCriacaoFormulario: Map<number, () => FormGroup>;
+    private auth = getAuth();
 
     constructor(
         private formBuilder: FormBuilder,
-        private authService: AuthService,
         private messageService: MessageService,
         private router: Router
     ) {
@@ -38,31 +38,36 @@ export class EntrarComponent implements OnInit {
     }
 
     public entrar(): void {
-        this.authService.autenticar(new UsuarioModel(
-            '', this.formularioLogin.get('email').value, this.formularioLogin.get('senha').value
-        )).subscribe((usuarioLogado: UsuarioModel) => {
-            if(usuarioLogado) {
+        signInWithEmailAndPassword(this.auth, this.formularioLogin.get('email').value, this.formularioLogin.get('senha').value)
+            .then((userCredential) => {
+                localStorage.setItem('user', JSON.stringify(userCredential.user));
                 this.redirecionarPaginaInicial();
-            } else {
-                PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', 'Seu e-mail ou senha podem estar errados.');
-            }
-        });
+            })
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', error.message));
     }
 
     public registrar(): void {
-        PrimengFactory.mensagemErro(this.messageService, 'Erro!', 'Funcionalidade ainda não implementada.');
+        createUserWithEmailAndPassword(this.auth, this.formularioRegistro.get('email').value,  this.formularioRegistro.get('senha').value)
+            .then((userCredential) => {
+                localStorage.setItem('user', JSON.stringify(userCredential.user));
+                this.redirecionarPaginaInicial();
+            })
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', error.message));
     }
 
     public redefinirSenha(): void {
-        PrimengFactory.mensagemErro(this.messageService, 'Erro!', 'Funcionalidade ainda não implementada.');
+        sendPasswordResetEmail(this.auth, this.formularioEsqueceuSenha.get('senha').value)
+            .then(() => {
+                this.modoAutenticacao = this.modosAutenticacao.MODO_ENTRAR
+            })
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na tentativa de recuperação de senha', error.message));
     }
 
     private inicializarFormulario(modoAutenticacao: number): FormGroup {
         if(this.mapaCriacaoFormulario.has(modoAutenticacao)) {
             return this.mapaCriacaoFormulario.get(modoAutenticacao)();
-        } else {
-            throw new Error('Não foi possível criar formulário, modo de autenticação: ' + modoAutenticacao);
         }
+        throw new Error('Não foi possível criar formulário, modo de autenticação: ' + modoAutenticacao);
     }
 
     private definifirCriacaoFormularios(): void {
@@ -80,14 +85,16 @@ export class EntrarComponent implements OnInit {
                 repetirSenha: new FormControl(null, [Validators.required])
             });
         });
-        this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_ESQUECEU_SENHA, () => {
-            return this.formBuilder.group({ email: new FormControl(null, [Validators.required, Validators.email]) });
-        });
+        this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_ESQUECEU_SENHA, () => 
+            this.formBuilder.group({ email: new FormControl(null, [Validators.required, Validators.email])})
+        );
     }
 
     private verificarUsuarioLogado(): void {
-        if(this.authService.estaLogado()) {
+        const user = getAuth().currentUser;
+        if(!!user) {
             this.redirecionarPaginaInicial();
+            localStorage.setItem('user', JSON.stringify(user));
         }
     }
 

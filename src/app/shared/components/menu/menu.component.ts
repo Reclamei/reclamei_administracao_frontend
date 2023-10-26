@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MapeamentoRota } from '../../constants/mapeamento-rota';
 import { PrimengFactory } from '../../factories/primeng.factory';
 import { AuthService } from '../../services/auth.service';
+import { getAuth, signOut   } from "firebase/auth";
 
 @Component({
     selector: 'app-menu',
@@ -34,7 +35,12 @@ export class MenuComponent {
     }
 
     private deslogar(): void {
-        this.authService.sair();
+        const auth = getAuth();
+        signOut(auth).then(() => {
+            localStorage.removeItem('user');
+        }).catch((error) => {
+            PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', error.message);
+        });
         this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
     }
 

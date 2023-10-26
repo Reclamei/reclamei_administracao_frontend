@@ -14,10 +14,10 @@ a.link-redefinir-senha {
 }
 
 .card-autenticacao {
-    max-width: 100vw;
+    max-width: 200vw;
     max-height: 100vh;
     overflow-y: auto;
-    animation: "card-fade" 1s cubic-bezier(0.19, 1, 0.22, 1) normal;
+    animation: card-fade 1s cubic-bezier(0.19, 1, 0.22, 1) normal;
 }
 
 @keyframes card-fade {

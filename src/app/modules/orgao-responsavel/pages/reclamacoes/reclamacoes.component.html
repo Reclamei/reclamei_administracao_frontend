@@ -1,40 +1,18 @@
 <div class="p-2">
     <p-card>
         <div class="flex">
-            <h1 class="traco flex-1">Reclamações</h1>
-            <div class>
-                <p-dropdown [options]="opcoesFiltroReclamacoes" [(ngModel)]="statusReclamacoes" (ngModelChange)="filtrarReclamacoes()"></p-dropdown>
-            </div>
+            <h2 class="traco flex-1">Reclamações</h2>
         </div>
-        <p-table [value]="reclamacoesFiltradas" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} resultados.">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th></th>
-                    <th>Tipo</th>
-                    <th>Subtipo</th>
-                    <th>Descrição</th>
-                    <th>Data</th>
-                    <th>Ações</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-reclamacao>
-                <tr>
-                    <td><img class="miniatura-reclamacao" [src]="reclamacao.localImagem" /></td>
-                    <td>{{reclamacao.tipo}}</td>
-                    <td>{{reclamacao.subtipo}}</td>
-                    <td>{{reclamacao.descricao}}</td>
-                    <td>{{reclamacao.data | date:"dd/MM/yyyy"}}</td>
-                    <td>
-                        <button pButton type="button "class="p-button-rounded p-button-text p-button-warning" icon="pi pi-map" (click)="mostrarLocalizacao(reclamacao)" pTooltip="Visualizar no Mapa" tooltipPosition="top"></button>
-                        <button pButton type="button" class="p-button-rounded p-button-text p-button-warning" icon="pi pi-pencil" (click)="editarReclamacao(reclamacao)" pTooltip="Acessar Detalhes" tooltipPosition="top"></button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
+        <p-tabView>
+            <p-tabPanel header="Últimas">
+                <app-reclamacoes-table></app-reclamacoes-table>
+            </p-tabPanel>
+            <p-tabPanel header="Não respondidas">
+                <app-reclamacoes-table></app-reclamacoes-table>
+            </p-tabPanel>
+            <p-tabPanel header="Respondidas">
+                <app-reclamacoes-table></app-reclamacoes-table>
+            </p-tabPanel>
+        </p-tabView>
     </p-card>
 </div>
-<p-dialog header="Localização" [(visible)]="modalLocalizacaoVisivel" [modal]="true" [draggable]="false" [resizable]="false">
-    <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa">
-        <map-marker [position]="centralizarMapa"></map-marker>
-    </google-map>
-</p-dialog>
