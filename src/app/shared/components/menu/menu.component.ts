@@ -5,7 +5,6 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { MapeamentoRota } from '../../constants/mapeamento-rota';
 import { PrimengFactory } from '../../factories/primeng.factory';
-import { AuthService } from '../../services/auth.service';
 import { getAuth, signOut   } from "firebase/auth";
 
 @Component({
@@ -22,7 +21,6 @@ export class MenuComponent {
     constructor(
         private orgaoService: OrgaoService,
         private router: Router,
-        private authService: AuthService,
         private messageService: MessageService
     ) {
         this.orgao = this.orgaoService.obterOrgao();

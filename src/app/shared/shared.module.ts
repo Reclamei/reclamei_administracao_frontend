@@ -6,9 +6,7 @@ import { ViewportComponent } from './components/viewport/viewport.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MenuComponent } from './components/menu/menu.component';
-import { AuthService } from "./services/auth.service";
 import { MessageService } from "primeng/api";
-import { AuthGuard } from "./guards/auth.guard";
 import { GraficoBarraComponent } from './components/grafico-barra/grafico-barra.component';
 import { GOOGLE_IMPORTS } from "./imports/google.imports";
 
@@ -41,9 +39,7 @@ const MODULE_PRIVATE: any[] = [
         GOOGLE_IMPORTS
     ],
     providers: [
-        AuthService,
-        MessageService,
-        AuthGuard
+        MessageService
     ]
 })
 export class SharedModule { }

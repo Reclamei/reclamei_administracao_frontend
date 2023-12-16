@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { MapeamentoRota } from 'src/app/shared/constants/mapeamento-rota';
 import { PrimengFactory } from 'src/app/shared/factories/primeng.factory';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { ErrorType } from 'src/app/shared/auth/model/error-type.enum';
 
 
 @Component({
@@ -43,7 +44,7 @@ export class EntrarComponent implements OnInit {
                 localStorage.setItem('user', JSON.stringify(userCredential.user));
                 this.redirecionarPaginaInicial();
             })
-            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', error.message));
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', ErrorType.getMessage(error.code)));
     }
 
     public registrar(): void {
@@ -52,7 +53,7 @@ export class EntrarComponent implements OnInit {
                 localStorage.setItem('user', JSON.stringify(userCredential.user));
                 this.redirecionarPaginaInicial();
             })
-            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', error.message));
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
 
     public redefinirSenha(): void {
@@ -60,7 +61,7 @@ export class EntrarComponent implements OnInit {
             .then(() => {
                 this.modoAutenticacao = this.modosAutenticacao.MODO_ENTRAR
             })
-            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na tentativa de recuperação de senha', error.message));
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na tentativa de recuperação de senha', ErrorType.getMessage(error.code)));
     }
 
     private inicializarFormulario(modoAutenticacao: number): FormGroup {

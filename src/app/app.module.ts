@@ -11,6 +11,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
 
 import * as firebase from 'firebase/app';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './shared/auth/interceptor/token-interceptor';
 
 firebase.initializeApp(environment.firebase);
 
@@ -28,7 +30,13 @@ firebase.initializeApp(environment.firebase);
         EntrarComponent,
         HomeComponent
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -20,6 +20,7 @@ export class ReclamacoesTableComponent {
     public configuracaoMapa: google.maps.MapOptions = this.inicializarConfiguracaoMapa();
     public opcoesFiltroReclamacoes: SelectItem<number>[] = this.inicializarOpcoesFiltroReclamacoes();
     public statusReclamacoes: number = 0;
+    public mapType = 'roadmap';
 
     constructor(
         private reclamacaoService: ReclamacaoService

@@ -24,7 +24,16 @@
     </ng-template>
 </p-table>
 <p-dialog header="Localização" [(visible)]="modalLocalizacaoVisivel" [modal]="true" [draggable]="false" [resizable]="false">
-    <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa">
+    <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa" [mapTypeId]="mapType">
         <map-marker [position]="centralizarMapa"></map-marker>
     </google-map>
+    <div>
+        <label>Tipo de Mapa:</label>
+        <select [(ngModel)]="mapType">
+          <option value="roadmap">Estrada</option>
+          <option value="satellite">Satélite</option>
+          <option value="hybrid">Híbrido</option>
+          <option value="terrain">Terreno</option>
+        </select>
+    </div>
 </p-dialog>
