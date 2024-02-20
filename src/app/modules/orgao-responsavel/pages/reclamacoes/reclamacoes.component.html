@@ -1,9 +1,11 @@
 <div class="p-2">
     <p-card>
-        <div class="flex">
-            <h1 class="traco flex-1">Reclamações</h1>
-            <div class>
-                <p-dropdown [options]="opcoesFiltroReclamacoes" [(ngModel)]="statusReclamacoes" (ngModelChange)="filtrarReclamacoes()"></p-dropdown>
+        <div class="grid grid-nogutter">
+            <div class="col-12 sm:col-12 md:col-12 lg:col-8">
+                <h1 class="traco">Reclamações</h1>
+            </div>
+            <div class="col-12 sm:col-12 md:col-12 lg:col-4">
+                <p-dropdown class="p-fluid" [options]="opcoesFiltroReclamacoes" [(ngModel)]="statusReclamacoes" (ngModelChange)="filtrarReclamacoes()"></p-dropdown>
             </div>
         </div>
         <p-table [value]="reclamacoesFiltradas" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} resultados.">
