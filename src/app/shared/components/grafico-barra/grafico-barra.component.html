@@ -1,0 +1,13 @@
+<div class="titulo mb-2" *ngIf="configuracaoGrafico.titulo">{{configuracaoGrafico.titulo}}</div>
+<div class="subtitulo mb-2" *ngIf="configuracaoGrafico.subtitulo">{{configuracaoGrafico.subtitulo}}</div>
+<div class="container-grafico mb-2">
+    <div class="entrada-grafico" *ngFor="let entrada of configuracaoGrafico.entradas" [ngStyle]="{'width': calcularPorcentagemTextual(entrada.valor), 'background-color': entrada.cor}" [title]="entrada.titulo + ' (' + calcularPorcentagemTextual(entrada.valor) + ')'"></div>
+</div>
+<div class="container-legenda">
+    <div class="legenda" *ngFor="let entrada of configuracaoGrafico.entradas">
+        <div class="cor-legenda" [ngStyle]="{'background-color': entrada.cor}"></div>
+        <div>{{entrada.titulo}}</div>
+        <div class="pontilhado"></div>
+        <div>{{calcularPorcentagemTextual(entrada.valor)}}</div>
+    </div>
+</div>

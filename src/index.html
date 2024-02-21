@@ -2,23 +2,22 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Paradise - PrimeNG</title>
+        <title>Canal do Cidadão</title>
         <base href="/">
-
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-        <link id="theme-css" rel="stylesheet" type="text/css" href="assets/theme/theme-blue.css">
-        <link id="layout-css" rel="stylesheet" type="text/css" href="assets/layout/css/layout-default.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/variaveis-globais.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/regras-gerais.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/splash-screen.css" />
+        <link rel="stylesheet" type="text/css" href="assets/css/componentes-simples.css" />
+        <link rel="stylesheet" type="text/css" href="assets/fonts/roboto/css/roboto.css" />
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5eAAdYinGRlAbY--j14e5o-cSpJTtRkU&libraries=visualization"></script>
     </head>
     <body>
         <app-root>
-            <div class="splash-screen">
-                <div class="splash-screen-loader">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
+            <div class="container-splash-screen">
+                <div class="spinner-splash-screen"></div>
+                <div class="aviso-splash-screen">Sua conexão pode estar muito lenta, ou um erro aconteceu,<br />ou seu navegador não tem suporte a JavaScript.</div>
             </div>
         </app-root>
     </body>

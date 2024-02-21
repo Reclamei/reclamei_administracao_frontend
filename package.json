@@ -1,5 +1,5 @@
 {
-    "name": "paradise",
+    "name": "canal-do-cidadao",
     "version": "14.0.1",
     "license": "PrimeNG Commercial",
     "scripts": {
@@ -17,6 +17,7 @@
         "@angular/compiler": "~14.0.0",
         "@angular/core": "~14.0.0",
         "@angular/forms": "~14.0.0",
+        "@angular/google-maps": "^14.2.7",
         "@angular/platform-browser": "~14.0.0",
         "@angular/platform-browser-dynamic": "~14.0.0",
         "@angular/router": "~14.0.0",
