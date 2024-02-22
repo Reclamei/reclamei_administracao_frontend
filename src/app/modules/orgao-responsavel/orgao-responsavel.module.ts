@@ -5,6 +5,7 @@ import { OrgaoResponsavelRoutingModule } from './orgao-responsavel-routing.modul
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
 import { ReclamacoesComponent } from './pages/reclamacoes/reclamacoes.component';
+import { AbrangenciaComponent } from './pages/abrangencia/abrangencia.component';
 import { ReclamacoesTableComponent } from './pages/reclamacoes/reclamacoes-table/reclamacoes-table.component';
 
 @NgModule({
@@ -12,7 +13,8 @@ import { ReclamacoesTableComponent } from './pages/reclamacoes/reclamacoes-table
         DashboardComponent,
         ReclamacoesComponent,
         ReclamacoesTableComponent,
-        RelatoriosComponent
+        RelatoriosComponent,
+        AbrangenciaComponent
     ],
     imports: [
         CommonModule,
