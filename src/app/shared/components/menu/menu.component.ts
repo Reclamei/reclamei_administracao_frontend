@@ -1,11 +1,11 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { OrgaoModel } from '../../models/aplicacao/orgao.model';
-import { OrgaoService } from '../../services/orgao.service';
-import { MenuItem, MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
-import { MapeamentoRota } from '../../constants/mapeamento-rota';
-import { PrimengFactory } from '../../factories/primeng.factory';
-import { getAuth, signOut   } from "firebase/auth";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {OrgaoModel} from '../../models/aplicacao/orgao.model';
+import {OrgaoService} from '../../services/orgao.service';
+import {MenuItem, MessageService} from 'primeng/api';
+import {Router} from '@angular/router';
+import {MapeamentoRota} from '../../constants/mapeamento-rota';
+import {PrimengFactory} from '../../factories/primeng.factory';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
     selector: 'app-menu',
@@ -21,24 +21,22 @@ export class MenuComponent {
     constructor(
         private orgaoService: OrgaoService,
         private router: Router,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private authService: AuthService
     ) {
         this.orgao = this.orgaoService.obterOrgao();
     }
 
     public selecionarOpcao(opcao: MenuItem): void {
-        if(!opcao.disabled) {
+        if (!opcao.disabled) {
             opcao.command();
         }
     }
 
     private deslogar(): void {
-        const auth = getAuth();
-        signOut(auth).then(() => {
-            localStorage.removeItem('user');
-        }).catch((error) => {
-            PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', error.message);
-        });
+        this.authService
+            .signOut()
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', error.message));
         this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
     }
 

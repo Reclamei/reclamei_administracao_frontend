@@ -5,14 +5,14 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: "http://localhost:8083/",
+  apiEndpoint: 'http://localhost:8083/',
   firebase: {
-    apiKey: "AIzaSyD1mGeGUP1pB_ie5pbkkgqez1f2614sUXI",
-    authDomain: "reclamei-auth.firebaseapp.com",
-    projectId: "reclamei-auth",
-    storageBucket: "reclamei-auth.appspot.com",
-    messagingSenderId: "931498777244",
-    appId: "1:931498777244:web:1441eaad23accb9cf5ab59",
-    measurementId: "G-T25QTFJB3B"
+      apiKey: 'AIzaSyD1mGeGUP1pB_ie5pbkkgqez1f2614sUXI',
+      authDomain: 'reclamei-auth.firebaseapp.com',
+      projectId: 'reclamei-auth',
+      storageBucket: 'reclamei-auth.appspot.com',
+      messagingSenderId: '931498777244',
+      appId: '1:931498777244:web:1441eaad23accb9cf5ab59',
+      measurementId: 'G-T25QTFJB3B'
   }
 };

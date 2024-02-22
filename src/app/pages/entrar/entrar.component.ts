@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { MapeamentoRota } from 'src/app/shared/constants/mapeamento-rota';
-import { PrimengFactory } from 'src/app/shared/factories/primeng.factory';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { ErrorType } from 'src/app/shared/auth/model/error-type.enum';
-
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
+import {MapeamentoRota} from 'src/app/shared/constants/mapeamento-rota';
+import {PrimengFactory} from 'src/app/shared/factories/primeng.factory';
+import {ErrorType} from 'src/app/shared/auth/model/error-type.enum';
+import {AuthService} from 'src/app/shared/auth/auth.service';
+import {map, take, tap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-entrar',
@@ -20,12 +20,12 @@ export class EntrarComponent implements OnInit {
     public formularioRegistro: FormGroup;
     public formularioEsqueceuSenha: FormGroup;
     private mapaCriacaoFormulario: Map<number, () => FormGroup>;
-    private auth = getAuth();
 
     constructor(
         private formBuilder: FormBuilder,
         private messageService: MessageService,
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) {
         this.mapaCriacaoFormulario = new Map();
         this.definifirCriacaoFormularios();
@@ -39,16 +39,18 @@ export class EntrarComponent implements OnInit {
     }
 
     public entrar(): void {
-        signInWithEmailAndPassword(this.auth, this.formularioLogin.get('email').value, this.formularioLogin.get('senha').value)
+        this.authService
+            .signInWithEmailAndPassword(this.formularioLogin.get('email').value, this.formularioLogin.get('senha').value)
             .then((userCredential) => {
-                localStorage.setItem('user', JSON.stringify(userCredential.user));
+                this.authService.setUserSubject(userCredential.user);
                 this.redirecionarPaginaInicial();
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', ErrorType.getMessage(error.code)));
     }
 
     public registrar(): void {
-        createUserWithEmailAndPassword(this.auth, this.formularioRegistro.get('email').value,  this.formularioRegistro.get('senha').value)
+        this.authService
+            .createUserWithEmailAndPassword(this.formularioRegistro.get('email').value,  this.formularioRegistro.get('senha').value)
             .then((userCredential) => {
                 localStorage.setItem('user', JSON.stringify(userCredential.user));
                 this.redirecionarPaginaInicial();
@@ -57,7 +59,8 @@ export class EntrarComponent implements OnInit {
     }
 
     public redefinirSenha(): void {
-        sendPasswordResetEmail(this.auth, this.formularioEsqueceuSenha.get('senha').value)
+        this.authService
+            .sendPasswordResetEmail(this.formularioEsqueceuSenha.get('senha').value)
             .then(() => {
                 this.modoAutenticacao = this.modosAutenticacao.MODO_ENTRAR
             })
@@ -86,17 +89,20 @@ export class EntrarComponent implements OnInit {
                 repetirSenha: new FormControl(null, [Validators.required])
             });
         });
-        this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_ESQUECEU_SENHA, () => 
+        this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_ESQUECEU_SENHA, () =>
             this.formBuilder.group({ email: new FormControl(null, [Validators.required, Validators.email])})
         );
     }
 
     private verificarUsuarioLogado(): void {
-        const user = getAuth().currentUser;
-        if(!!user) {
-            this.redirecionarPaginaInicial();
-            localStorage.setItem('user', JSON.stringify(user));
-        }
+        this.authService.getAngularFireAuth().authState.pipe(
+            take(1),
+            map(user => !!user),
+            tap(authenticated => {
+                if (!authenticated) {
+                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());                }
+            })
+        );
     }
 
     private redirecionarPaginaInicial(): void {
