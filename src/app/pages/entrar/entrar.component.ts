@@ -49,6 +49,8 @@ export class EntrarComponent implements OnInit {
     }
 
     public registrar(): void {
+        // Fazer uma tela de cadastro mais completa contemplando os dados da company. No subscribe dessa chamada
+        // fazer o registro no ms-company
         this.authService
             .createUserWithEmailAndPassword(this.formularioRegistro.get('email').value,  this.formularioRegistro.get('senha').value)
             .then((userCredential) => {

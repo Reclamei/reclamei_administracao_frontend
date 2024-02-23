@@ -4,7 +4,7 @@ export class MapeamentoRota {
 	public static readonly ROTA_RAIZ: MapeamentoRota = this.registrarRota(null, '');
 	public static readonly ROTA_AUTENTICAR: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'autenticar');
 	public static readonly ROTA_PAINEL_ADMINISTRATIVO: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'painel-administrativo');
-	public static readonly ROTA_RECLAMACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'relatorios');
+	public static readonly ROTA_RECLAMACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'reclamacoes');
 	public static readonly ROTA_ABRANGENCIA: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'abrangencia');
 	public static readonly ROTA_RELATORIOS: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'relatorios');
 	public static readonly ROTA_CONFIGURACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'configuracoes');
@@ -33,17 +33,9 @@ export class MapeamentoRota {
 		return this.rota;
 	}
 
-	public obterSuperRota(): MapeamentoRota {
-		return this.superRota;
-	}
-
 	public obterCaminhoRota(prefixado: boolean = true): string {
 		let caminho: string = this.superRota ? this.superRota.obterCaminhoRota(prefixado) : '';
 		return caminho + this.prefixarSeparador(this.rota);
-	}
-
-	public ehRotaRaiz(): boolean {
-		return this.obterCaminhoRota().length == 0;
 	}
 
 	private prefixarSeparador(caminho: string): string {

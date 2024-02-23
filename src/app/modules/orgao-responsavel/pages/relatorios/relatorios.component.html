@@ -1,1 +1,43 @@
-<p>relatorios works!</p>
+<div class="p-2">
+    <div class="grid grid-nogutter pb-2">
+        <div class="pr-1 col-12 sm:col-12 md:col-12 lg:col-6">
+            <p-card>
+                <div class="flex">
+                    <h2 class="traco flex-1">Reclamações por Região</h2>
+                </div>
+                <google-map width="100%" height="59vh" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa">
+                    <map-heatmap-layer [data]="dadosMapaCalor" [options]="opcoesMapaCalor"></map-heatmap-layer>
+                </google-map>
+            </p-card>
+        </div>
+        <div class="pl-1 col-12 sm:col-12 md:col-12 lg:col-6">
+            <p-card>
+                <div class="flex">
+                    <h2 class="traco flex-1">Principais Problemas</h2>
+                </div>
+                <p-accordion [multiple]="true">
+                    <p-accordionTab [(selected)]="detalheProblemasVisivel[0]" header="Tipos de problemas">
+                        <div class="pb-2"><b>{{(maiorTipoProblema.porcentagem * 100) | number:'1.2-2'}}% {{maiorTipoProblema.item.descricao}}</b></div>
+                        <div class="flex pb-1" *ngFor="let tipo of tiposProblema">
+                            <div class="flex-1">{{tipo.descricao}}</div>
+                            <div>({{tipo.quantidadeReclamacoes}})</div>
+                        </div>
+                    </p-accordionTab>
+                    <p-accordionTab [(selected)]="detalheProblemasVisivel[1]" header="Cidades">
+                        <div class="pb-2"><b>{{(maiorCidade.porcentagem * 100) | number:'1.2-2'}}% {{maiorCidade.item.nome}}</b></div>
+                        <div class="flex pb-1" *ngFor="let cidade of cidades">
+                            <div class="flex-1">{{cidade.nome}}</div>
+                            <div>({{cidade.quantidadeReclamacoes}})</div>
+                        </div>
+                    </p-accordionTab>
+                </p-accordion>
+            </p-card>
+        </div>
+    </div>
+    <p-card>
+        <div class="flex">
+            <h2 class="traco flex-1">Tempo de Resposta das Reclamações por Dia</h2>
+        </div>
+        <p-chart type="line" [data]="dadosTempoResposta"></p-chart>
+    </p-card>
+</div>
