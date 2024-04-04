@@ -1,0 +1,23 @@
+<div class="tela gradiente-cor-principal">
+    <p-card class="card-autenticacao">
+        <div class="flex justify-content-center">
+            <h1 class="traco text-center">Canal do Cidadão</h1>
+        </div>
+        <ng-container *ngIf="isValidEmailLink">
+            <h2 class="text-center">CONCLUIR CADASTRO</h2>
+            <p class="text-center">Informe os dados abaixo<br />para se registrar no sistema.</p>
+            <form [formGroup]="formRegistro">
+                <label for="cnpj-login" class="block mb-1">CNPJ</label>
+                <input pInputText id="cnpj-login" formControlName="cnpj" type="text" class="mb-3 w-full" disabled/>
+                <label for="email-login" class="block mb-1">E-mail</label>
+                <input pInputText id="email-login" formControlName="email" type="email" class="mb-3 w-full" disabled/>
+                <label for="senha-login" class="block mb-1">Senha</label>
+                <input pInputText id="senha-login" formControlName="senha" type="password" class="mb-3 w-full" />
+                <label for="senha-repetida-login" class="block mb-1">Repetir Senha</label>
+                <input pInputText id="senha-repetida-login" formControlName="repetirSenha" type="password" class="mb-2 w-full" />
+                <button pButton [disabled]="!formRegistro.valid" class="p-button-warning mb-2 mt-4 w-full" icon="pi pi-key" label="REGISTRAR" (click)="registrar()"></button>
+            </form>
+        </ng-container>
+    </p-card>
+</div>
+<p-toast></p-toast>

@@ -17,7 +17,6 @@ export class EntrarComponent implements OnInit {
     public readonly modosAutenticacao: ModoAutenticacao = new ModoAutenticacao();
     public modoAutenticacao: number = this.modosAutenticacao.MODO_ENTRAR;
     public formularioLogin: FormGroup;
-    public formularioRegistro: FormGroup;
     public formularioEsqueceuSenha: FormGroup;
     private mapaCriacaoFormulario: Map<number, () => FormGroup>;
 
@@ -30,7 +29,6 @@ export class EntrarComponent implements OnInit {
         this.mapaCriacaoFormulario = new Map();
         this.definifirCriacaoFormularios();
         this.formularioLogin = this.inicializarFormulario(this.modosAutenticacao.MODO_ENTRAR);
-        this.formularioRegistro = this.inicializarFormulario(this.modosAutenticacao.MODO_REGISTRAR);
         this.formularioEsqueceuSenha = this.inicializarFormulario(this.modosAutenticacao.MODO_ESQUECEU_SENHA);
     }
 
@@ -46,18 +44,6 @@ export class EntrarComponent implements OnInit {
                 this.redirecionarPaginaInicial();
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', ErrorType.getMessage(error.code)));
-    }
-
-    public registrar(): void {
-        // Fazer uma tela de cadastro mais completa contemplando os dados da company. No subscribe dessa chamada
-        // fazer o registro no ms-company
-        this.authService
-            .createUserWithEmailAndPassword(this.formularioRegistro.get('email').value,  this.formularioRegistro.get('senha').value)
-            .then((userCredential) => {
-                localStorage.setItem('user', JSON.stringify(userCredential.user));
-                this.redirecionarPaginaInicial();
-            })
-            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
 
     public redefinirSenha(): void {
@@ -81,14 +67,6 @@ export class EntrarComponent implements OnInit {
             return this.formBuilder.group({
                 email: new FormControl(null, [Validators.required, Validators.email]),
                 senha: new FormControl(null, [Validators.required])
-            });
-        });
-        this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_REGISTRAR, () => {
-            return this.formBuilder.group({
-                nome: new FormControl(null, [Validators.required]),
-                email: new FormControl(null, [Validators.required, Validators.email]),
-                senha: new FormControl(null, [Validators.required]),
-                repetirSenha: new FormControl(null, [Validators.required])
             });
         });
         this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_ESQUECEU_SENHA, () =>

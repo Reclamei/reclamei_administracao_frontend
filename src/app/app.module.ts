@@ -13,6 +13,8 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {TokenInterceptor} from './shared/auth/interceptor/token-interceptor';
 import {AngularFireModule} from '@angular/fire/compat';
 import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
+import {RegistrarComponent} from './pages/registrar/registrar.component';
+import {ConcluirCadastroComponent} from './pages/concluir-cadastro/concluir-cadastro.component';
 
 @NgModule({
     imports: [
@@ -27,7 +29,9 @@ import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
     declarations: [
         AppComponent,
         EntrarComponent,
-        HomeComponent
+        HomeComponent,
+        RegistrarComponent,
+        ConcluirCadastroComponent
     ],
     providers: [
         {

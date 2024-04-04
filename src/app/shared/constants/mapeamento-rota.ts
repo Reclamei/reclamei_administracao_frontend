@@ -3,6 +3,7 @@ export class MapeamentoRota {
 	public static readonly TODAS_AS_ROTAS: MapeamentoRota[] = [];
 	public static readonly ROTA_RAIZ: MapeamentoRota = this.registrarRota(null, '');
 	public static readonly ROTA_AUTENTICAR: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'autenticar');
+	public static readonly ROTA_CONCLUIR_CADASTRO: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'finalizar-cadastro');
 	public static readonly ROTA_PAINEL_ADMINISTRATIVO: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'painel-administrativo');
 	public static readonly ROTA_RECLAMACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'reclamacoes');
 	public static readonly ROTA_ABRANGENCIA: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'abrangencia');
