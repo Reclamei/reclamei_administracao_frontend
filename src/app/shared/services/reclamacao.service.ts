@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { ReclamacaoModel } from '../models/aplicacao/reclamacao.model';
-import { StatusReclamacaoEnum } from '../models/aplicacao/status-reclamacao.enum';
+import {Injectable} from '@angular/core';
+import {ReclamacaoModel} from '../models/aplicacao/reclamacao.model';
+import {StatusReclamacaoEnum} from '../models/aplicacao/status-reclamacao.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ export class ReclamacaoService {
     private reclamacoes: ReclamacaoModel[] = this.inicializarReclamacoes();
 
     public obterReclamacoes(): ReclamacaoModel[] {
-        return [...this.reclamacoes]
+        return [...this.reclamacoes];
     }
 
     private inicializarReclamacoes(): ReclamacaoModel[] {
@@ -28,7 +28,7 @@ export class ReclamacaoService {
             (this.gerarStringAleatoria() + this.gerarStringAleatoria()).split(/([AaMnXx])/g).join(' '),
             [StatusReclamacaoEnum.PENDENTE, StatusReclamacaoEnum.PROMESSA, StatusReclamacaoEnum.RESOLVIDO][Math.round(Math.random() * 10) % 3].getId(),
             Math.random() > 0.5
-        )
+        );
     }
 
     private gerarStringAleatoria(): string {

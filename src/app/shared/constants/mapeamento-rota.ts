@@ -18,7 +18,7 @@ export class MapeamentoRota {
 
 	private static registrarIgnorandoDuplicatas(rotaParaRegistrar: MapeamentoRota): MapeamentoRota {
 		let rotaJaRegistradaEncontrada: MapeamentoRota = this.encontrarRotaDuplicada(rotaParaRegistrar);
-		if(!rotaJaRegistradaEncontrada) {
+		if (!rotaJaRegistradaEncontrada) {
 			this.TODAS_AS_ROTAS.push(rotaParaRegistrar);
 			rotaJaRegistradaEncontrada = rotaParaRegistrar;
 		}
@@ -26,7 +26,7 @@ export class MapeamentoRota {
 	}
 
 	private static encontrarRotaDuplicada(rotaTemporaria: MapeamentoRota): MapeamentoRota {
-		let caminhoRota: string = rotaTemporaria.obterCaminhoRota();
+		const caminhoRota: string = rotaTemporaria.obterCaminhoRota();
 		return this.TODAS_AS_ROTAS.find((rota: MapeamentoRota) => rota.obterCaminhoRota() === caminhoRota);
 	}
 
@@ -35,7 +35,7 @@ export class MapeamentoRota {
 	}
 
 	public obterCaminhoRota(prefixado: boolean = true): string {
-		let caminho: string = this.superRota ? this.superRota.obterCaminhoRota(prefixado) : '';
+		const caminho: string = this.superRota ? this.superRota.obterCaminhoRota(prefixado) : '';
 		return caminho + this.prefixarSeparador(this.rota);
 	}
 

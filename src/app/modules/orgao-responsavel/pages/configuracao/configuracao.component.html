@@ -1,0 +1,122 @@
+<div class="p-2">
+    <p-card class="flex mb-2">
+        <div class="flex">
+            <h2 class="traco flex-1">Empresa</h2>
+        </div>
+        <form [formGroup]="formularioOrgao" class="pl-3 pr-3">
+            <div class="grid grid-nogutter">
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="cnpj" class="block mb-1">CNPJ</label>
+                    <input pInputText id="cnpj" formControlName="cnpj" type="number" class="mb-3 w-full" disabled/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="nome" class="block mb-1">Nome fantasia</label>
+                    <input pInputText id="nome" formControlName="nome" type="text" class="mb-3 w-full" disabled/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="email" class="block mb-1">E-mail</label>
+                    <input pInputText id="email" formControlName="email" type="email" class="mb-3 w-full" disabled/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="site" class="block mb-1">Site</label>
+                    <input pInputText id="site" formControlName="site" type="text" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="telefone" class="block mb-1">Telefone</label>
+                    <input pInputText id="telefone" formControlName="telefone" type="tel" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="telefone-sac" class="block mb-1">Telefone SAC</label>
+                    <input pInputText id="telefone-sac" formControlName="telefoneSac" type="tel" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 pr-2 pl-2">
+                    <label for="descricao" class="block mb-1">Descrição</label>
+                    <textarea pInputTextarea class="w-full" id="descricao" rows="2" formControlName="descricao"></textarea>
+                </div>
+            </div>
+        </form>
+    </p-card>
+    <p-card class="flex mb-2">
+        <div class="flex">
+            <h2 class="traco flex-1">Responsáveis</h2>
+        </div>
+        <div class="col-2 col-offset-10 pt-0 pb-3 pr-0">
+            <button pButton type="button" icon="pi pi-user-plus" class="p-button-rounded p-button-warning w-full"
+                label="Incluir responsável" (click)="addResponsavel()"></button>
+        </div>
+        <div class="w-full">
+            <p-table [value]="orgao.responsaveis" dataKey="id" editMode="row" [styleClass]="'p-datatable-sm'">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-responsavel let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="responsavel">
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="responsavel.nome">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{responsavel.nome}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="responsavel.telefone" required>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{responsavel.telefone}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="responsavel.email">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{responsavel.email}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-1">
+                            <button *ngIf="responsavel.isAdm" pButton type="button" icon="pi pi-user" class="p-button-rounded p-button-text p-button-warning" pTooltip="Usuário administrador" tooltipPosition="top" disabled></button>
+                            <button *ngIf="!editing && usuarioAdm" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(responsavel)" class="p-button-rounded p-button-warning ml-2"></button>
+                            <button *ngIf="!editing && usuarioAdm" pButton type="button" icon="pi pi-trash" (click)="removeResponsavel(responsavel)" class="p-button-rounded p-button-danger ml-1"></button>
+                            <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(responsavel)" class="p-button-rounded p-button-text p-button-success ml-2 mr-2"></button>
+                            <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(responsavel, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+    </p-card>
+    <p-card class="flex">
+        <div class="flex">
+            <h2 class="traco flex-1">Alterar Senha</h2>
+            <div class="grid grid-nogutter">
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="site" class="block mb-1">Site</label>
+                    <input pInputText id="senha-antiga" formControlName="site" type="text" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="telefone" class="block mb-1">Telefone</label>
+                    <input pInputText id="nova-senha" formControlName="telefone" type="tel" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="telefone-sac" class="block mb-1">Telefone SAC</label>
+                    <input pInputText id="nova-senha-2" formControlName="telefoneSac" type="tel" class="mb-4 w-full"/>
+                </div>
+            </div>
+        </div>
+    </p-card>
+</div>

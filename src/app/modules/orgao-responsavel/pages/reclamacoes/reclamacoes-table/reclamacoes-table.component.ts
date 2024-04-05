@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
-import { SelectItem } from "primeng/api";
-import { ReclamacaoModel } from "src/app/shared/models/aplicacao/reclamacao.model";
-import { StatusReclamacaoEnum } from "src/app/shared/models/aplicacao/status-reclamacao.enum";
-import { ReclamacaoService } from "src/app/shared/services/reclamacao.service";
+import {Component} from '@angular/core';
+import {SelectItem} from 'primeng/api';
+import {ReclamacaoModel} from 'src/app/shared/models/aplicacao/reclamacao.model';
+import {StatusReclamacaoEnum} from 'src/app/shared/models/aplicacao/status-reclamacao.enum';
+import {ReclamacaoService} from 'src/app/shared/services/reclamacao.service';
 
 @Component({
     selector: 'app-reclamacoes-table',
@@ -37,7 +37,7 @@ export class ReclamacoesTableComponent {
     }
 
     public filtrarReclamacoes(): void {
-        if(this.statusReclamacoes === 0) {
+        if (this.statusReclamacoes === 0) {
             this.reclamacoesFiltradas = [...this.reclamacoes];
         } else {
             this.reclamacoesFiltradas = this.reclamacoes.filter((reclamacao: ReclamacaoModel) => reclamacao.idStatus === this.statusReclamacoes);

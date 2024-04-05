@@ -46,7 +46,7 @@ export class MenuComponent {
             { icon: 'pi pi-exclamation-triangle', label: 'Reclamações', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_RECLAMACOES.obterCaminhoRota()) },
             { icon: 'pi pi-map-marker', label: 'Abrangência', command: () => PrimengFactory.mensagemErro(this.messageService, 'Erro!', 'Funcionalidade não implementada.') },
             { icon: 'pi pi-chart-bar', label: 'Relatórios', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_RELATORIOS.obterCaminhoRota()) },
-            { icon: 'pi pi-sliders-v', label: 'Configurações', command: () => PrimengFactory.mensagemErro(this.messageService, 'Erro!', 'Funcionalidade não implementada.') },
+            { icon: 'pi pi-sliders-v', label: 'Configurações', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_CONFIGURACOES.obterCaminhoRota()) },
             { icon: 'pi pi-sign-out', label: 'Sair', command: () => this.deslogar() },
         ];
     }
