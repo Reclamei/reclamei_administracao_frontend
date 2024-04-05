@@ -40,7 +40,7 @@
         <div class="flex">
             <h2 class="traco flex-1">Responsáveis</h2>
         </div>
-        <div class="col-2 col-offset-10 pt-0 pb-3 pr-0">
+        <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-0">
             <button pButton type="button" icon="pi pi-user-plus" class="p-button-rounded p-button-warning w-full"
                 label="Incluir responsável" (click)="addResponsavel()"></button>
         </div>
@@ -72,7 +72,7 @@
                                 <input pInputText type="text" [(ngModel)]="responsavel.telefone" required>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{responsavel.telefone}}
+                                 {{responsavel.telefone}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -103,19 +103,24 @@
     <p-card class="flex">
         <div class="flex">
             <h2 class="traco flex-1">Alterar Senha</h2>
-            <div class="grid grid-nogutter">
-                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="site" class="block mb-1">Site</label>
-                    <input pInputText id="senha-antiga" formControlName="site" type="text" class="mb-4 w-full"/>
-                </div>
-                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="telefone" class="block mb-1">Telefone</label>
-                    <input pInputText id="nova-senha" formControlName="telefone" type="tel" class="mb-4 w-full"/>
-                </div>
-                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="telefone-sac" class="block mb-1">Telefone SAC</label>
-                    <input pInputText id="nova-senha-2" formControlName="telefoneSac" type="tel" class="mb-4 w-full"/>
-                </div>
+        </div>
+        <div class="grid grid-nogutter">
+            <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                <label for="senha-atual" class="block mb-1">Senha atual</label>
+                <input pInputText id="senha-atual" type="password" [(ngModel)]="senhaAtual" class="mb-4 w-full"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                <label for="nova-senha" class="block mb-1">Nova senha</label>
+                <input pInputText id="nova-senha" type="password" [(ngModel)]="novaSenha" class="mb-4 w-full"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                <label for="repetir-senha" class="block mb-1">Repetir senha</label>
+                <input pInputText id="repetir-senha" type="password" [(ngModel)]="repetirSenha" class="mb-4 w-full"/>
+            </div>
+
+            <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-0">
+                <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full"
+                    label="Salvar nova senha" (click)="alterarSenha()"></button>
             </div>
         </div>
     </p-card>

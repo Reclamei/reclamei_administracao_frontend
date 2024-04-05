@@ -3,6 +3,8 @@ import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {UserCredential} from '@firebase/auth-types';
 import {BehaviorSubject} from 'rxjs';
 import {ActionCodeSettings, user} from '@angular/fire/auth';
+import firebase from 'firebase/compat';
+import User = firebase.User;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -39,6 +41,10 @@ export class AuthService {
 
     public isSignInWithEmailLink(): Promise<boolean> {
         return this.afAuth.isSignInWithEmailLink(window.location.href);
+    }
+
+    public getCurrentUser(): Promise<User> {
+        return this.afAuth.currentUser;
     }
 
     public signOut(): Promise<void> {
