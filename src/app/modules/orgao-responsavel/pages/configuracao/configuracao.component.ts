@@ -4,9 +4,9 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../../../shared/auth/auth.service';
 import {map, take, tap} from 'rxjs/operators';
 import {MapeamentoRota} from '../../../../shared/constants/mapeamento-rota';
-import {OrgaoModel} from '../../../../shared/models/aplicacao/orgao.model';
-import {OrgaoService} from '../../../../shared/services/orgao.service';
-import {ResponsavelModel} from '../../../../shared/models/aplicacao/responsavel.model';
+import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
+import {CompanyService} from '../../../../shared/services/company.service';
+import {HeadModel} from '../../../../shared/models/aplicacao/head.model';
 import {PrimengFactory} from '../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {MessageService} from 'primeng/api';
@@ -19,9 +19,9 @@ import {MessageService} from 'primeng/api';
 export class ConfiguracaoComponent implements OnInit {
 
     public formularioOrgao: FormGroup;
-    public orgao: OrgaoModel;
+    public orgao: CompanyModel;
     public usuarioAdm = true;
-    public clonedResposaveis: { [s: number]: ResponsavelModel } = {};
+    public clonedResposaveis: { [s: number]: HeadModel } = {};
 
     public senhaAtual = '';
     public novaSenha = '';
@@ -37,7 +37,7 @@ export class ConfiguracaoComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private messageService: MessageService,
-        private orgaoService: OrgaoService
+        private orgaoService: CompanyService
     ) {
         this.orgao = this.orgaoService.obterOrgao();
         this.formularioOrgao = this.inicializarFormulario();
@@ -60,34 +60,34 @@ export class ConfiguracaoComponent implements OnInit {
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao alterar senha', ErrorType.getMessage(error.code)));
     }
 
-    public onRowEditInit(responsavel: ResponsavelModel) {
-        this.clonedResposaveis[responsavel.codigo] = { ...responsavel };
+    public onRowEditInit(responsavel: HeadModel) {
+        this.clonedResposaveis[responsavel.id] = { ...responsavel };
     }
 
-    public onRowEditCancel(responsavel: ResponsavelModel, index: number) {
-        this.orgao.responsaveis[index] = this.clonedResposaveis[responsavel.codigo];
-        delete this.clonedResposaveis[responsavel.codigo];
+    public onRowEditCancel(responsavel: HeadModel, index: number) {
+        this.orgao.heads[index] = this.clonedResposaveis[responsavel.id];
+        delete this.clonedResposaveis[responsavel.id];
         // salvar no banco
     }
 
-    public removeResponsavel(responsavel: ResponsavelModel) {
-        this.orgao.responsaveis = this.orgao.responsaveis.filter((val) => val.codigo !== responsavel.codigo);
+    public removeResponsavel(responsavel: HeadModel) {
+        this.orgao.heads = this.orgao.heads.filter((val) => val.id !== responsavel.id);
         // remover no banco
     }
 
     public addResponsavel() {
-        this.orgao.responsaveis.push(new ResponsavelModel());
+        this.orgao.heads.push(new HeadModel());
     }
 
     private inicializarFormulario(): FormGroup {
         return this.formBuilder.group({
             cnpj: new FormControl(this.orgao.cnpj, [Validators.required]),
-            nome: new FormControl(this.orgao.nome, [Validators.required]),
+            nome: new FormControl(this.orgao.name, [Validators.required]),
             email: new FormControl(this.orgao.email, [Validators.required, Validators.email]),
             site: new FormControl(this.orgao.site, []),
-            telefone: new FormControl(this.orgao.telefone, []),
-            telefoneSac: new FormControl(this.orgao.telefoneSac, [Validators.required]),
-            descricao: new FormControl(this.orgao.descricao, [Validators.required])
+            telefone: new FormControl(this.orgao.phone, []),
+            telefoneSac: new FormControl(this.orgao.sacPhone, [Validators.required]),
+            descricao: new FormControl(this.orgao.description, [Validators.required])
         });
     }
 

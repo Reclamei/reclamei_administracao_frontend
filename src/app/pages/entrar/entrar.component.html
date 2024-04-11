@@ -17,7 +17,7 @@
             </form>
         </ng-container>
         <ng-container *ngSwitchCase="modosAutenticacao.MODO_REGISTRAR">
-            <app-registrar [modoAutenticacao]="modoAutenticacao" (modoAlterado)="modoAutenticacao = modosAutenticacao.MODO_ENTRAR"></app-registrar>
+            <app-register [authenticationMode]="modoAutenticacao" (modeChanged)="modoAutenticacao = modosAutenticacao.MODO_ENTRAR"></app-register>
         </ng-container>
         <ng-container *ngSwitchCase="modosAutenticacao.MODO_ESQUECEU_SENHA">
             <h2 class="text-center pt-5">REDEFINIR SENHA</h2>

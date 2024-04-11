@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {OrgaoModel} from '../../models/aplicacao/orgao.model';
-import {OrgaoService} from '../../services/orgao.service';
+import {CompanyModel} from '../../models/aplicacao/company.model';
+import {CompanyService} from '../../services/company.service';
 import {MenuItem, MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {MapeamentoRota} from '../../constants/mapeamento-rota';
@@ -13,13 +13,13 @@ import {AuthService} from '../../auth/auth.service';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-    public orgao: OrgaoModel | null = null;
+    public orgao: CompanyModel | null = null;
     public opcoes: MenuItem[] = this.inicializarOpcoesMenu();
-    @Input() public esconderMenuMobile: boolean = true;
+    @Input() public esconderMenuMobile = true;
     @Output() public aoEsconderMenu: EventEmitter<void> = new EventEmitter();
 
     constructor(
-        private orgaoService: OrgaoService,
+        private orgaoService: CompanyService,
         private router: Router,
         private messageService: MessageService,
         private authService: AuthService

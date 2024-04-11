@@ -13,7 +13,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {TokenInterceptor} from './shared/auth/interceptor/token-interceptor';
 import {AngularFireModule} from '@angular/fire/compat';
 import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
-import {RegistrarComponent} from './pages/registrar/registrar.component';
+import {RegisterComponent} from './pages/register/register.component';
 import {ConcluirCadastroComponent} from './pages/concluir-cadastro/concluir-cadastro.component';
 
 @NgModule({
@@ -30,7 +30,7 @@ import {ConcluirCadastroComponent} from './pages/concluir-cadastro/concluir-cada
         AppComponent,
         EntrarComponent,
         HomeComponent,
-        RegistrarComponent,
+        RegisterComponent,
         ConcluirCadastroComponent
     ],
     providers: [

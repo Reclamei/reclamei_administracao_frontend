@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: 'http://localhost:8083/',
+  apiEndpoint: 'http://localhost:8083',
   firebase: {
       apiKey: 'AIzaSyD1mGeGUP1pB_ie5pbkkgqez1f2614sUXI',
       authDomain: 'reclamei-auth.firebaseapp.com',
