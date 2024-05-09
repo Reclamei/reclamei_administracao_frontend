@@ -8,6 +8,7 @@ import {ErrorType} from 'src/app/shared/auth/model/error-type.enum';
 import {AuthService} from 'src/app/shared/auth/auth.service';
 import {map, take, tap} from 'rxjs/operators';
 import {CompanyService} from '../../shared/services/company.service';
+import {v4 as uuidv4} from 'uuid';
 
 @Component({
     selector: 'app-register',
@@ -37,22 +38,26 @@ export class RegisterComponent implements OnInit {
     }
 
     public validateRegistration() {
-        if (this.registrationForm.value.acessoEmail) {
-            const actionCodeSettings = {
-                url: 'http://localhost:4200/finalizar-cadastro',
-                handleCodeInApp: true
-            };
-            this.authService
-                .sendSignInLinkToEmail(this.registrationForm.value.email, actionCodeSettings)
-                .then(() => {
-                    window.localStorage.setItem('emailForSignIn', this.registrationForm.value.email);
-                    window.localStorage.setItem('cnpjForSignIn', this.registrationForm.value.cnpj);
-                    this.step = this.steps.VALIDACAO_ANDAMENTO;
-                })
-                .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
+        if (this.registrationForm.value.hasEmailAccess) {
+            this.companyService.create(this.registrationForm.value).subscribe({
+                next: () => this.sendSignInLinkToEmail(),
+                error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro', error.message)
+            });
         } else {
             this.step = this.steps.VALIDACAO_ANDAMENTO;
         }
+    }
+
+    private sendSignInLinkToEmail() {
+        const hash = this.registrationForm.value.heads[0].external_id;
+        const actionCodeSettings = {
+            url: `http://localhost:4200/finalizar-cadastro?hash=${hash}`,
+            handleCodeInApp: true
+        };
+        this.authService
+            .sendSignInLinkToEmail(this.registrationForm.value.email, actionCodeSettings)
+            .then(() => this.step = this.steps.VALIDACAO_ANDAMENTO)
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
 
     private initializeForm(): FormGroup {
@@ -60,9 +65,12 @@ export class RegisterComponent implements OnInit {
             cnpj: new FormControl(null, [Validators.required]),
             name: new FormControl(null, []),
             site: new FormControl(null, []),
-            email: new FormControl(null, []),
+            email: new FormControl('liviaaurich2@gmail.com', []),
+            description: new FormControl(null, []),
+            phone: new FormControl(null, []),
             hasEmailAccess: new FormControl(true, []),
-            secondaryEmail: new FormControl(null, [])
+            secondaryEmail: new FormControl(null, []),
+            heads: this.formBuilder.array([{ external_id: uuidv4() }])
         });
     }
 
@@ -83,7 +91,9 @@ export class RegisterComponent implements OnInit {
                 this.registrationForm.patchValue({
                     cnpj: company.cnpj,
                     name: company.name,
-                    email: company.email
+                    // email: company.email, TODO: comentado apenas para teste
+                    description: company.description,
+                    phone: company.phone,
                 });
                 this.step = this.steps.VALIDAR_INFORMACOES;
             },

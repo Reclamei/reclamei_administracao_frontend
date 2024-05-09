@@ -8,12 +8,12 @@ import {ErrorType} from 'src/app/shared/auth/model/error-type.enum';
 import {AuthService} from 'src/app/shared/auth/auth.service';
 
 @Component({
-    selector: 'app-concluir-cadastro',
-    templateUrl: './concluir-cadastro.component.html',
-    styleUrls: ['./concluir-cadastro.component.scss']
+    selector: 'app-complete-registration',
+    templateUrl: './complete-registration.component.html',
+    styleUrls: ['./complete-registration.component.scss']
 })
-export class ConcluirCadastroComponent implements OnInit {
-    public formRegistro: FormGroup;
+export class CompleteRegistrationComponent implements OnInit {
+    public registrationForm: FormGroup;
     public isValidEmailLink: boolean;
 
     constructor(
@@ -22,49 +22,45 @@ export class ConcluirCadastroComponent implements OnInit {
         private router: Router,
         private authService: AuthService
     ) {
-        this.formRegistro = this.inicializarFormulario();
+        this.registrationForm = this.initializeForm();
     }
 
     public ngOnInit(): void {
-        this.verificarEmailLink();
+        this.checkEmailLink();
     }
 
-    public registrar(): void {
+    public register(): void {
         this.authService
-            .createUserWithEmailAndPassword(this.formRegistro.get('email').value,  this.formRegistro.get('senha').value)
+            .createUserWithEmailAndPassword(this.registrationForm.get('email').value,  this.registrationForm.get('senha').value)
             .then((userCredential) => {
                 // Criar no company o registro da company com as informaões do CNPJ vinculado e o responsavel principal
                 localStorage.setItem('user', JSON.stringify(userCredential.user));
-                this.redirecionarPaginaInicial();
+                this.redirectHomepage();
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
 
-    private inicializarFormulario(): FormGroup {
+    private initializeForm(): FormGroup {
         return this.formBuilder.group({
             cnpj: new FormControl(null, [Validators.required]),
             email: new FormControl(null, [Validators.required, Validators.email]),
-            senha: new FormControl(null, [Validators.required]),
-            repetirSenha: new FormControl(null, [Validators.required])
+            password: new FormControl(null, [Validators.required]),
+            passwordRepeat: new FormControl(null, [Validators.required])
         });
     }
 
-    private verificarEmailLink(): void {
-        this.formRegistro.get('email').setValue(window.localStorage.getItem('emailForSignIn'));
-        this.formRegistro.get('cnpj').setValue(window.localStorage.getItem('cnpjForSignIn'));
+    private checkEmailLink(): void {
         this.authService.isSignInWithEmailLink()
             .then((emailLink) => {
                 this.isValidEmailLink = emailLink;
                 if (!emailLink) {
                     this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
                 }
-                window.localStorage.removeItem('emailForSignIn');
-                window.localStorage.removeItem('cnpjForSignIn');
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
 
-    private redirecionarPaginaInicial(): void {
+    private redirectHomepage(): void {
         this.router.navigateByUrl(MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO.obterCaminhoRota());
     }
 }
