@@ -1,11 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from 'primeng/api';
 import {MapeamentoRota} from 'src/app/shared/constants/mapeamento-rota';
 import {PrimengFactory} from 'src/app/shared/factories/primeng.factory';
 import {ErrorType} from 'src/app/shared/auth/model/error-type.enum';
 import {AuthService} from 'src/app/shared/auth/auth.service';
+import {Subscription} from 'rxjs';
+import {CompanyService} from '../../shared/services/company.service';
+import {HeadService} from '../../shared/services/head.service';
 
 @Component({
     selector: 'app-complete-registration',
@@ -15,29 +18,48 @@ import {AuthService} from 'src/app/shared/auth/auth.service';
 export class CompleteRegistrationComponent implements OnInit {
     public registrationForm: FormGroup;
     public isValidEmailLink: boolean;
+    public externalId: string;
 
     constructor(
         private formBuilder: FormBuilder,
         private messageService: MessageService,
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private route: ActivatedRoute,
+        private companyService: CompanyService,
+        private headService: HeadService
     ) {
         this.registrationForm = this.initializeForm();
     }
 
-    public ngOnInit(): void {
-        this.checkEmailLink();
+    async ngOnInit(): Promise<void> {
+        await this.checkEmailLink();
+        await this.checkQueryParams();
+        await this.checkExternalId();
     }
 
-    public register(): void {
-        this.authService
-            .createUserWithEmailAndPassword(this.registrationForm.get('email').value,  this.registrationForm.get('senha').value)
+    public async register(): Promise<void> {
+        await this.createUser();
+        await this.confirmUser();
+    }
+
+    private async createUser(): Promise<void> {
+        return this.authService
+            .createUserWithEmailAndPassword(this.registrationForm.get('email').value,  this.registrationForm.get('password').value)
             .then((userCredential) => {
-                // Criar no company o registro da company com as informaões do CNPJ vinculado e o responsavel principal
                 localStorage.setItem('user', JSON.stringify(userCredential.user));
-                this.redirectHomepage();
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
+    }
+
+    private async confirmUser(): Promise<Subscription> {
+        return this.headService.confirmUser(this.externalId).subscribe({
+            next: (res) => this.redirectHomepage(),
+            error: (error) => {
+                localStorage.setItem('user', JSON.stringify(null));
+                PrimengFactory.mensagemErro(this.messageService, 'Erro ao confirmar usuário', ErrorType.getMessage(error.code));
+            }
+        });
     }
 
     private initializeForm(): FormGroup {
@@ -49,18 +71,45 @@ export class CompleteRegistrationComponent implements OnInit {
         });
     }
 
-    private checkEmailLink(): void {
-        this.authService.isSignInWithEmailLink()
+    private async checkEmailLink(): Promise<void> {
+        return this.authService.isSignInWithEmailLink()
             .then((emailLink) => {
                 this.isValidEmailLink = emailLink;
                 if (!emailLink) {
-                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
+                    this.redirectAuthenticationPage();
                 }
             })
-            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na validação do link de e-mail',
+                ErrorType.getMessage(error.code)));
+    }
+
+    private redirectAuthenticationPage(): void {
+        this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
     }
 
     private redirectHomepage(): void {
         this.router.navigateByUrl(MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO.obterCaminhoRota());
+    }
+
+    private async checkQueryParams(): Promise<Subscription> {
+        return this.route.queryParams.subscribe(params => {
+            this.externalId = params.hash;
+            if (this.externalId == null) {
+                this.redirectAuthenticationPage();
+            }
+        });
+    }
+
+    private async checkExternalId(): Promise<Subscription> {
+        return this.companyService.getCompanyByHeadExternalId(this.externalId).subscribe({
+            next: (company) => {
+                this.registrationForm.patchValue({
+                    cnpj: company.cnpj,
+                    email: company.email
+                });
+            },
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
+                ErrorType.getMessage(error.code))
+        });
     }
 }

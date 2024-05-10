@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
     }
 
     private sendSignInLinkToEmail() {
-        const hash = this.registrationForm.value.heads[0].external_id;
+        const hash = this.registrationForm.value.heads[0].externalId;
         const actionCodeSettings = {
             url: `http://localhost:4200/finalizar-cadastro?hash=${hash}`,
             handleCodeInApp: true
@@ -70,7 +70,7 @@ export class RegisterComponent implements OnInit {
             phone: new FormControl(null, []),
             hasEmailAccess: new FormControl(true, []),
             secondaryEmail: new FormControl(null, []),
-            heads: this.formBuilder.array([{ external_id: uuidv4() }])
+            heads: this.formBuilder.array([{ externalId: uuidv4() }])
         });
     }
 

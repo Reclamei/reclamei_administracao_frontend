@@ -10,7 +10,7 @@ import {v4 as uuidv4} from 'uuid';
 })
 export class CompanyService {
 
-    private baseUrl = `${environment.apiEndpoint}/ms-company`;
+    private baseUrl = `${environment.apiEndpoint}/ms-company/companies`;
 
     private orgaosRegistrados: CompanyModel[] = this.inicializarOrgaos();
 
@@ -18,11 +18,15 @@ export class CompanyService {
 
     public create(company: CompanyModel) {
         const headers = new HttpHeaders({  'Content-Type': 'application/json' });
-        return this.http.post(`${this.baseUrl}/companies`, company, { headers });
+        return this.http.post(this.baseUrl, company, { headers });
     }
 
     public getInformationByCnpj(cnpj: string) {
-        return this.http.get<CompanyModel>(`${this.baseUrl}/companies/cnpj/${cnpj}`);
+        return this.http.get<CompanyModel>(`${this.baseUrl}/cnpj/${cnpj}`);
+    }
+
+    public getCompanyByHeadExternalId(externalId: string) {
+        return this.http.get<CompanyModel>(`${this.baseUrl}/head/external-id/${externalId}`);
     }
 
     public obterOrgao(): CompanyModel {
