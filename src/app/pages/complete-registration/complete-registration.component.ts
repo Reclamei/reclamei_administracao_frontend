@@ -40,6 +40,7 @@ export class CompleteRegistrationComponent implements OnInit {
 
     public async register(): Promise<void> {
         await this.createUser();
+        await this.updateUserProfile();
         await this.confirmUser();
     }
 
@@ -47,7 +48,7 @@ export class CompleteRegistrationComponent implements OnInit {
         return this.authService
             .createUserWithEmailAndPassword(this.registrationForm.get('email').value,  this.registrationForm.get('password').value)
             .then((userCredential) => {
-                localStorage.setItem('user', JSON.stringify(userCredential.user));
+                sessionStorage.setItem('user', JSON.stringify(userCredential.user));
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
@@ -56,7 +57,7 @@ export class CompleteRegistrationComponent implements OnInit {
         return this.headService.confirmUser(this.externalId).subscribe({
             next: (res) => this.redirectHomepage(),
             error: (error) => {
-                localStorage.setItem('user', JSON.stringify(null));
+                sessionStorage.setItem('user', JSON.stringify(null));
                 PrimengFactory.mensagemErro(this.messageService, 'Erro ao confirmar usuário', ErrorType.getMessage(error.code));
             }
         });
@@ -111,5 +112,17 @@ export class CompleteRegistrationComponent implements OnInit {
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
                 ErrorType.getMessage(error.code))
         });
+    }
+
+    private async updateUserProfile() {
+        const user = await this.authService.getCurrentUser();
+        if (user) {
+            await user.updateProfile({
+                displayName: this.externalId.toString(),
+            });
+            sessionStorage.setItem('user', JSON.stringify(user));
+        } else {
+            throw new Error('Usuário não autenticado');
+        }
     }
 }

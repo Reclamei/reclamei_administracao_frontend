@@ -49,6 +49,7 @@ export class AuthService {
 
     public signOut(): Promise<void> {
         sessionStorage.clear();
+        localStorage.clear();
         this.userSubject.next(user);
         return this.afAuth.signOut();
     }

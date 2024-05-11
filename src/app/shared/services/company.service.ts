@@ -29,6 +29,10 @@ export class CompanyService {
         return this.http.get<CompanyModel>(`${this.baseUrl}/head/external-id/${externalId}`);
     }
 
+    public getCompanyById(id: number) {
+        return this.http.get<CompanyModel>(`${this.baseUrl}/${id}`);
+    }
+
     public obterOrgao(): CompanyModel {
         const orgao = new CompanyModel(
             'Administrador',

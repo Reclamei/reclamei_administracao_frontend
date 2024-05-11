@@ -7,7 +7,7 @@ import {RelatoriosComponent} from './pages/relatorios/relatorios.component';
 import {ReclamacoesComponent} from './pages/reclamacoes/reclamacoes.component';
 import {AbrangenciaComponent} from './pages/abrangencia/abrangencia.component';
 import {ReclamacoesTableComponent} from './pages/reclamacoes/reclamacoes-table/reclamacoes-table.component';
-import {ConfiguracaoComponent} from './pages/configuracao/configuracao.component';
+import {SettingsComponent} from './pages/settings/settings.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +16,7 @@ import {ConfiguracaoComponent} from './pages/configuracao/configuracao.component
         ReclamacoesTableComponent,
         RelatoriosComponent,
         AbrangenciaComponent,
-        ConfiguracaoComponent
+        SettingsComponent
     ],
     imports: [
         CommonModule,
