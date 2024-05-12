@@ -2,6 +2,7 @@ import {HeadModel} from './head.model';
 
 export class CompanyModel {
     constructor(
+        public id?: number,
         public role?: string,
         public localImage?: string,
         public cnpj?: string,

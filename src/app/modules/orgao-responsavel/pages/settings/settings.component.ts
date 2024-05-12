@@ -10,6 +10,7 @@ import {HeadModel} from '../../../../shared/models/aplicacao/head.model';
 import {PrimengFactory} from '../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {MessageService} from 'primeng/api';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-settings',
@@ -20,17 +21,17 @@ export class SettingsComponent implements OnInit {
 
     public companyForm: FormGroup;
     public company: CompanyModel = new CompanyModel();
-    public isUserAdmin = true;
+    public isUserAdmin = false;
     public clonedHeads: { [s: number]: HeadModel } = {};
 
     public senhaAtual = '';
     public newPassword = '';
     public repetirSenha = '';
 
-    ngOnInit(): void {
-        this.company = this.companyService.obterOrgao();
+    async ngOnInit(): Promise<void> {
+        this.companyForm = this.initializeForm();
+        await this.getCompanyByExternalId();
         this.checkLoggedInUser();
-        // this.getCompanyById(1);
     }
 
     constructor(
@@ -39,21 +40,7 @@ export class SettingsComponent implements OnInit {
         private authService: AuthService,
         private messageService: MessageService,
         private companyService: CompanyService
-    ) {
-        this.company = this.companyService.obterOrgao();
-        this.companyForm = this.initializeForm();
-        // this.getCompanyById(1);
-    }
-
-    public getCompanyById(id: number) {
-        this.companyService.getCompanyById(id).subscribe({
-            next: (company) => {
-                this.company = company;
-            },
-            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
-                ErrorType.getMessage(error.code))
-        });
-    }
+    ) { }
 
     public changePassword() {
         if (this.newPassword !== this.repetirSenha) {
@@ -91,20 +78,29 @@ export class SettingsComponent implements OnInit {
         this.company.heads.push(new HeadModel());
     }
 
-    private initializeForm(): FormGroup {
-        return this.formBuilder.group({
-            cnpj: new FormControl(this.company.cnpj, [Validators.required]),
-            name: new FormControl(this.company.name, [Validators.required]),
-            email: new FormControl(this.company.email, [Validators.required, Validators.email]),
-            site: new FormControl(this.company.site, []),
-            phone: new FormControl(this.company.phone, []),
-            sacPhone: new FormControl(this.company.sacPhone, [Validators.required]),
-            description: new FormControl(this.company.description, [Validators.required])
+    public updateCompany() {
+        this.companyService.update(this.companyForm.value).subscribe({
+            next: () => PrimengFactory.mensagemSucesso(this.messageService, 'Registro atualizado com sucesso.', ''),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao atualizar informações do órgão.',
+                ErrorType.getMessage(error.code))
         });
     }
 
-    private checkLoggedInUser(): void {
-        this.authService.getAngularFireAuth().authState.pipe(
+    private initializeForm(): FormGroup {
+        return this.formBuilder.group({
+            id: new FormControl(null, [Validators.required]),
+            cnpj: new FormControl(null, [Validators.required]),
+            name: new FormControl(null, [Validators.required]),
+            email: new FormControl(null, [Validators.required, Validators.email]),
+            site: new FormControl(null, []),
+            phone: new FormControl(null, []),
+            sacPhone: new FormControl(null, [Validators.required]),
+            description: new FormControl(null, [Validators.required])
+        });
+    }
+
+    private checkLoggedInUser(): Observable<boolean> {
+        return this.authService.getAngularFireAuth().authState.pipe(
             take(1),
             map(user => !!user),
             tap(authenticated => {
@@ -117,6 +113,31 @@ export class SettingsComponent implements OnInit {
 
     onRowEditSave(head: any) {
 
+    }
+
+    private async getCompanyByExternalId() {
+        const user = await this.authService.getCurrentUser();
+        if (!user || !user.displayName) {
+            throw new Error('Usuário não autenticado');
+        }
+        return this.companyService.getCompanyByHeadExternalId(user.displayName).subscribe({
+            next: (company: CompanyModel) => {
+                this.company = company;
+                this.companyForm.patchValue({
+                    id: company.id,
+                    cnpj: company.cnpj,
+                    name: company.name,
+                    email: company.email,
+                    site: company.site,
+                    phone: company.phone,
+                    sacPhone: company.sacPhone,
+                    description: company.description,
+                });
+                this.isUserAdmin = company.heads.find(head => head.externalId === user.displayName).isAdmin === true;
+            },
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
+                ErrorType.getMessage(error.code))
+        });
     }
 
 }

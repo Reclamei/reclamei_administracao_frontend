@@ -86,7 +86,7 @@ export class RegisterComponent implements OnInit {
     }
 
     public getInformationByCnpj() {
-        this.companyService.getInformationByCnpj(this.registrationForm.value.cnpj).subscribe({
+        this.companyService.findInformationByCnpj(this.registrationForm.value.cnpj).subscribe({
             next: (company) => {
                 this.registrationForm.patchValue({
                     cnpj: company.cnpj,

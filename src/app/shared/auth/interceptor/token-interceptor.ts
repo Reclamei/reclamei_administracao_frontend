@@ -11,7 +11,8 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const user = sessionStorage.getItem('user');
-    const authToken = !!user ? user['stsTokenManager']?.accessToken : null;
+    const userJson  = JSON.parse(user);
+    const authToken = !!userJson ? userJson['stsTokenManager']?.accessToken : null;
 
     if (authToken) {
       // Clone the request and add the token header

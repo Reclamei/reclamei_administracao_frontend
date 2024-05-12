@@ -12,8 +12,6 @@ export class CompanyService {
 
     private baseUrl = `${environment.apiEndpoint}/ms-company/companies`;
 
-    private orgaosRegistrados: CompanyModel[] = this.inicializarOrgaos();
-
     constructor(private http: HttpClient) { }
 
     public create(company: CompanyModel) {
@@ -21,7 +19,7 @@ export class CompanyService {
         return this.http.post(this.baseUrl, company, { headers });
     }
 
-    public getInformationByCnpj(cnpj: string) {
+    public findInformationByCnpj(cnpj: string) {
         return this.http.get<CompanyModel>(`${this.baseUrl}/cnpj/${cnpj}`);
     }
 
@@ -29,12 +27,14 @@ export class CompanyService {
         return this.http.get<CompanyModel>(`${this.baseUrl}/head/external-id/${externalId}`);
     }
 
-    public getCompanyById(id: number) {
-        return this.http.get<CompanyModel>(`${this.baseUrl}/${id}`);
+    public update(company: CompanyModel) {
+        const headers = new HttpHeaders({  'Content-Type': 'application/json' });
+        return this.http.put(this.baseUrl, company, { headers });
     }
 
     public obterOrgao(): CompanyModel {
         const orgao = new CompanyModel(
+            1,
             'Administrador',
             '/assets/images/representative/orgaos/aaa.png',
             '001112220001',
@@ -47,25 +47,6 @@ export class CompanyService {
         );
         orgao.heads.push(new HeadModel(1, uuidv4(), 'livia@empresa.com', 'Livia', '27996469871', true));
         return orgao;
-    }
-
-    private inicializarOrgaos(): CompanyModel[] {
-        return [
-            new CompanyModel(
-                'Administrador',
-                '/assets/images/representative/orgaos/aaa.png',
-                '001112220001',
-                'Empresa Luz e Força Energiza',
-                'fulano@empresa.com',
-                'energia.com.br',
-                '27999878714',
-                '37241410',
-                'Empresa que cuida da energia',
-                [
-                    new HeadModel(1, uuidv4(), 'livia@empresa.com', 'Livia', '27996469871', true)
-                ]
-            )
-        ];
     }
 
 }

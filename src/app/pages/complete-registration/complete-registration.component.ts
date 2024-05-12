@@ -48,7 +48,7 @@ export class CompleteRegistrationComponent implements OnInit {
         return this.authService
             .createUserWithEmailAndPassword(this.registrationForm.get('email').value,  this.registrationForm.get('password').value)
             .then((userCredential) => {
-                sessionStorage.setItem('user', JSON.stringify(userCredential.user));
+                sessionStorage.setItem('user', JSON.stringify(userCredential));
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
