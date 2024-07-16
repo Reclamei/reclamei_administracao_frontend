@@ -45,7 +45,7 @@ export class CompanyService {
             '37241410',
             'Empresa que cuida da energia'
         );
-        orgao.heads.push(new HeadModel(1, uuidv4(), 'livia@empresa.com', 'Livia', '27996469871', true));
+        orgao.heads.push(new HeadModel(1, 1, uuidv4(), 'livia@empresa.com', 'Livia', '27996469871', true));
         return orgao;
     }
 

@@ -106,7 +106,7 @@ export class CompleteRegistrationComponent implements OnInit {
             next: (company) => {
                 this.registrationForm.patchValue({
                     cnpj: company.cnpj,
-                    email: company.email
+                    email: company.heads.find(head => head.externalId === this.externalId).email
                 });
             },
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',

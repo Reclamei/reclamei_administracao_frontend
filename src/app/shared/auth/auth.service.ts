@@ -47,6 +47,10 @@ export class AuthService {
         return this.afAuth.currentUser;
     }
 
+    public deleteUser(uid) {
+        // return this.afAuth.deleteUser(uid);
+    }
+
     public signOut(): Promise<void> {
         sessionStorage.clear();
         localStorage.clear();

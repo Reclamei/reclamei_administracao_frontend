@@ -10,6 +10,7 @@ const routes: Routes = [
     { path: MapeamentoRota.ROTA_AUTENTICAR.obterRota(), component: EntrarComponent },
     { path: MapeamentoRota.ROTA_CONCLUIR_CADASTRO.obterRota(), component: CompleteRegistrationComponent },
     { path: MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO.obterRota(), loadChildren: () => import('./modules/orgao-responsavel/orgao-responsavel.module').then((m) => m.OrgaoResponsavelModule), canActivate: [AuthGuard] },
+    { path: MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN.obterRota(), loadChildren: () => import('./modules/system-admin/system-admin.module').then((m) => m.SystemAdminModule), canActivate: [AuthGuard] },
     { path: '**', redirectTo: MapeamentoRota.ROTA_RAIZ.obterRota() },
 ];
 

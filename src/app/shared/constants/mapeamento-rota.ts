@@ -10,6 +10,12 @@ export class MapeamentoRota {
 	public static readonly ROTA_RELATORIOS: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'relatorios');
 	public static readonly ROTA_CONFIGURACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'configuracoes');
 
+	public static readonly ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'painel-administrativo-system-admin');
+	public static readonly ROTA_CONFIGURACOES_SYSTEM_ADMIN: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN, 'configuracoes');
+	public static readonly ROTA_APROVACOES_SYSTEM_ADMIN: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN, 'aprovacoes');
+	public static readonly ROTA_TIPOS_SERVICO_SYSTEM_ADMIN: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN, 'tipos-servico');
+	public static readonly ROTA_LOCALIDADES_SYSTEM_ADMIN: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN, 'localidades');
+
 	private constructor(private superRota: MapeamentoRota, private rota: string) {}
 
 	private static registrarRota(superRota: MapeamentoRota, rota: string): MapeamentoRota {

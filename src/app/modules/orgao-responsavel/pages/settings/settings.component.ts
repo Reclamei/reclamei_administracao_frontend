@@ -11,6 +11,7 @@ import {PrimengFactory} from '../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {MessageService} from 'primeng/api';
 import {Observable} from 'rxjs';
+import {HeadService} from '../../../../shared/services/head.service';
 
 @Component({
     selector: 'app-settings',
@@ -39,7 +40,8 @@ export class SettingsComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private messageService: MessageService,
-        private companyService: CompanyService
+        private companyService: CompanyService,
+        private headService: HeadService
     ) { }
 
     public changePassword() {
@@ -66,16 +68,23 @@ export class SettingsComponent implements OnInit {
     public onRowEditCancel(head: HeadModel, index: number) {
         this.company.heads[index] = this.clonedHeads[head.id];
         delete this.clonedHeads[head.id];
-        // salvar no banco
+        // salvar no banco?
     }
 
-    public removeHead(head: HeadModel) {
-        this.company.heads = this.company.heads.filter((val) => val.id !== head.id);
-        // remover no banco
+    public async removeHead(head: HeadModel) {
+        await this.removeAsyncHead(head);
+    }
+
+    private async removeAsyncHead(head: HeadModel) {
+        return this.headService.delete(head.id).subscribe({
+            next: () => this.company.heads = this.company.heads.filter((val) => val.id !== head.id),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao remover responsável.',
+                ErrorType.getMessage(error.code))
+        });
     }
 
     public addHead() {
-        this.company.heads.push(new HeadModel());
+        this.company.heads.push(new HeadModel(null, this.companyForm.value.id));
     }
 
     public updateCompany() {
@@ -111,8 +120,39 @@ export class SettingsComponent implements OnInit {
     }
 
 
-    onRowEditSave(head: any) {
+    onRowEditSave(head: HeadModel) {
+        if (head.id) {
+            this.updateHead(head);
+            return;
+        }
+        this.createHead(head);
+    }
 
+    private async createHead(head: HeadModel) {
+        await this.createAsyncHead(head);
+        const actionCodeSettings = {
+            url: `http://localhost:4200/finalizar-cadastro?hash=${head.externalId}`,
+            handleCodeInApp: true
+        };
+        await this.authService
+            .sendSignInLinkToEmail(head.email, actionCodeSettings)
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
+        await this.getHeadsByCompany();
+    }
+
+    private async createAsyncHead(head: HeadModel) {
+        return this.headService.create(head).subscribe({
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao inserir responsável.',
+                ErrorType.getMessage(error.code))
+        });
+    }
+
+    private updateHead(head: HeadModel) {
+        this.headService.update(head).subscribe({
+            next: () => this.getHeadsByCompany(),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao atualizar informações do responsável.',
+                ErrorType.getMessage(error.code))
+        });
     }
 
     private async getCompanyByExternalId() {
@@ -140,4 +180,10 @@ export class SettingsComponent implements OnInit {
         });
     }
 
+    private async getHeadsByCompany() {
+        return this.headService.getAllHeadsByCompanyId(this.companyForm.value.id).subscribe({
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao obter responsáveis.',
+                ErrorType.getMessage(error.code))
+        });
+    }
 }

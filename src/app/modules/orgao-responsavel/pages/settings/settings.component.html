@@ -4,7 +4,7 @@
             <h2 class="traco flex-1">Empresa</h2>
         </div>
         <form [formGroup]="companyForm" class="pl-2 pr-2">
-            <div class="grid grid-nogutter">
+            <div class="grid grid-nogutter pb-0">
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
                     <label for="cnpj" class="block mb-1">CNPJ</label>
                     <input pInputText id="cnpj" formControlName="cnpj" type="number" class="mb-3 w-full" disabled/>
@@ -34,7 +34,7 @@
                     <textarea pInputTextarea class="w-full" id="description" rows="2" formControlName="description"></textarea>
                 </div>
 
-                <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-2">
+                <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pr-2">
                     <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full" [disabled]="!companyForm.valid"
                             label="Salvar" (click)="updateCompany()"></button>
                 </div>
@@ -111,7 +111,7 @@
         <div class="flex">
             <h2 class="traco flex-1">Alterar Senha</h2>
         </div>
-        <div class="grid grid-nogutter pl-2 pr-2">
+        <div class="grid grid-nogutter pl-2 pr-2 pb-0">
             <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
                 <label for="senha-atual" class="block mb-1">Senha atual</label>
                 <input pInputText id="senha-atual" type="password" [(ngModel)]="senhaAtual" class="mb-4 w-full"/>
@@ -125,7 +125,7 @@
                 <input pInputText id="repetir-senha" type="password" [(ngModel)]="repetirSenha" class="mb-3 w-full"/>
             </div>
 
-            <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-2">
+            <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pr-2">
                 <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full"
                     label="Salvar nova senha" (click)="changePassword()"></button>
             </div>

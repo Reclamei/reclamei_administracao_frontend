@@ -50,7 +50,7 @@ export class EntrarComponent implements OnInit {
         this.authService
             .sendPasswordResetEmail(this.formularioEsqueceuSenha.get('senha').value)
             .then(() => {
-                this.modoAutenticacao = this.modosAutenticacao.MODO_ENTRAR
+                this.modoAutenticacao = this.modosAutenticacao.MODO_ENTRAR;
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na tentativa de recuperação de senha', ErrorType.getMessage(error.code)));
     }
