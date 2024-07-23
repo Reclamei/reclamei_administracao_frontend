@@ -15,6 +15,7 @@
                     <th>Código</th>
                     <th>Nome</th>
                     <th>Descrição</th>
+                    <th>Sub-tipos de serviços</th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -42,6 +43,9 @@
                                 {{serviceType.description}}
                             </ng-template>
                         </p-cellEditor>
+                    </td>
+                    <td>
+                        {{serviceType.subtypesString}}
                     </td>
                     <td>
                         <div class="flex align-items-center justify-content-center gap-1">
@@ -78,6 +82,7 @@
                     <tr>
                         <th>Código</th>
                         <th>Nome</th>
+                        <th>Descrição</th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -99,10 +104,20 @@
                             </p-cellEditor>
                         </td>
                         <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="subtype.description">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{subtype.description}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
                             <div class="flex align-items-center justify-content-center gap-1">
                                 <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowSubtypeEditInit(subtype)" class="p-button-rounded p-button-warning ml-2"></button>
                                 <button *ngIf="!editing" pButton type="button" icon="pi pi-trash" (click)="removeSubtype(subtype)" class="p-button-rounded p-button-danger ml-1"></button>
-                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowSubtypeEditSave(subtype)" class="p-button-rounded p-button-success ml-2 mr-2"></button>
+                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="p-button-rounded p-button-success ml-2 mr-2"></button>
                                 <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowSubtypeEditCancel(subtype, ri)" class="p-button-rounded p-button-danger"></button>
                             </div>
                         </td>
@@ -112,7 +127,7 @@
         </div>
     </div>
     <div class="flex justify-content-end mt-5">
-        <button pButton label="Cancelar" (click)="visible = false" class="p-button-danger w-7rem"></button>
-        <button pButton label="Salvar" (click)="visible = false" class="p-button-warning ml-2 w-7rem"></button>
+        <button pButton label="Cancelar" (click)="cancelDialogSubtypes()" class="p-button-danger w-7rem"></button>
+        <button pButton label="Salvar" (click)="saveSubtypes()" class="p-button-warning ml-2 w-7rem"></button>
     </div>
 </p-dialog>

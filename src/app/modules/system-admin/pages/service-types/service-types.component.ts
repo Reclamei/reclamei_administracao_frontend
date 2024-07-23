@@ -16,6 +16,7 @@ export class ServiceTypesComponent implements OnInit {
     filteredServiceTypes: ServiceTypeModel[] = [];
     visible: boolean = false;
     serviceTypeSelected: ServiceTypeModel = new ServiceTypeModel();
+    filteredSubtypes: ServiceSubtypeModel[] = [];
     private clonedSubtypes: { [s: number]: HeadModel } = {};
     private clonedServicesType: { [s: number]: HeadModel } = {};
 
@@ -59,20 +60,22 @@ export class ServiceTypesComponent implements OnInit {
 
     openSubtypesDialog(serviceType: ServiceTypeModel) {
         this.serviceTypeSelected = serviceType;
+        this.filteredSubtypes = this.serviceTypeSelected.subtypes;
         this.visible = true;
     }
 
     addSubType() {
-        this.serviceTypeSelected.subtypes.push(new ServiceSubtypeModel(Math.random()));
+        this.serviceTypeSelected.subtypes.push(new ServiceSubtypeModel());
     }
 
-    removeSubtype(subtype: ServiceSubtypeModel) {
+    async removeSubtype(subtype: ServiceSubtypeModel) {
         this.serviceTypeSelected.subtypes = this.serviceTypeSelected.subtypes.filter((val) => val.id !== subtype.id);
-        // TODO: Implementar chamada backend
-    }
+        this.serviceTypeSelected.subtypes = this.serviceTypeSelected.subtypes.filter(item => !!item.name && !!item.description);
 
-    onRowSubtypeEditSave(subtype: ServiceSubtypeModel) {
-        // TODO: Implementar
+        if (this.serviceTypeSelected.subtypes !== this.filteredSubtypes) {
+            await this.updateServiceType(this.serviceTypeSelected);
+            await this.getServiceTypes();
+        }
     }
 
     onRowSubtypeEditCancel(subtype: ServiceSubtypeModel, index: number) {
@@ -92,7 +95,7 @@ export class ServiceTypesComponent implements OnInit {
         });
     }
 
-    private updateServiceType(serviceType: ServiceTypeModel) {
+    private async updateServiceType(serviceType: ServiceTypeModel) {
         return this.serviceTypesService.update(serviceType).subscribe({
             next: () => this.getServiceTypes(),
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
@@ -103,11 +106,26 @@ export class ServiceTypesComponent implements OnInit {
     private async getServiceTypes() {
         return this.serviceTypesService.get().subscribe({
             next: (serviceTypes: ServiceTypeModel[]) => {
-                serviceTypes.forEach(type =>  type.subtypesString = type.subtypes.join(', '));
+                serviceTypes.forEach(type =>  type.subtypesString = type.subtypes.map(item => item.name).join(', \n'));
                 this.filteredServiceTypes = serviceTypes;
             },
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
                 ErrorType.getMessage(error.code))
         });
+    }
+
+    async saveSubtypes() {
+        this.serviceTypeSelected.subtypes = this.serviceTypeSelected.subtypes.filter(item => !!item.name && !!item.description);
+
+        if (this.serviceTypeSelected.subtypes !== this.filteredSubtypes) {
+            await this.updateServiceType(this.serviceTypeSelected);
+            await this.getServiceTypes();
+        }
+        this.visible = false;
+    }
+
+    cancelDialogSubtypes() {
+        this.filteredSubtypes = [];
+        this.visible = false;
     }
 }
