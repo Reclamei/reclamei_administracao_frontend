@@ -21,9 +21,7 @@
             <ng-template pTemplate="body" let-serviceType let-editing="editing" let-ri="rowIndex">
                 <tr [pEditableRow]="serviceType">
                     <td>
-                        <ng-template pTemplate="output">
-                            {{serviceType.id}}
-                        </ng-template>
+                        {{serviceType.id}}
                     </td>
                     <td>
                         <p-cellEditor>
@@ -49,7 +47,7 @@
                         <div class="flex align-items-center justify-content-center gap-1">
                             <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(serviceType)" class="p-button-rounded p-button-warning ml-2"></button>
                             <button *ngIf="!editing" pButton type="button" icon="pi pi-trash" (click)="removeServiceType(serviceType)" class="p-button-rounded p-button-danger ml-1"></button>
-                            <button *ngIf="!editing" pButton type="button" icon="pi pi-link" (click)="openSubtypesDialog(serviceType)" class="p-button-rounded ml-1" pTooltip="Vincular sub-serviço" tooltipPosition="top"></button>
+                            <button *ngIf="!editing && !!serviceType.id" pButton type="button" icon="pi pi-link" (click)="openSubtypesDialog(serviceType)" class="p-button-rounded ml-1" pTooltip="Vincular sub-serviço" tooltipPosition="top"></button>
                             <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(serviceType)" class="p-button-rounded p-button-success ml-2 mr-2"></button>
                             <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(serviceType, ri)" class="p-button-rounded p-button-danger"></button>
                         </div>
@@ -75,7 +73,7 @@
             </div>
         </div>
         <div >
-            <p-table [value]="serviceTypeSelected.serviceSubtypes" dataKey="id" editMode="row">
+            <p-table [value]="serviceTypeSelected.subtypes" dataKey="id" editMode="row">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Código</th>

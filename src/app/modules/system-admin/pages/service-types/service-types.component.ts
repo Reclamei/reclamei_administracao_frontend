@@ -1,14 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ServiceTypeModel} from '../../../../shared/models/aplicacao/service-type.model';
 import {ServiceSubtypeModel} from '../../../../shared/models/aplicacao/service-subtype.model';
 import {HeadModel} from '../../../../shared/models/aplicacao/head.model';
+import {PrimengFactory} from '../../../../shared/factories/primeng.factory';
+import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
+import {MessageService} from 'primeng/api';
+import {ServiceTypesService} from '../../../../shared/services/service-types.service';
 
 @Component({
     selector: 'app-service-types',
     templateUrl: './service-types.component.html',
     styleUrls: ['./service-types.component.scss']
 })
-export class ServiceTypesComponent {
+export class ServiceTypesComponent implements OnInit {
     filteredServiceTypes: ServiceTypeModel[] = [];
     visible: boolean = false;
     serviceTypeSelected: ServiceTypeModel = new ServiceTypeModel();
@@ -16,11 +20,16 @@ export class ServiceTypesComponent {
     private clonedServicesType: { [s: number]: HeadModel } = {};
 
     constructor(
+        private serviceTypesService: ServiceTypesService,
+        private messageService: MessageService,
     ) { }
 
+    async ngOnInit(): Promise<void> {
+        await this.getServiceTypes();
+    }
+
     addServiceType() {
-        this.filteredServiceTypes.push(new ServiceTypeModel(Math.random()));
-        // TODO: Implementar
+        this.filteredServiceTypes.push(new ServiceTypeModel());
     }
 
     onRowEditInit(serviceType: ServiceTypeModel) {
@@ -28,12 +37,19 @@ export class ServiceTypesComponent {
     }
 
     removeServiceType(serviceType: ServiceTypeModel) {
-        this.filteredServiceTypes = this.filteredServiceTypes.filter((val) => val.id !== serviceType.id);
-        // TODO: Implementar chamada backend
+        this.serviceTypesService.delete(serviceType.id).subscribe({
+            next: () => this.filteredServiceTypes = this.filteredServiceTypes.filter((val) => val.id !== serviceType.id),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao remover tipo de serviço.',
+                ErrorType.getMessage(error.code))
+        });
     }
 
     onRowEditSave(serviceType: ServiceTypeModel) {
-        // TODO: Implementar
+        if (!serviceType.id) {
+            this.createServiceType(serviceType);
+            return;
+        }
+        this.updateServiceType(serviceType);
     }
 
     onRowEditCancel(serviceType: ServiceTypeModel, index: number) {
@@ -47,11 +63,11 @@ export class ServiceTypesComponent {
     }
 
     addSubType() {
-        this.serviceTypeSelected.serviceSubtypes.push(new ServiceSubtypeModel(Math.random()));
+        this.serviceTypeSelected.subtypes.push(new ServiceSubtypeModel(Math.random()));
     }
 
     removeSubtype(subtype: ServiceSubtypeModel) {
-        this.serviceTypeSelected.serviceSubtypes = this.serviceTypeSelected.serviceSubtypes.filter((val) => val.id !== subtype.id);
+        this.serviceTypeSelected.subtypes = this.serviceTypeSelected.subtypes.filter((val) => val.id !== subtype.id);
         // TODO: Implementar chamada backend
     }
 
@@ -60,11 +76,38 @@ export class ServiceTypesComponent {
     }
 
     onRowSubtypeEditCancel(subtype: ServiceSubtypeModel, index: number) {
-        this.serviceTypeSelected.serviceSubtypes[index] = this.clonedSubtypes[subtype.id];
+        this.serviceTypeSelected.subtypes[index] = this.clonedSubtypes[subtype.id];
         delete this.clonedSubtypes[subtype.id];
     }
 
     onRowSubtypeEditInit(subtype: ServiceSubtypeModel) {
         this.clonedSubtypes[subtype.id] = { ...subtype };
+    }
+
+    private createServiceType(serviceType: ServiceTypeModel) {
+        this.serviceTypesService.create(serviceType).subscribe({
+            next: () => this.getServiceTypes(),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
+                ErrorType.getMessage(error.code))
+        });
+    }
+
+    private updateServiceType(serviceType: ServiceTypeModel) {
+        return this.serviceTypesService.update(serviceType).subscribe({
+            next: () => this.getServiceTypes(),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
+                ErrorType.getMessage(error.code))
+        });
+    }
+
+    private async getServiceTypes() {
+        return this.serviceTypesService.get().subscribe({
+            next: (serviceTypes: ServiceTypeModel[]) => {
+                serviceTypes.forEach(type =>  type.subtypesString = type.subtypes.join(', '));
+                this.filteredServiceTypes = serviceTypes;
+            },
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
+                ErrorType.getMessage(error.code))
+        });
     }
 }

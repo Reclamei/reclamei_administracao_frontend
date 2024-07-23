@@ -6,8 +6,8 @@ export class ServiceTypeModel {
         public name?: string,
         public description?: string,
         public subtypesString?: string,
-        public serviceSubtypes?: ServiceSubtypeModel[]
+        public subtypes?: ServiceSubtypeModel[]
     ) {
-        this.serviceSubtypes = [];
+        this.subtypes = [];
     }
 }
