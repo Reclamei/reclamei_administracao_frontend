@@ -8,6 +8,7 @@ export class CompanyModel {
         public cnpj?: string,
         public name?: string,
         public email?: string,
+        public secondaryEmail?: string,
         public site?: string,
         public phone?: string,
         public sacPhone?: string,

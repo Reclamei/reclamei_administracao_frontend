@@ -16,6 +16,10 @@ export class HeadService {
         return this.http.patch(`${this.baseUrl}/${externalId}/confirm`, null);
     }
 
+    public denyUser(externalId) {
+        return this.http.patch(`${this.baseUrl}/${externalId}/deny`, null);
+    }
+
     public getAllHeadsByCompanyId(companyId: number) {
         return this.http.get<HeadModel[]>(`${this.baseUrl}/company/${companyId}`);
     }

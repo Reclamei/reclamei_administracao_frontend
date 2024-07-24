@@ -4,6 +4,8 @@ import {CompanyService} from '../../../../shared/services/company.service';
 import {PrimengFactory} from '../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
+import {AuthService} from '../../../../shared/auth/auth.service';
+import {HeadService} from '../../../../shared/services/head.service';
 
 @Component({
     selector: 'app-approvals',
@@ -14,13 +16,11 @@ import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
 export class ApprovalsComponent implements OnInit {
     filteredApprovals: CompanyModel[] = [];
 
-    filteredApprovals1 = [
-        {cnpj: "11.111.111/0001-00", name: "Luz e Força Santa Maria", email: "principal@gmail.com", secondaryEmail: "livia@gmail.com", createdAt: new Date().toISOString() },
-    ];
-
     constructor(
+        private authService: AuthService,
         private companyService: CompanyService,
         private messageService: MessageService,
+        private headService: HeadService
     ) { }
 
     async ngOnInit(): Promise<void> {
@@ -30,7 +30,11 @@ export class ApprovalsComponent implements OnInit {
     async getFilteredApprovals() {
         return this.companyService.findCompaniesPendingApproval().subscribe({
             next: (companies: CompanyModel[]) => {
-                companies.forEach(companie => companie.createdAt = companie.heads.find(head => head.isAdmin).createdAt);
+                companies.forEach(company => {
+                    const headAdmin = company.heads.find(head => head.isAdmin);
+                    company.createdAt = headAdmin.createdAt;
+                    company.secondaryEmail = headAdmin.email;
+                });
                 this.filteredApprovals = companies;
             },
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
@@ -38,12 +42,24 @@ export class ApprovalsComponent implements OnInit {
         });
     }
 
-    approve(record: any) {
-        // TODO: Implementar: enviar email para o head
+    async approve(record: CompanyModel) {
+        const headAdmin = record.heads.find(head => head.isAdmin);
+        const actionCodeSettings = {
+            url: `http://localhost:4200/finalizar-cadastro?hash=${headAdmin.externalId}`,
+            handleCodeInApp: true
+        };
+        await this.authService
+            .sendSignInLinkToEmail(headAdmin.email, actionCodeSettings)
+            .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));
     }
 
-    refuse(record: any) {
-        // TODO: Implementar: chamar endpoint de deny
+    refuse(record: CompanyModel) {
+        const headAdmin = record.heads.find(head => head.isAdmin);
+        this.headService.denyUser(headAdmin.externalId).subscribe({
+            next: (res) => this.getFilteredApprovals(),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro em recusar cadastro',
+                ErrorType.getMessage(error.code))
+        });
     }
 
 }
