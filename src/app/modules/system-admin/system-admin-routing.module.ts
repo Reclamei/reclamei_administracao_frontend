@@ -7,14 +7,15 @@ import {SystemSettingsComponent} from './pages/settings/system-settings.componen
 import {ApprovalsComponent} from './pages/approvals/approvals.component';
 import {ServiceTypesComponent} from './pages/service-types/service-types.component';
 import {LocationComponent} from './pages/location/location.component';
+import {AuthGuardAdmin} from '../../shared/auth/guard/auth-guard-admin';
 
 const routes: Routes = [
     {path: '', component: HomeComponent, children: [
-        { path: '', component: DashboardComponent},
-        { path: MapeamentoRota.ROTA_APROVACOES_SYSTEM_ADMIN.obterRota(), component: ApprovalsComponent},
-        { path: MapeamentoRota.ROTA_TIPOS_SERVICO_SYSTEM_ADMIN.obterRota(), component: ServiceTypesComponent},
-        { path: MapeamentoRota.ROTA_LOCALIDADES_SYSTEM_ADMIN.obterRota(), component: LocationComponent},
-        { path: MapeamentoRota.ROTA_CONFIGURACOES_SYSTEM_ADMIN.obterRota(), component: SystemSettingsComponent},
+        { path: '', component: DashboardComponent, canActivate: [AuthGuardAdmin]},
+        { path: MapeamentoRota.ROTA_APROVACOES_SYSTEM_ADMIN.obterRota(), component: ApprovalsComponent, canActivate: [AuthGuardAdmin]},
+        { path: MapeamentoRota.ROTA_TIPOS_SERVICO_SYSTEM_ADMIN.obterRota(), component: ServiceTypesComponent, canActivate: [AuthGuardAdmin]},
+        { path: MapeamentoRota.ROTA_LOCALIDADES_SYSTEM_ADMIN.obterRota(), component: LocationComponent, canActivate: [AuthGuardAdmin]},
+        { path: MapeamentoRota.ROTA_CONFIGURACOES_SYSTEM_ADMIN.obterRota(), component: SystemSettingsComponent, canActivate: [AuthGuardAdmin]},
         { path: '**', redirectTo: MapeamentoRota.ROTA_RAIZ.obterRota() },
     ]}
 ];
