@@ -8,7 +8,8 @@ export class HeadModel {
         public email?: string,
         public name?: string,
         public phone?: string,
-        public isAdmin?: boolean
+        public isAdmin?: boolean,
+        public createdAt?: Date
     ) {
         this.isAdmin = false;
         this.externalId = uuidv4();

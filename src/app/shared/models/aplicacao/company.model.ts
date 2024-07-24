@@ -12,6 +12,7 @@ export class CompanyModel {
         public phone?: string,
         public sacPhone?: string,
         public description?: string,
+        public createdAt?: Date,
         public heads?: HeadModel[]
     ) {
         this.heads = [];

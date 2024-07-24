@@ -27,6 +27,10 @@ export class CompanyService {
         return this.http.get<CompanyModel>(`${this.baseUrl}/head/external-id/${externalId}`);
     }
 
+    public findCompaniesPendingApproval() {
+        return this.http.get<CompanyModel[]>(`${this.baseUrl}/pending-approval`);
+    }
+
     public update(company: CompanyModel) {
         const headers = new HttpHeaders({  'Content-Type': 'application/json' });
         return this.http.put(this.baseUrl, company, { headers });
