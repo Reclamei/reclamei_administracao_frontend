@@ -59,8 +59,9 @@ export class MenuComponent {
                 { icon: 'pi pi-home', label: 'Início', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN.obterCaminhoRota()) },
                 { icon: 'pi pi-chart-bar', label: 'Aprovações', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_APROVACOES_SYSTEM_ADMIN.obterCaminhoRota()) },
                 { icon: 'pi pi-briefcase', label: 'Tipos de serviço', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_TIPOS_SERVICO_SYSTEM_ADMIN.obterCaminhoRota()) },
-                { icon: 'pi pi-building', label: 'Localidades', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_LOCALIDADES_SYSTEM_ADMIN.obterCaminhoRota()) },
-                { icon: 'pi pi-sliders-v', label: 'Configurações', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_CONFIGURACOES_SYSTEM_ADMIN.obterCaminhoRota()) },
+                { icon: 'pi pi-globe', label: 'Localidades', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_LOCALIDADES_SYSTEM_ADMIN.obterCaminhoRota()) },
+                { icon: 'pi pi-building', label: 'Empresas', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_EMPRESAS_SYSTEM_ADMIN.obterCaminhoRota()) },
+                { icon: 'pi pi-sliders-v', label: 'Abrangência', command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_CONFIGURACOES_SYSTEM_ADMIN.obterCaminhoRota()) },
                 { icon: 'pi pi-sign-out', label: 'Sair', command: () => this.deslogar() },
             ];
         }

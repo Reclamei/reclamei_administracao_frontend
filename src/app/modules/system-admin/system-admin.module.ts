@@ -6,13 +6,15 @@ import {SharedModule} from '../../shared/shared.module';
 import {SystemAdminRoutingModule} from './system-admin-routing.module';
 import {ServiceTypesComponent} from './pages/service-types/service-types.component';
 import {LocationComponent} from './pages/location/location.component';
+import {CompaniesComponent} from './pages/companies/companies.component';
 
 @NgModule({
     declarations: [
         ApprovalsComponent,
         SystemSettingsComponent,
         ServiceTypesComponent,
-        LocationComponent
+        LocationComponent,
+        CompaniesComponent
     ],
     imports: [
         CommonModule,

@@ -1,51 +1,51 @@
 <div class="p-2">
-    <p-card class="flex mb-2">
+    <p-card>
         <div class="flex">
-            <h2 class="traco flex-1">Localidades</h2>
+            <h2 class="traco flex-1">Empresas</h2>
         </div>
         <div class="grid grid-nogutter pl-2 pr-2">
             <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-2">
                 <button pButton type="button" icon="pi pi-user-plus" class="p-button-rounded p-button-warning w-full"
-                        label="Incluir localidade" (click)="addLocation()"></button>
+                        label="Incluir empresa" (click)="addCompany()"></button>
             </div>
         </div>
         <div class="mr-3 ml-3">
-            <p-table [value]="filteredLocations" dataKey="id" editMode="row">
+            <p-table [value]="filteredCompanies" dataKey="id" editMode="row">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Código</th>
+                        <th>CNPJ</th>
                         <th>Nome</th>
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-location let-editing="editing" let-ri="rowIndex">
-                    <tr [pEditableRow]="location">
+                <ng-template pTemplate="body" let-company let-editing="editing" let-ri="rowIndex">
+                    <tr [pEditableRow]="company">
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="location.postcode" required>
+                                    <input pInputText type="text" [(ngModel)]="company.cnpj" required>
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{location.postcode}}
+                                    {{company.cnpj}}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="location.name" required>
+                                    <input pInputText type="text" [(ngModel)]="company.name" required>
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{location.name}}
+                                    {{company.name}}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td>
                             <div class="flex align-items-center justify-content-center gap-1">
-                                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(location)" class="p-button-rounded p-button-warning ml-2"></button>
-                                <button *ngIf="!editing" pButton type="button" icon="pi pi-trash" (click)="removeLocation(location)" class="p-button-rounded p-button-danger ml-1"></button>
-                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(location)" class="p-button-rounded p-button-success ml-2 mr-2"></button>
-                                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(location, ri)" class="p-button-rounded p-button-danger"></button>
+                                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(company)" class="p-button-rounded p-button-warning ml-2"></button>
+                                <button *ngIf="!editing" pButton type="button" icon="pi pi-trash" (click)="removeCompany(company)" class="p-button-rounded p-button-danger ml-1"></button>
+                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(company)" class="p-button-rounded p-button-success ml-2 mr-2"></button>
+                                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(company, ri)" class="p-button-rounded p-button-danger"></button>
                             </div>
                         </td>
                     </tr>

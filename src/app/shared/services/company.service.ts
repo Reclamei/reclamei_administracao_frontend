@@ -4,6 +4,7 @@ import {HeadModel} from '../models/aplicacao/head.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {v4 as uuidv4} from 'uuid';
+import {LocationModel} from '../models/aplicacao/location.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,14 @@ export class CompanyService {
     public update(company: CompanyModel) {
         const headers = new HttpHeaders({  'Content-Type': 'application/json' });
         return this.http.put(this.baseUrl, company, { headers });
+    }
+
+    public delete(id: number) {
+        return this.http.delete(`${this.baseUrl}/${id}`);
+    }
+
+    public findAll() {
+        return this.http.get<LocationModel[]>(this.baseUrl);
     }
 
     public obterOrgao(): CompanyModel {
