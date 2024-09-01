@@ -3,7 +3,6 @@ import {MessageService} from 'primeng/api';
 import {PrimengFactory} from '../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {Observable} from 'rxjs';
-import {ServiceTypeModel} from '../../../../shared/models/aplicacao/service-type.model';
 import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
 import {CompanyService} from '../../../../shared/services/company.service';
 
@@ -46,15 +45,15 @@ export class CompaniesComponent implements OnInit {
         delete this.clonedCompanies[company.id];
     }
 
-    onRowEditSave(company: CompanyModel) {
+    async onRowEditSave(company: CompanyModel) {
         if (!company.id) {
-            this.saveLocation(() => this.companyService.create(company));
+            this.saveCompany(() => this.companyService.create(company));
             return;
         }
-        this.saveLocation(() => this.companyService.update(company));
+        this.saveCompany(() => this.companyService.update(company));
     }
 
-    private saveLocation(saveMethod: () => Observable<any>) {
+    private saveCompany(saveMethod: () => Observable<any>) {
         saveMethod().subscribe({
             next: () => this.getCompanies(),
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
@@ -62,10 +61,24 @@ export class CompaniesComponent implements OnInit {
         });
     }
 
+    public getInformationByCnpj(company: CompanyModel) {
+         this.companyService.findInformationByCnpj(company.cnpj).subscribe({
+            next: (companyInformation: CompanyModel) => {
+                company.name = companyInformation.name;
+                company.email = companyInformation.email;
+                company.description = companyInformation.description;
+                company.phone = companyInformation.phone;
+            },
+            error: (error) =>
+                PrimengFactory.mensagemErro(this.messageService, 'Erro ao buscar CNPJ',
+                    'Não encontramos os detalhes para o CNPJ informado.')
+        });
+    }
+
     private async getCompanies() {
         return this.companyService.findAll().subscribe({
-            next: (locations: ServiceTypeModel[]) => {
-                this.filteredCompanies = locations;
+            next: (company: CompanyModel[]) => {
+                this.filteredCompanies = company;
             },
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
                 ErrorType.getMessage(error.code))

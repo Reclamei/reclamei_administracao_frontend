@@ -7,6 +7,7 @@ import {SystemAdminRoutingModule} from './system-admin-routing.module';
 import {ServiceTypesComponent} from './pages/service-types/service-types.component';
 import {LocationComponent} from './pages/location/location.component';
 import {CompaniesComponent} from './pages/companies/companies.component';
+import {CnpjPipe} from '../../shared/pipes/cnpj-pipe';
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import {CompaniesComponent} from './pages/companies/companies.component';
         SystemSettingsComponent,
         ServiceTypesComponent,
         LocationComponent,
-        CompaniesComponent
+        CompaniesComponent,
+        CnpjPipe
     ],
     imports: [
         CommonModule,

@@ -22,11 +22,14 @@
                     <tr [pEditableRow]="company">
                         <td>
                             <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="company.cnpj" required>
+                                <ng-template pTemplate="input" *ngIf="!company.id">
+                                    <p-inputMask mask="99.999.999/9999-99" unmask="true" [(ngModel)]="company.cnpj" (onBlur)="getInformationByCnpj(company)" required></p-inputMask>
+                                </ng-template>
+                                <ng-template pTemplate="input" *ngIf="!!company.id">
+                                    {{company.cnpj | cnpj}}
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{company.cnpj}}
+                                    {{company.cnpj | cnpj}}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
