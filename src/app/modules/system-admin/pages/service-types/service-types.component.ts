@@ -104,7 +104,7 @@ export class ServiceTypesComponent implements OnInit {
     }
 
     private async getServiceTypes() {
-        return this.serviceTypesService.get().subscribe({
+        return this.serviceTypesService.findAll().subscribe({
             next: (serviceTypes: ServiceTypeModel[]) => {
                 serviceTypes.forEach(type =>  type.subtypesString = type.subtypes.map(item => item.name).join(', \n'));
                 this.filteredServiceTypes = serviceTypes;

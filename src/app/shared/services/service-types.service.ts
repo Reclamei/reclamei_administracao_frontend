@@ -12,7 +12,7 @@ export class ServiceTypesService {
 
     constructor(private http: HttpClient) { }
 
-    public get() {
+    public findAll() {
         return this.http.get<ServiceTypeModel[]>(this.baseUrl);
     }
 

@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from '../orgao-responsavel/pages/home/home.component';
 import {DashboardComponent} from '../orgao-responsavel/pages/dashboard/dashboard.component';
 import {MapeamentoRota} from '../../shared/constants/mapeamento-rota';
-import {SystemSettingsComponent} from './pages/settings/system-settings.component';
+import {CoveragesComponent} from './pages/coverages/coverages.component';
 import {ApprovalsComponent} from './pages/approvals/approvals.component';
 import {ServiceTypesComponent} from './pages/service-types/service-types.component';
 import {LocationComponent} from './pages/location/location.component';
@@ -17,7 +17,7 @@ const routes: Routes = [
         { path: MapeamentoRota.ROTA_TIPOS_SERVICO_SYSTEM_ADMIN.obterRota(), component: ServiceTypesComponent, canActivate: [AuthGuardAdmin]},
         { path: MapeamentoRota.ROTA_LOCALIDADES_SYSTEM_ADMIN.obterRota(), component: LocationComponent, canActivate: [AuthGuardAdmin]},
         { path: MapeamentoRota.ROTA_EMPRESAS_SYSTEM_ADMIN.obterRota(), component: CompaniesComponent, canActivate: [AuthGuardAdmin]},
-        { path: MapeamentoRota.ROTA_CONFIGURACOES_SYSTEM_ADMIN.obterRota(), component: SystemSettingsComponent, canActivate: [AuthGuardAdmin]},
+        { path: MapeamentoRota.ROTA_CONFIGURACOES_SYSTEM_ADMIN.obterRota(), component: CoveragesComponent, canActivate: [AuthGuardAdmin]},
         { path: '**', redirectTo: MapeamentoRota.ROTA_RAIZ.obterRota() },
     ]}
 ];

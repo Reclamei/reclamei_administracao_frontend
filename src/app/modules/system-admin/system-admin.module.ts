@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ApprovalsComponent} from './pages/approvals/approvals.component';
-import {SystemSettingsComponent} from './pages/settings/system-settings.component';
+import {CoveragesComponent} from './pages/coverages/coverages.component';
 import {SharedModule} from '../../shared/shared.module';
 import {SystemAdminRoutingModule} from './system-admin-routing.module';
 import {ServiceTypesComponent} from './pages/service-types/service-types.component';
@@ -12,7 +12,7 @@ import {CnpjPipe} from '../../shared/pipes/cnpj-pipe';
 @NgModule({
     declarations: [
         ApprovalsComponent,
-        SystemSettingsComponent,
+        CoveragesComponent,
         ServiceTypesComponent,
         LocationComponent,
         CompaniesComponent,

@@ -5,7 +5,6 @@ import {OrgaoResponsavelRoutingModule} from './orgao-responsavel-routing.module'
 import {SharedModule} from 'src/app/shared/shared.module';
 import {RelatoriosComponent} from './pages/relatorios/relatorios.component';
 import {ReclamacoesComponent} from './pages/reclamacoes/reclamacoes.component';
-import {AbrangenciaComponent} from './pages/abrangencia/abrangencia.component';
 import {ReclamacoesTableComponent} from './pages/reclamacoes/reclamacoes-table/reclamacoes-table.component';
 import {SettingsComponent} from './pages/settings/settings.component';
 
@@ -15,7 +14,6 @@ import {SettingsComponent} from './pages/settings/settings.component';
         ReclamacoesComponent,
         ReclamacoesTableComponent,
         RelatoriosComponent,
-        AbrangenciaComponent,
         SettingsComponent
     ],
     imports: [
