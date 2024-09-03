@@ -22,11 +22,6 @@ export class ReclamacoesComponent implements OnInit {
     public reclamations: ReclamationModel[] = [];
 
     public filteredReclamations: ReclamationModel[] = [];
-    public modalLocalizacaoVisivel = false;
-    public reclamacaoEmFoco: ReclamationModel | null = null;
-    public centralizarMapa: Record<string, any> = {};
-    public ampliacaoMapa = 15;
-    public configuracaoMapa: google.maps.MapOptions = this.inicializarConfiguracaoMapa();
 
     constructor(
         private reclamacaoService: ReclamacaoService,
@@ -39,13 +34,6 @@ export class ReclamacoesComponent implements OnInit {
         await this.getCompanyByExternalId();
         await this.loadCoverages();
         await this.loadReclamations();
-    }
-
-    public mostrarLocalizacao(reclamacao: ReclamationModel): void {
-        this.reclamacaoEmFoco = reclamacao;
-        this.centralizarMapa = {lat: this.gerarLocalizacaoColatina(-19.5385576), lng: this.gerarLocalizacaoColatina(-40.636211)};
-        this.ampliacaoMapa = 3;
-        this.modalLocalizacaoVisivel = true;
     }
 
     public filterReclamations(index: number): void {
@@ -61,19 +49,6 @@ export class ReclamacoesComponent implements OnInit {
                 break;
         }
     }
-
-    private gerarLocalizacaoColatina(base: number): number {
-        return base + ((Math.random() / 100) * (Math.random() > 0.5 ? 1 : -1));
-    }
-
-    private inicializarConfiguracaoMapa(): google.maps.MapOptions {
-        return {
-            streetViewControl: false,
-            mapTypeControl: false,
-            clickableIcons: true
-        };
-    }
-
     private async loadCoverages() {
         this.coverages = await firstValueFrom(this.coverageService.findByCompanyId(this.company.id));
     }

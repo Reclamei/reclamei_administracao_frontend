@@ -16,8 +16,3 @@
         </p-tabView>
     </p-card>
 </div>
-<p-dialog header="Localização" [(visible)]="modalLocalizacaoVisivel" [modal]="true" [draggable]="false" [resizable]="false">
-    <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa">
-        <map-marker [position]="centralizarMapa"></map-marker>
-    </google-map>
-</p-dialog>
