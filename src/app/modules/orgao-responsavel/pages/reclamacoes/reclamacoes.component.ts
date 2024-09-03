@@ -1,10 +1,14 @@
-import { Component } from "@angular/core";
-import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { SelectItem } from "primeng/api";
-import { MapsConstants } from "src/app/shared/constants/maps";
-import { ReclamacaoModel } from "src/app/shared/models/aplicacao/reclamacao.model";
-import { StatusReclamacaoEnum } from "src/app/shared/models/aplicacao/status-reclamacao.enum";
-import { ReclamacaoService } from "src/app/shared/services/reclamacao.service";
+import {Component, OnInit} from '@angular/core';
+import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
+import {StatusReclamationEnum} from 'src/app/shared/models/aplicacao/status-reclamation.enum';
+import {ReclamacaoService} from 'src/app/shared/services/reclamacao.service';
+import {CoverageService} from '../../../../shared/services/coverage.service';
+import {AuthService} from '../../../../shared/auth/auth.service';
+import {CompanyService} from '../../../../shared/services/company.service';
+import {firstValueFrom} from 'rxjs';
+import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.model';
+import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
+import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
 
 @Component({
     selector: 'app-reclamacoes',
@@ -12,36 +16,49 @@ import { ReclamacaoService } from "src/app/shared/services/reclamacao.service";
     styleUrls: ['./reclamacoes.component.scss']
 })
 
-export class ReclamacoesComponent {
-    public reclamacoes: ReclamacaoModel[] = [];
-    public reclamacoesFiltradas: ReclamacaoModel[] = [];
+export class ReclamacoesComponent implements OnInit {
+    public coverages: CoverageModel[] = [];
+    public company: CompanyModel;
+    public reclamations: ReclamationModel[] = [];
+
+    public filteredReclamations: ReclamationModel[] = [];
     public modalLocalizacaoVisivel = false;
-    public reclamacaoEmFoco: ReclamacaoModel | null = null;
+    public reclamacaoEmFoco: ReclamationModel | null = null;
     public centralizarMapa: Record<string, any> = {};
-    public ampliacaoMapa: number = 15;
+    public ampliacaoMapa = 15;
     public configuracaoMapa: google.maps.MapOptions = this.inicializarConfiguracaoMapa();
-    public opcoesFiltroReclamacoes: SelectItem<number>[] = this.inicializarOpcoesFiltroReclamacoes();
-    public statusReclamacoes: number = 0;
 
     constructor(
-        private reclamacaoService: ReclamacaoService
-    ) {
-        this.reclamacoes = this.reclamacaoService.obterReclamacoes();
-        this.filtrarReclamacoes();
+        private reclamacaoService: ReclamacaoService,
+        private coverageService: CoverageService,
+        private authService: AuthService,
+        private companyService: CompanyService,
+    ) { }
+
+    async ngOnInit() {
+        await this.getCompanyByExternalId();
+        await this.loadCoverages();
+        await this.loadReclamations();
     }
 
-    public mostrarLocalizacao(reclamacao: ReclamacaoModel): void {
+    public mostrarLocalizacao(reclamacao: ReclamationModel): void {
         this.reclamacaoEmFoco = reclamacao;
         this.centralizarMapa = {lat: this.gerarLocalizacaoColatina(-19.5385576), lng: this.gerarLocalizacaoColatina(-40.636211)};
         this.ampliacaoMapa = 3;
         this.modalLocalizacaoVisivel = true;
     }
 
-    public filtrarReclamacoes(): void {
-        if(this.statusReclamacoes === 0) {
-            this.reclamacoesFiltradas = [...this.reclamacoes];
-        } else {
-            this.reclamacoesFiltradas = this.reclamacoes.filter((reclamacao: ReclamacaoModel) => reclamacao.idStatus === this.statusReclamacoes);
+    public filterReclamations(index: number): void {
+        switch (index) {
+            case 0:
+                this.filteredReclamations = [...this.reclamations];
+                break;
+            case 1:
+                this.filteredReclamations = this.reclamations.filter(rec => rec.status === StatusReclamationEnum.OPEN.getId());
+                break;
+            case 2:
+                this.filteredReclamations = this.reclamations.filter(rec => rec.status !== StatusReclamationEnum.OPEN.getId());
+                break;
         }
     }
 
@@ -57,12 +74,24 @@ export class ReclamacoesComponent {
         };
     }
 
-    private inicializarOpcoesFiltroReclamacoes(): SelectItem<number>[] {
-        return [
-            { value: 0, label: 'Todas' },
-            { value: StatusReclamacaoEnum.RESOLVIDO.getId(), label: StatusReclamacaoEnum.RESOLVIDO.getDescricao() },
-            { value: StatusReclamacaoEnum.PENDENTE.getId(), label: StatusReclamacaoEnum.PENDENTE.getDescricao() },
-            { value: StatusReclamacaoEnum.PROMESSA.getId(), label: StatusReclamacaoEnum.PROMESSA.getDescricao() },
-        ];
+    private async loadCoverages() {
+        this.coverages = await firstValueFrom(this.coverageService.findByCompanyId(this.company.id));
+    }
+
+    private async getCompanyByExternalId() {
+        const user = await this.authService.getCurrentUser();
+        if (!user || !user.displayName) {
+            throw new Error('Usuário não autenticado');
+        }
+        this.company = await firstValueFrom(this.companyService.getCompanyByHeadExternalId(user.displayName));
+    }
+
+    private async loadReclamations() {
+        const filters = this.coverages.map(item =>
+            new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+        this.reclamations = await firstValueFrom(this.reclamacaoService.findByCompany(filters));
+        // TODO: Remover
+        this.reclamations.forEach(item => item.photo = '/assets/images/representative/reclamacoes/' +
+            ['001.png', '002.png', '003.png'][Math.round(Math.random() * 10) % 3]);
     }
 }

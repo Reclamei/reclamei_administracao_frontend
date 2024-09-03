@@ -16,6 +16,10 @@ export class CoverageService {
         return this.http.get<CoverageModel[]>(this.baseUrl);
     }
 
+    public findByCompanyId(companyId: number) {
+        return this.http.get<CoverageModel[]>(`${this.baseUrl}/${companyId}`);
+    }
+
     public create(coverage: CoverageModel) {
         const headers = new HttpHeaders({  'Content-Type': 'application/json' });
         return this.http.post(this.baseUrl, coverage, { headers });
