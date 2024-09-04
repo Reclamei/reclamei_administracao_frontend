@@ -20,7 +20,7 @@ export class CachedService {
     ) { }
 
     private async loadCoverages() {
-        if (!this.company) {
+        if (!this.company?.id) {
             await this.getCompanyByExternalId();
         }
         this.coverages = await firstValueFrom(this.coverageService.findByCompanyId(this.company.id));
@@ -42,10 +42,15 @@ export class CachedService {
     }
 
     public async getCompany() {
-        if (!this.company) {
+        if (!this.company?.id) {
             await this.getCompanyByExternalId();
         }
         return this.company;
+    }
+
+    public invalidateCache() {
+        this.company = new CompanyModel();
+        this.coverages = [];
     }
 
 }
