@@ -12,6 +12,7 @@ import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {MessageService} from 'primeng/api';
 import {Observable} from 'rxjs';
 import {HeadService} from '../../../../shared/services/head.service';
+import {CachedService} from '../../../../shared/services/cached.service';
 
 @Component({
     selector: 'app-settings',
@@ -41,7 +42,8 @@ export class SettingsComponent implements OnInit {
         private authService: AuthService,
         private messageService: MessageService,
         private companyService: CompanyService,
-        private headService: HeadService
+        private headService: HeadService,
+        private cachedService: CachedService
     ) { }
 
     public changePassword() {
@@ -157,11 +159,8 @@ export class SettingsComponent implements OnInit {
 
     private async getCompanyByExternalId() {
         const user = await this.authService.getCurrentUser();
-        if (!user || !user.displayName) {
-            throw new Error('Usuário não autenticado');
-        }
-        return this.companyService.getCompanyByHeadExternalId(user.displayName).subscribe({
-            next: (company: CompanyModel) => {
+        await this.cachedService.getCompany()
+            .then(company => {
                 this.company = company;
                 this.companyForm.patchValue({
                     id: company.id,
@@ -174,10 +173,9 @@ export class SettingsComponent implements OnInit {
                     description: company.description,
                 });
                 this.isUserAdmin = company.heads.find(head => head.externalId === user.displayName).isAdmin === true;
-            },
-            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
-                ErrorType.getMessage(error.code))
-        });
+            })
+            .catch(error => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
+                ErrorType.getMessage(error.code)));
     }
 
     private async getHeadsByCompany() {

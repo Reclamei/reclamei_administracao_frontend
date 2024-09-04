@@ -2,13 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
 import {StatusReclamationEnum} from 'src/app/shared/models/aplicacao/status-reclamation.enum';
 import {ReclamacaoService} from 'src/app/shared/services/reclamacao.service';
-import {CoverageService} from '../../../../shared/services/coverage.service';
-import {AuthService} from '../../../../shared/auth/auth.service';
-import {CompanyService} from '../../../../shared/services/company.service';
 import {firstValueFrom} from 'rxjs';
 import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.model';
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
 import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
+import {CachedService} from '../../../../shared/services/cached.service';
 
 @Component({
     selector: 'app-reclamacoes',
@@ -25,9 +23,7 @@ export class ReclamacoesComponent implements OnInit {
 
     constructor(
         private reclamacaoService: ReclamacaoService,
-        private coverageService: CoverageService,
-        private authService: AuthService,
-        private companyService: CompanyService,
+        private cachedService: CachedService,
     ) { }
 
     async ngOnInit() {
@@ -49,16 +45,13 @@ export class ReclamacoesComponent implements OnInit {
                 break;
         }
     }
+
     private async loadCoverages() {
-        this.coverages = await firstValueFrom(this.coverageService.findByCompanyId(this.company.id));
+        this.coverages = await this.cachedService.getCoverages();
     }
 
     private async getCompanyByExternalId() {
-        const user = await this.authService.getCurrentUser();
-        if (!user || !user.displayName) {
-            throw new Error('Usuário não autenticado');
-        }
-        this.company = await firstValueFrom(this.companyService.getCompanyByHeadExternalId(user.displayName));
+        this.company = await this.cachedService.getCompany();
     }
 
     private async loadReclamations() {
