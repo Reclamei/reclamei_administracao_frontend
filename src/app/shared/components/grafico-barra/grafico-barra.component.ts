@@ -1,20 +1,26 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { GraficoBarraModel } from '../../models/grafico/grafico-barra.model';
-import { EntradaSimples } from '../../models/grafico/entrada-monovalor.model';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {GraficoBarraModel} from '../../models/grafico/grafico-barra.model';
+import {EntradaSimples} from '../../models/grafico/entrada-monovalor.model';
 
 @Component({
     selector: 'app-grafico-barra',
     templateUrl: './grafico-barra.component.html',
     styleUrls: ['./grafico-barra.component.scss']
 })
-export class GraficoBarraComponent implements OnInit {
+export class GraficoBarraComponent implements OnChanges {
     @Input() public configuracaoGrafico: GraficoBarraModel;
 
     data: any;
 
     options: any;
 
-    ngOnInit() {
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['configuracaoGrafico']) {
+            this.loadGraph();
+        }
+    }
+
+    loadGraph() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
 

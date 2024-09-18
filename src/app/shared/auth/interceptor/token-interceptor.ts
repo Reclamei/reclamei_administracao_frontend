@@ -15,7 +15,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const userJson  = JSON.parse(user);
     const authToken = !!userJson ? userJson['stsTokenManager']?.accessToken : null;
 
-    if (['POST', 'PUT', 'DELETE'].includes(request.method) && !request.url.endsWith('/ms-reclamation/reclamations/company')) {
+    if (['POST', 'PUT', 'DELETE'].includes(request.method) && !request.url.includes('/ms-reclamation/reclamations/company')) {
       this.cachedService.invalidateCache();
     }
 
