@@ -1,0 +1,41 @@
+<div class="grid grid-nogutter">
+    <div class="col-12 md:col-6 lg:col-3 p-2">
+        <div class="card-estatistico card-reclamacoes">
+            <span class="material-icons icone">sentiment_neutral</span>        
+                <div class="titulo">Reclamações</div>
+            <div class="quantidade">{{dashboard.totalCount}}</div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3 p-2">
+        <div class="card-estatistico card-respondidas">
+            <span class="material-icons icone">mood</span>    
+            <div class="titulo">Respondidas</div>
+            <div class="quantidade">{{dashboard.answeredCount}}</div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3 p-2">
+        <div class="card-estatistico card-sem-resposta">
+            <span class="material-icons icone">sentiment_very_dissatisfied</span>
+            <div class="titulo">Sem Resposta</div>
+            <div class="quantidade">{{dashboard.unansweredCount}}</div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3 p-2">
+        <div class="card-estatistico card-resolvidas">
+            <i class="icone pi pi-check-square"></i>
+            <div class="titulo">Resolvidas</div>
+            <div class="quantidade">{{dashboard.resolvedCount}}</div>
+        </div>
+    </div>
+</div>
+<div class="grid grid-nogutter card-estatistico m-2">
+    <div class="col-12 mb-2">
+        <h2 class="traco">Desempenho</h2>
+    </div>
+    <div class="col-12 md:col-6 p-2">
+        <app-grafico-barra [configuracaoGrafico]="graficoBarraResolvidas"></app-grafico-barra>
+    </div>
+    <div class="col-12 md:col-6 p-2">
+        <app-grafico-barra [configuracaoGrafico]="graficoBarraRespondidas"></app-grafico-barra>
+    </div>
+</div>

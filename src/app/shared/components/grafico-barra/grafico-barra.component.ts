@@ -8,14 +8,14 @@ import {EntradaSimples} from '../../models/grafico/entrada-monovalor.model';
     styleUrls: ['./grafico-barra.component.scss']
 })
 export class GraficoBarraComponent implements OnChanges {
-    @Input() public configuracaoGrafico: GraficoBarraModel;
+    @Input() public configuracaoGrafico: GraficoBarraModel = new GraficoBarraModel();
 
     data: any;
 
     options: any;
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes['configuracaoGrafico']) {
+        if (changes.configuracaoGrafico) {
             this.loadGraph();
         }
     }

@@ -48,6 +48,7 @@ export class ApprovalsComponent implements OnInit {
             url: `http://localhost:4200/finalizar-cadastro?hash=${headAdmin.externalId}`,
             handleCodeInApp: true
         };
+        // TODO: Alterar status do head para PENDING_CONFIRMATION
         await this.authService
             .sendSignInLinkToEmail(headAdmin.email, actionCodeSettings)
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', ErrorType.getMessage(error.code)));

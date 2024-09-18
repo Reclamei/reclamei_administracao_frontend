@@ -1,5 +1,5 @@
-import { EntradaSimples } from "./entrada-monovalor.model";
-import { GraficoModel } from "./grafico.model";
+import {EntradaSimples} from './entrada-monovalor.model';
+import {GraficoModel} from './grafico.model';
 
 export class GraficoBarraModel extends GraficoModel {
     constructor(

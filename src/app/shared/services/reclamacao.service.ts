@@ -19,7 +19,7 @@ export class ReclamacaoService {
         return this.http.post<ReclamationModel[]>(`${this.baseUrl}/company`, filters, { headers });
     }
 
-    public buildDashboard(filters: CompanyFilter[]) {
+    public buildDashboard(filters) {
         const headers = new HttpHeaders({  'Content-Type': 'application/json' });
         return this.http.post<DashboardModel>(`${this.baseUrl}/company/dashboard`, filters, { headers });
     }

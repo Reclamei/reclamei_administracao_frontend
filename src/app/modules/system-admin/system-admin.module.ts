@@ -8,9 +8,11 @@ import {ServiceTypesComponent} from './pages/service-types/service-types.compone
 import {LocationComponent} from './pages/location/location.component';
 import {CompaniesComponent} from './pages/companies/companies.component';
 import {CnpjPipe} from '../../shared/pipes/cnpj-pipe';
+import {DashboardAdminComponent} from './pages/dashboard-admin/dashboard-admin.component';
 
 @NgModule({
     declarations: [
+        DashboardAdminComponent,
         ApprovalsComponent,
         CoveragesComponent,
         ServiceTypesComponent,

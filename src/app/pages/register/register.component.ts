@@ -44,6 +44,7 @@ export class RegisterComponent implements OnInit {
                 error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro', error.message)
             });
         } else {
+            // TODO: Salvar head com o status PENDING_APPROVAL, o mesmo deve aparecer para o admin aprovar
             this.step = this.steps.VALIDACAO_ANDAMENTO;
         }
     }
