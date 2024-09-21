@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {OrgaoResponsavelRoutingModule} from './orgao-responsavel-routing.module';
 import {SharedModule} from 'src/app/shared/shared.module';
-import {RelatoriosComponent} from './pages/relatorios/relatorios.component';
+import {ReportsComponent} from './pages/reports/reports.component';
 import {ReclamacoesComponent} from './pages/reclamacoes/reclamacoes.component';
 import {ReclamacoesTableComponent} from './pages/reclamacoes/reclamacoes-table/reclamacoes-table.component';
 import {SettingsComponent} from './pages/settings/settings.component';
@@ -13,7 +13,7 @@ import {SettingsComponent} from './pages/settings/settings.component';
         DashboardComponent,
         ReclamacoesComponent,
         ReclamacoesTableComponent,
-        RelatoriosComponent,
+        ReportsComponent,
         SettingsComponent
     ],
     imports: [
@@ -22,4 +22,5 @@ import {SettingsComponent} from './pages/settings/settings.component';
         SharedModule
     ]
 })
-export class OrgaoResponsavelModule { }
+export class OrgaoResponsavelModule {
+}

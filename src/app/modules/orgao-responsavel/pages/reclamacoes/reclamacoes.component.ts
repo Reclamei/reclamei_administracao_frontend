@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
 import {StatusReclamationEnum} from 'src/app/shared/models/aplicacao/status-reclamation.enum';
-import {ReclamacaoService} from 'src/app/shared/services/reclamacao.service';
+import {ReclamationService} from 'src/app/shared/services/reclamation.service';
 import {firstValueFrom} from 'rxjs';
 import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.model';
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
@@ -22,7 +22,7 @@ export class ReclamacoesComponent implements OnInit {
     public filteredReclamations: ReclamationModel[] = [];
 
     constructor(
-        private reclamacaoService: ReclamacaoService,
+        private reclamacaoService: ReclamationService,
         private cachedService: CachedService,
     ) { }
 

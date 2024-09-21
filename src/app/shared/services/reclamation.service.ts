@@ -4,11 +4,12 @@ import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CompanyFilter} from '../models/aplicacao/company-filter.model';
 import {DashboardModel} from '../models/aplicacao/dashboard.model';
+import {ReportsModel} from '../models/aplicacao/reports.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ReclamacaoService {
+export class ReclamationService {
 
     private baseUrl = `${environment.apiEndpoint}/ms-reclamation/reclamations`;
 
@@ -22,5 +23,10 @@ export class ReclamacaoService {
     public buildDashboard(filters) {
         const headers = new HttpHeaders({  'Content-Type': 'application/json' });
         return this.http.post<DashboardModel>(`${this.baseUrl}/company/dashboard`, filters, { headers });
+    }
+
+    public buildReports(filters) {
+        const headers = new HttpHeaders({  'Content-Type': 'application/json' });
+        return this.http.post<ReportsModel>(`${this.baseUrl}/company/reports`, filters, { headers });
     }
 }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EntradaSimples} from 'src/app/shared/models/grafico/entrada-monovalor.model';
 import {GraficoBarraModel} from 'src/app/shared/models/grafico/grafico-barra.model';
-import {ReclamacaoService} from '../../../../shared/services/reclamacao.service';
+import {ReclamationService} from '../../../../shared/services/reclamation.service';
 import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.model';
 import {firstValueFrom} from 'rxjs';
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit{
     public graficoBarraRespondidas: GraficoBarraModel = new GraficoBarraModel();
 
     constructor(
-        private reclamationService: ReclamacaoService,
+        private reclamationService: ReclamationService,
         private cachedService: CachedService
     ) {}
 
