@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {CidadeModel} from 'src/app/shared/models/aplicacao/cidade.model';
-import {TipoProblemaModel} from 'src/app/shared/models/aplicacao/tipo-problema.model';
 import {ReclamationService} from '../../../../shared/services/reclamation.service';
 import {firstValueFrom} from 'rxjs';
 import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.model';
 import {CachedService} from '../../../../shared/services/cached.service';
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
+import {ReportsModel} from '../../../../shared/models/aplicacao/reports.model';
+import {MainProblemsModel} from '../../../../shared/models/aplicacao/main-problems.model';
 
 type ItemPorcentavel<T> = { item: T, porcentagem: number };
 
@@ -16,21 +16,10 @@ type ItemPorcentavel<T> = { item: T, porcentagem: number };
 })
 export class ReportsComponent implements OnInit {
     public detalheProblemasVisivel: boolean[] = [true, true];
-    public tiposProblema: TipoProblemaModel[] = [
-        new TipoProblemaModel('Mal funcionamento do equipamento', 263),
-        new TipoProblemaModel('Produto com defeito', 214),
-        new TipoProblemaModel('Produto quebrou com pouco tempo de uso', 93),
-        new TipoProblemaModel('Outro problema', 68),
-        new TipoProblemaModel('Não liga', 30),
-    ];
-    public maiorTipoProblema: ItemPorcentavel<TipoProblemaModel> = null;
-    public cidades: CidadeModel[] = [
-        new CidadeModel('Colatina', 259),
-        new CidadeModel('Linhares', 105),
-        new CidadeModel('Vitória', 29),
-        new CidadeModel('São Mateus', 2)
-    ];
-    public maiorCidade: ItemPorcentavel<CidadeModel> = null;
+    public mainProblems: MainProblemsModel[] = [];
+    public maiorTipoProblema: ItemPorcentavel<MainProblemsModel> = null;
+    public mainCitiesProblems: MainProblemsModel[] = [];
+    public maiorCidade: ItemPorcentavel<MainProblemsModel> = null;
     public dadosTempoResposta: Record<string, any> = {
         labels: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
         datasets: [{
@@ -55,13 +44,13 @@ export class ReportsComponent implements OnInit {
     }
 
     public async ngOnInit() {
-        await this.fillHeatmap();
+        await this.fillReports();
         this.calcularPorcentagens();
     }
 
     private calcularPorcentagens(): void {
-        this.maiorTipoProblema = this.obterMaiorPorcentagem(this.tiposProblema, (tipo: TipoProblemaModel) => tipo.quantidadeReclamacoes);
-        this.maiorCidade = this.obterMaiorPorcentagem(this.cidades, (cidade: CidadeModel) => cidade.quantidadeReclamacoes);
+        this.maiorTipoProblema = this.obterMaiorPorcentagem(this.mainProblems, (tipo: MainProblemsModel) => tipo.value);
+        this.maiorCidade = this.obterMaiorPorcentagem(this.mainCitiesProblems, (cidade: MainProblemsModel) => cidade.value);
     }
 
     private obterMaiorPorcentagem<T>(itens: T[], obterQuantidade: (item: T) => number): ItemPorcentavel<T> {
@@ -80,11 +69,21 @@ export class ReportsComponent implements OnInit {
         };
     }
 
-    private async fillHeatmap() {
+    private async fillReports() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
         const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
         const data = await firstValueFrom(this.reclamationService.buildReports({coverages: filters}));
 
+        this.fillHeatmap(data);
+        this.fillMainProblems(data);
+    }
+
+    private fillMainProblems(data: ReportsModel): void {
+        this.mainProblems = data.mainProblems;
+        this.mainCitiesProblems = data.mainCitiesProblems;
+    }
+
+    private fillHeatmap(data: ReportsModel): void {
         this.mapData = data.heatmapData.map(({latitude, longitude}) => ({
             lat: Number(latitude),
             lng: Number(longitude)
@@ -92,7 +91,7 @@ export class ReportsComponent implements OnInit {
         this.centerMap();
     }
 
-    private centerMap() {
+    private centerMap(): void {
         const sumLat = this.mapData.reduce((sum, item) => sum + item.lat, 0);
         const averageLat = this.mapData.length ? sumLat / this.mapData.length : 0;
 

@@ -18,18 +18,18 @@
                 <p-accordion [multiple]="true">
                     <p-accordionTab [(selected)]="detalheProblemasVisivel[0]" header="Tipos de problemas">
                         <div class="pb-2"><b>{{ (maiorTipoProblema.porcentagem * 100) | number:'1.2-2' }}
-                            % {{ maiorTipoProblema.item.descricao }}</b></div>
-                        <div *ngFor="let tipo of tiposProblema" class="flex pb-1">
-                            <div class="flex-1">{{ tipo.descricao }}</div>
-                            <div>({{ tipo.quantidadeReclamacoes }})</div>
+                            % {{ maiorTipoProblema.item.description }}</b></div>
+                        <div *ngFor="let tipo of mainProblems" class="flex pb-1">
+                            <div class="flex-1">{{ tipo.description }}</div>
+                            <div>({{ tipo.value }})</div>
                         </div>
                     </p-accordionTab>
                     <p-accordionTab [(selected)]="detalheProblemasVisivel[1]" header="Cidades">
                         <div class="pb-2"><b>{{ (maiorCidade.porcentagem * 100) | number:'1.2-2' }}
-                            % {{ maiorCidade.item.nome }}</b></div>
-                        <div *ngFor="let cidade of cidades" class="flex pb-1">
-                            <div class="flex-1">{{ cidade.nome }}</div>
-                            <div>({{ cidade.quantidadeReclamacoes }})</div>
+                            % {{ maiorCidade.item.description }}</b></div>
+                        <div *ngFor="let cidade of mainCitiesProblems" class="flex pb-1">
+                            <div class="flex-1">{{ cidade.description }}</div>
+                            <div>({{ cidade.value }})</div>
                         </div>
                     </p-accordionTab>
                 </p-accordion>
