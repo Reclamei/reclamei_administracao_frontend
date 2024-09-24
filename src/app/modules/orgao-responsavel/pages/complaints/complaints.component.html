@@ -3,15 +3,15 @@
         <div class="flex">
             <h2 class="traco flex-1">Reclamações</h2>
         </div>
-        <p-tabView (onChange)="filterReclamations($event.index)">
+        <p-tabView (onChange)="filterComplaints($event.index)">
             <p-tabPanel header="Últimas">
-                <app-reclamacoes-table [reclamations]="reclamations"></app-reclamacoes-table>
+                <app-complaints-table [complaints]="complaints"></app-complaints-table>
             </p-tabPanel>
             <p-tabPanel header="Não respondidas">
-                <app-reclamacoes-table [reclamations]="filteredReclamations"></app-reclamacoes-table>
+                <app-complaints-table [complaints]="filteredComplaints"></app-complaints-table>
             </p-tabPanel>
             <p-tabPanel header="Respondidas">
-                <app-reclamacoes-table [reclamations]="filteredReclamations"></app-reclamacoes-table>
+                <app-complaints-table [complaints]="filteredComplaints"></app-complaints-table>
             </p-tabPanel>
         </p-tabView>
     </p-card>

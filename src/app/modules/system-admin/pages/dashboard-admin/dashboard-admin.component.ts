@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EntradaSimples} from 'src/app/shared/models/grafico/entrada-monovalor.model';
 import {GraficoBarraModel} from 'src/app/shared/models/grafico/grafico-barra.model';
-import {ReclamationService} from '../../../../shared/services/reclamation.service';
+import {ComplaintService} from '../../../../shared/services/complaint.service';
 import {firstValueFrom} from 'rxjs';
 import {DashboardModel} from '../../../../shared/models/aplicacao/dashboard.model';
 
@@ -10,15 +10,16 @@ import {DashboardModel} from '../../../../shared/models/aplicacao/dashboard.mode
     templateUrl: './dashboard-admin.component.html',
     styleUrls: ['./dashboard-admin.component.scss']
 })
-export class DashboardAdminComponent implements OnInit{
+export class DashboardAdminComponent implements OnInit {
     public dashboard: DashboardModel = new DashboardModel();
 
     public graficoBarraResolvidas: GraficoBarraModel = new GraficoBarraModel();
     public graficoBarraRespondidas: GraficoBarraModel = new GraficoBarraModel();
 
     constructor(
-        private reclamationService: ReclamationService
-    ) {}
+        private complaintService: ComplaintService
+    ) {
+    }
 
     async ngOnInit() {
         await this.buildDashboard();
@@ -41,7 +42,7 @@ export class DashboardAdminComponent implements OnInit{
     }
 
     private async buildDashboard() {
-        this.dashboard = await firstValueFrom(this.reclamationService.buildDashboard({isAdmin: true, coverages: []}));
+        this.dashboard = await firstValueFrom(this.complaintService.buildDashboard({isAdmin: true, coverages: []}));
     }
 
 }
