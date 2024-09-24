@@ -16,17 +16,17 @@
                     <h2 class="traco flex-1">Principais Problemas</h2>
                 </div>
                 <p-accordion [multiple]="true">
-                    <p-accordionTab [(selected)]="detalheProblemasVisivel[0]" header="Tipos de problemas">
-                        <div class="pb-2"><b>{{ (maiorTipoProblema.porcentagem * 100) | number:'1.2-2' }}
-                            % {{ maiorTipoProblema.item.description }}</b></div>
+                    <p-accordionTab [(selected)]="detailVisibleProblems[0]" header="Tipos de problemas">
+                        <div class="pb-2"><b>{{ (mostCommonIssueType?.percentage * 100) | number:'1.2-2' }}
+                            % {{ mostCommonIssueType?.item.description }}</b></div>
                         <div *ngFor="let tipo of mainProblems" class="flex pb-1">
                             <div class="flex-1">{{ tipo.description }}</div>
                             <div>({{ tipo.value }})</div>
                         </div>
                     </p-accordionTab>
-                    <p-accordionTab [(selected)]="detalheProblemasVisivel[1]" header="Cidades">
-                        <div class="pb-2"><b>{{ (maiorCidade.porcentagem * 100) | number:'1.2-2' }}
-                            % {{ maiorCidade.item.description }}</b></div>
+                    <p-accordionTab [(selected)]="detailVisibleProblems[1]" header="Cidades">
+                        <div class="pb-2"><b>{{ (cityWithMostIssues?.percentage * 100) | number:'1.2-2' }}
+                            % {{ cityWithMostIssues?.item.description }}</b></div>
                         <div *ngFor="let cidade of mainCitiesProblems" class="flex pb-1">
                             <div class="flex-1">{{ cidade.description }}</div>
                             <div>({{ cidade.value }})</div>
@@ -38,8 +38,8 @@
     </div>
     <p-card>
         <div class="flex">
-            <h2 class="traco flex-1">Tempo de Resposta das Reclamações por Dia</h2>
+            <h2 class="traco flex-1">Tempo até a análise das Reclamações</h2>
         </div>
-        <p-chart [data]="dadosTempoResposta" type="line"></p-chart>
+        <p-chart [data]="responseTimeGraph" type="line"></p-chart>
     </p-card>
 </div>

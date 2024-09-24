@@ -7,7 +7,7 @@ import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model'
 import {ReportsModel} from '../../../../shared/models/aplicacao/reports.model';
 import {MainProblemsModel} from '../../../../shared/models/aplicacao/main-problems.model';
 
-type ItemPorcentavel<T> = { item: T, porcentagem: number };
+type ItemPorcentavel<T> = { item: T, percentage: number };
 
 @Component({
     selector: 'app-reports',
@@ -15,19 +15,15 @@ type ItemPorcentavel<T> = { item: T, porcentagem: number };
     styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-    public detalheProblemasVisivel: boolean[] = [true, true];
+    public detailVisibleProblems: boolean[] = [true, true];
     public mainProblems: MainProblemsModel[] = [];
-    public maiorTipoProblema: ItemPorcentavel<MainProblemsModel> = null;
+    public mostCommonIssueType: ItemPorcentavel<MainProblemsModel> = null;
     public mainCitiesProblems: MainProblemsModel[] = [];
-    public maiorCidade: ItemPorcentavel<MainProblemsModel> = null;
-    public dadosTempoResposta: Record<string, any> = {
+    public cityWithMostIssues: ItemPorcentavel<MainProblemsModel> = null;
+
+    public responseTimeGraph: Record<string, any> = {
         labels: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
-        datasets: [{
-            label: 'Tempo de Resposta',
-            data: [18, 0, 58, 24, 26, 34, 66],
-            borderColor: '#ff9999',
-            backgroundColor: '#ff999955',
-        }]
+        datasets: []
     };
 
     public mapCentering: google.maps.LatLngLiteral = {lat: -19.551675, lng: -40.580482};
@@ -49,17 +45,17 @@ export class ReportsComponent implements OnInit {
     }
 
     private calcularPorcentagens(): void {
-        this.maiorTipoProblema = this.obterMaiorPorcentagem(this.mainProblems, (tipo: MainProblemsModel) => tipo.value);
-        this.maiorCidade = this.obterMaiorPorcentagem(this.mainCitiesProblems, (cidade: MainProblemsModel) => cidade.value);
+        this.mostCommonIssueType = this.getHighestPercentage(this.mainProblems, (type: MainProblemsModel) => type.value);
+        this.cityWithMostIssues = this.getHighestPercentage(this.mainCitiesProblems, (city: MainProblemsModel) => city.value);
     }
 
-    private obterMaiorPorcentagem<T>(itens: T[], obterQuantidade: (item: T) => number): ItemPorcentavel<T> {
+    private getHighestPercentage<T>(itens: T[], obterQuantidade: (item: T) => number): ItemPorcentavel<T> {
         let total: number = 0;
         itens.forEach((item: T) => total += obterQuantidade(item));
         return itens.map((item: T) => ({
             item: item,
-            porcentagem: Math.round((obterQuantidade(item) / total) * 10000) / 10000
-        })).sort((a, b) => b.porcentagem - a.porcentagem)[0];
+            percentage: Math.round((obterQuantidade(item) / total) * 10000) / 10000
+        })).sort((a, b) => b.percentage - a.percentage)[0];
     }
 
     private initializeMapConfig(): google.maps.MapOptions {
@@ -76,11 +72,63 @@ export class ReportsComponent implements OnInit {
 
         this.fillHeatmap(data);
         this.fillMainProblems(data);
+        this.fillResponseTimeGraph(data);
     }
 
     private fillMainProblems(data: ReportsModel): void {
         this.mainProblems = data.mainProblems;
         this.mainCitiesProblems = data.mainCitiesProblems;
+    }
+
+    private fillResponseTimeGraph(data: ReportsModel): void {
+        const groupedData = data.responseTimeGraph.reduce((acc, item) => {
+            const dayOfWeek = new Date(item.day).getDay() + 1;
+            if (!acc[dayOfWeek]) {
+                acc[dayOfWeek] = {totalResponseTime: 0, totalAnswered: 0, count: 0};
+            }
+            acc[dayOfWeek].totalResponseTime += item.averageResponseTime || 0;
+            acc[dayOfWeek].totalAnswered += item.quantityAnswered || 0;
+            acc[dayOfWeek].count += 1;
+
+            return acc;
+        }, {});
+
+        const averages = [];
+        const count = [];
+        const labels = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+
+        labels.forEach((label, index) => {
+            if (groupedData[index]) {
+                averages.push(groupedData[index].totalResponseTime / groupedData[index].count);
+                count.push(groupedData[index].totalAnswered);
+            } else {
+                averages.push(0); // Se não houver dados para o dia, coloca 0
+                count.push(0);
+            }
+        });
+
+        this.buildResponseTimeGraph(labels, averages, count);
+    }
+
+    private buildResponseTimeGraph(labels: string[], averages: number[], count: number[]): void {
+        this.responseTimeGraph = {
+            labels: labels,
+            datasets: [
+                {
+                    type: 'line',
+                    label: 'Tempo de Resposta',
+                    data: averages,
+                    borderColor: '#a6a6a6',
+                    backgroundColor: '#a6a6a6',
+                },
+                {
+                    type: 'bar',
+                    label: 'Quantidade respondida',
+                    data: count,
+                    backgroundColor: '#f8d444',
+                }
+            ]
+        };
     }
 
     private fillHeatmap(data: ReportsModel): void {
