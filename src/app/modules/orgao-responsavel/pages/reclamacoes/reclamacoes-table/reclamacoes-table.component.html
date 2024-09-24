@@ -1,0 +1,39 @@
+<p-table [value]="reclamations" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} resultados.">
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th>Tipo</th>
+            <th>Subtipo</th>
+            <th>Descrição</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-reclamation>
+        <tr>
+            <td><img class="miniatura-reclamacao" [src]="reclamation.photo" /></td>
+            <td>{{reclamation.serviceName}}</td>
+            <td>{{reclamation.serviceSubtypeName}}</td>
+            <td>{{reclamation.description}}</td>
+            <td>{{reclamation.createdAt | date:"dd/MM/yyyy"}}</td>
+            <td>
+                <button pButton type="button "class="p-button-rounded p-button-text p-button-warning" icon="pi pi-map" (click)="mostrarLocalizacao(reclamation)" pTooltip="Visualizar no Mapa" tooltipPosition="top"></button>
+                <button pButton type="button" class="p-button-rounded p-button-text p-button-warning" icon="pi pi-pencil" (click)="editarReclamacao(reclamation)" pTooltip="Acessar Detalhes" tooltipPosition="top"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog header="Localização" [(visible)]="modalLocalizacaoVisivel" [modal]="true" [draggable]="false" [resizable]="false">
+    <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa" [mapTypeId]="mapType">
+        <map-marker [position]="centralizarMapa"></map-marker>
+    </google-map>
+    <div>
+        <label>Tipo de Mapa:</label>
+        <select [(ngModel)]="mapType">
+          <option value="roadmap">Estrada</option>
+          <option value="satellite">Satélite</option>
+          <option value="hybrid">Híbrido</option>
+          <option value="terrain">Terreno</option>
+        </select>
+    </div>
+</p-dialog>

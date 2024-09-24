@@ -1,25 +1,24 @@
 import {Component, Input} from '@angular/core';
-import {ComplaintModel} from 'src/app/shared/models/aplicacao/complaint-model';
+import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
 
 @Component({
-    selector: 'app-complaints-table',
-    templateUrl: './complaints-table.component.html',
-    styleUrls: ['./complaints-table.component.scss']
+    selector: 'app-reclamacoes-table',
+    templateUrl: './reclamacoes-table.component.html',
+    styleUrls: ['./reclamacoes-table.component.scss']
 })
-export class ComplaintsTableComponent {
-    @Input() complaints: ComplaintModel[] = [];
+export class ReclamacoesTableComponent {
+    @Input() reclamations: ReclamationModel[] = [];
 
     public modalLocalizacaoVisivel = false;
-    public reclamacaoEmFoco: ComplaintModel | null = null;
+    public reclamacaoEmFoco: ReclamationModel | null = null;
     public centralizarMapa: Record<string, any> = {};
     public ampliacaoMapa = 15;
     public configuracaoMapa: google.maps.MapOptions = this.inicializarConfiguracaoMapa();
     public mapType = 'roadmap';
 
-    constructor() {
-    }
+    constructor() { }
 
-    public mostrarLocalizacao(reclamacao: ComplaintModel): void {
+    public mostrarLocalizacao(reclamacao: ReclamationModel): void {
         this.reclamacaoEmFoco = reclamacao;
         this.centralizarMapa = {lat: this.gerarLocalizacaoColatina(-19.5385576), lng: this.gerarLocalizacaoColatina(-40.636211)};
         this.ampliacaoMapa = 15;

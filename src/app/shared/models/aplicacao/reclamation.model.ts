@@ -1,6 +1,6 @@
 import {LocalizationModel} from './localization.model';
 
-export class ComplaintModel {
+export class ReclamationModel {
     constructor(
         public id: number,
         public citizenId: number,
@@ -13,6 +13,5 @@ export class ComplaintModel {
         public photo: string,
         public status: string,
         public localization: LocalizationModel,
-    ) {
-    }
+    ) {}
 }

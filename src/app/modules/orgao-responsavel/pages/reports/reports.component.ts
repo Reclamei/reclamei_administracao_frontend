@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ComplaintService} from '../../../../shared/services/complaint.service';
+import {ReclamationService} from '../../../../shared/services/reclamation.service';
 import {firstValueFrom} from 'rxjs';
 import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.model';
 import {CachedService} from '../../../../shared/services/cached.service';
@@ -33,7 +33,7 @@ export class ReportsComponent implements OnInit {
     public mapData: google.maps.LatLngLiteral[] = [];
 
     constructor(
-        private complaintService: ComplaintService,
+        private reclamationService: ReclamationService,
         private cachedService: CachedService
     ) {
         this.calcularPorcentagens();
@@ -68,7 +68,7 @@ export class ReportsComponent implements OnInit {
     private async fillReports() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
         const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
-        const data = await firstValueFrom(this.complaintService.buildReports({coverages: filters}));
+        const data = await firstValueFrom(this.reclamationService.buildReports({coverages: filters}));
 
         this.fillHeatmap(data);
         this.fillMainProblems(data);
