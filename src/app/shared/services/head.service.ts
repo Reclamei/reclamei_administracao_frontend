@@ -10,7 +10,8 @@ export class HeadService {
 
     private baseUrl = `${environment.apiEndpoint}/ms-company/heads`;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     public confirmUser(externalId) {
         return this.http.patch(`${this.baseUrl}/${externalId}/confirm`, null);
@@ -20,18 +21,22 @@ export class HeadService {
         return this.http.patch(`${this.baseUrl}/${externalId}/deny`, null);
     }
 
+    public approveUser(externalId) {
+        return this.http.patch(`${this.baseUrl}/${externalId}/approve`, null);
+    }
+
     public getAllHeadsByCompanyId(companyId: number) {
         return this.http.get<HeadModel[]>(`${this.baseUrl}/company/${companyId}`);
     }
 
     public create(head: HeadModel) {
-        const headers = new HttpHeaders({  'Content-Type': 'application/json' });
-        return this.http.post(this.baseUrl, head, { headers });
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        return this.http.post(this.baseUrl, head, {headers});
     }
 
     public update(head: HeadModel) {
-        const headers = new HttpHeaders({  'Content-Type': 'application/json' });
-        return this.http.put(this.baseUrl, head, { headers });
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        return this.http.put(this.baseUrl, head, {headers});
     }
 
     public delete(id: number) {
