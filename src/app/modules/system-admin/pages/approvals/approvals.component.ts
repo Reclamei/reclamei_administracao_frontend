@@ -69,10 +69,10 @@ export class ApprovalsComponent implements OnInit {
         this.headService.denyUser(headAdmin.externalId).subscribe({
             next: (res) => {
                 this.getFilteredApprovals();
-                this.blockUIService.unblock();
             },
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro em recusar cadastro',
-                ErrorType.getMessage(error.code))
+                ErrorType.getMessage(error.code)),
+            complete: () => this.blockUIService.unblock()
         });
     }
 

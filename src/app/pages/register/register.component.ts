@@ -9,6 +9,7 @@ import {AuthService} from 'src/app/shared/auth/auth.service';
 import {map, take, tap} from 'rxjs/operators';
 import {CompanyService} from '../../shared/services/company.service';
 import {v4 as uuidv4} from 'uuid';
+import {BlockUIService} from '../../shared/services/block-ui.service';
 
 @Component({
     selector: 'app-register',
@@ -28,7 +29,8 @@ export class RegisterComponent implements OnInit {
         private messageService: MessageService,
         private router: Router,
         private authService: AuthService,
-        private companyService: CompanyService
+        private companyService: CompanyService,
+        private blockUIService: BlockUIService
     ) {
         this.registrationForm = this.initializeForm();
     }
@@ -47,6 +49,25 @@ export class RegisterComponent implements OnInit {
             // TODO: Salvar head com o status PENDING_APPROVAL, o mesmo deve aparecer para o admin aprovar
             this.step = this.steps.VALIDACAO_ANDAMENTO;
         }
+    }
+
+    public async getInformationByCnpj() {
+        this.blockUIService.block();
+        this.companyService.findInformationByCnpj(this.registrationForm.value.cnpj).subscribe({
+            next: (company) => {
+                this.registrationForm.patchValue({
+                    cnpj: company.cnpj,
+                    name: company.name,
+                    // email: company.email, TODO: comentado apenas para teste
+                    description: company.description,
+                    phone: company.phone,
+                });
+                this.step = this.steps.VALIDAR_INFORMACOES;
+            },
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao buscar CNPJ',
+                'Não encontramos os detalhes para o CNPJ informado.'),
+            complete: () => this.blockUIService.unblock()
+        });
     }
 
     private sendSignInLinkToEmail() {
@@ -71,7 +92,7 @@ export class RegisterComponent implements OnInit {
             phone: new FormControl(null, []),
             hasEmailAccess: new FormControl(true, []),
             secondaryEmail: new FormControl(null, []),
-            heads: this.formBuilder.array([{ externalId: uuidv4() }])
+            heads: this.formBuilder.array([{externalId: uuidv4()}])
         });
     }
 
@@ -81,35 +102,18 @@ export class RegisterComponent implements OnInit {
             map(user => !!user),
             tap(authenticated => {
                 if (!authenticated) {
-                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());                }
+                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
+                }
             })
         );
     }
-
-    public getInformationByCnpj() {
-        this.companyService.findInformationByCnpj(this.registrationForm.value.cnpj).subscribe({
-            next: (company) => {
-                this.registrationForm.patchValue({
-                    cnpj: company.cnpj,
-                    name: company.name,
-                    // email: company.email, TODO: comentado apenas para teste
-                    description: company.description,
-                    phone: company.phone,
-                });
-                this.step = this.steps.VALIDAR_INFORMACOES;
-            },
-            error: (error) =>
-                PrimengFactory.mensagemErro(this.messageService, 'Erro ao buscar CNPJ',
-                    'Não encontramos os detalhes para o CNPJ informado.')
-        });
-    }
 }
 
-class AuthenticationModes{
+class AuthenticationModes {
     public readonly MODO_ENTRAR: number = 0;
 }
 
-class RegistrationSteps{
+class RegistrationSteps {
     public readonly INFORMAR_CNPJ: number = 0;
     public readonly VALIDAR_INFORMACOES: number = 1;
     public readonly CONFIRMAR_EMAIL: number = 2;

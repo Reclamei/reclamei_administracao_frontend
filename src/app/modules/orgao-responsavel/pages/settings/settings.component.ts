@@ -177,10 +177,10 @@ export class SettingsComponent implements OnInit {
                     description: company.description,
                 });
                 this.isUserAdmin = company.heads.find(head => head.externalId === user.displayName).isAdmin === true;
-                this.blockUIService.unblock();
             })
             .catch(error => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
                 ErrorType.getMessage(error.code)));
+        this.blockUIService.unblock();
     }
 
     private async getHeadsByCompany() {
