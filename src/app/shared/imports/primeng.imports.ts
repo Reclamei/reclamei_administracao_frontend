@@ -79,6 +79,8 @@ import {TreeModule} from 'primeng/tree';
 import {TreeTableModule} from 'primeng/treetable';
 import {VirtualScrollerModule} from 'primeng/virtualscroller';
 import {GMapModule} from 'primeng/gmap';
+import {BlockUIModule} from 'primeng/blockui';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 export const PRIMENG_IMPORTS: any[] = [
     AccordionModule,
@@ -86,6 +88,7 @@ export const PRIMENG_IMPORTS: any[] = [
     AvatarModule,
     AvatarGroupModule,
     BadgeModule,
+    BlockUIModule,
     BreadcrumbModule,
     ButtonModule,
     CalendarModule,
@@ -135,6 +138,7 @@ export const PRIMENG_IMPORTS: any[] = [
     PasswordModule,
     PickListModule,
     ProgressBarModule,
+    ProgressSpinnerModule,
     RadioButtonModule,
     RatingModule,
     RippleModule,

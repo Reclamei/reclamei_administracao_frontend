@@ -6,6 +6,7 @@ import {CachedService} from '../../../../shared/services/cached.service';
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
 import {ReportsModel} from '../../../../shared/models/aplicacao/reports.model';
 import {MainProblemsModel} from '../../../../shared/models/aplicacao/main-problems.model';
+import {BlockUIService} from '../../../../shared/services/block-ui.service';
 
 type ItemPorcentavel<T> = { item: T, percentage: number };
 
@@ -34,7 +35,8 @@ export class ReportsComponent implements OnInit {
 
     constructor(
         private reclamationService: ReclamationService,
-        private cachedService: CachedService
+        private cachedService: CachedService,
+        private blockUIService: BlockUIService
     ) {
         this.calcularPorcentagens();
     }
@@ -68,11 +70,14 @@ export class ReportsComponent implements OnInit {
     private async fillReports() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
         const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+
+        this.blockUIService.block();
         const data = await firstValueFrom(this.reclamationService.buildReports({coverages: filters}));
 
         this.fillHeatmap(data);
         this.fillMainProblems(data);
         this.fillResponseTimeGraph(data);
+        this.blockUIService.unblock();
     }
 
     private fillMainProblems(data: ReportsModel): void {

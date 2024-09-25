@@ -15,6 +15,7 @@ import {AngularFireModule} from '@angular/fire/compat';
 import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
 import {RegisterComponent} from './pages/register/register.component';
 import {CompleteRegistrationComponent} from './pages/complete-registration/complete-registration.component';
+import {GlobalBlockUIComponent} from './shared/components/block-ui/block-ui.component';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import {CompleteRegistrationComponent} from './pages/complete-registration/compl
         EntrarComponent,
         HomeComponent,
         RegisterComponent,
-        CompleteRegistrationComponent
+        CompleteRegistrationComponent,
+        GlobalBlockUIComponent
     ],
     providers: [
         {
@@ -42,4 +44,5 @@ import {CompleteRegistrationComponent} from './pages/complete-registration/compl
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

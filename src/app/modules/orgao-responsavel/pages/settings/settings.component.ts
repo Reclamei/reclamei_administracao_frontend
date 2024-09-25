@@ -13,6 +13,7 @@ import {MessageService} from 'primeng/api';
 import {Observable} from 'rxjs';
 import {HeadService} from '../../../../shared/services/head.service';
 import {CachedService} from '../../../../shared/services/cached.service';
+import {BlockUIService} from '../../../../shared/services/block-ui.service';
 
 @Component({
     selector: 'app-settings',
@@ -30,12 +31,6 @@ export class SettingsComponent implements OnInit {
     public newPassword = '';
     public repetirSenha = '';
 
-    async ngOnInit(): Promise<void> {
-        this.companyForm = this.initializeForm();
-        await this.getCompanyByExternalId();
-        this.checkLoggedInUser();
-    }
-
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
@@ -43,8 +38,16 @@ export class SettingsComponent implements OnInit {
         private messageService: MessageService,
         private companyService: CompanyService,
         private headService: HeadService,
-        private cachedService: CachedService
-    ) { }
+        private cachedService: CachedService,
+        private blockUIService: BlockUIService
+    ) {
+    }
+
+    async ngOnInit(): Promise<void> {
+        this.companyForm = this.initializeForm();
+        await this.getCompanyByExternalId();
+        this.checkLoggedInUser();
+    }
 
     public changePassword() {
         if (this.newPassword !== this.repetirSenha) {
@@ -64,7 +67,7 @@ export class SettingsComponent implements OnInit {
     }
 
     public onRowEditInit(head: HeadModel) {
-        this.clonedHeads[head.id] = { ...head };
+        this.clonedHeads[head.id] = {...head};
     }
 
     public onRowEditCancel(head: HeadModel, index: number) {
@@ -77,14 +80,6 @@ export class SettingsComponent implements OnInit {
         await this.removeAsyncHead(head);
     }
 
-    private async removeAsyncHead(head: HeadModel) {
-        return this.headService.delete(head.id).subscribe({
-            next: () => this.company.heads = this.company.heads.filter((val) => val.id !== head.id),
-            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao remover responsável.',
-                ErrorType.getMessage(error.code))
-        });
-    }
-
     public addHead() {
         this.company.heads.push(new HeadModel(null, this.companyForm.value.id));
     }
@@ -93,6 +88,22 @@ export class SettingsComponent implements OnInit {
         this.companyService.update(this.companyForm.value).subscribe({
             next: () => PrimengFactory.mensagemSucesso(this.messageService, 'Registro atualizado com sucesso.', ''),
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao atualizar informações do órgão.',
+                ErrorType.getMessage(error.code))
+        });
+    }
+
+    onRowEditSave(head: HeadModel) {
+        if (head.id) {
+            this.updateHead(head);
+            return;
+        }
+        this.createHead(head);
+    }
+
+    private async removeAsyncHead(head: HeadModel) {
+        return this.headService.delete(head.id).subscribe({
+            next: () => this.company.heads = this.company.heads.filter((val) => val.id !== head.id),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao remover responsável.',
                 ErrorType.getMessage(error.code))
         });
     }
@@ -116,18 +127,10 @@ export class SettingsComponent implements OnInit {
             map(user => !!user),
             tap(authenticated => {
                 if (!authenticated) {
-                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());                }
+                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
+                }
             })
         );
-    }
-
-
-    onRowEditSave(head: HeadModel) {
-        if (head.id) {
-            this.updateHead(head);
-            return;
-        }
-        this.createHead(head);
     }
 
     private async createHead(head: HeadModel) {
@@ -158,6 +161,7 @@ export class SettingsComponent implements OnInit {
     }
 
     private async getCompanyByExternalId() {
+        this.blockUIService.block();
         const user = await this.authService.getCurrentUser();
         await this.cachedService.getCompany()
             .then(company => {
@@ -173,6 +177,7 @@ export class SettingsComponent implements OnInit {
                     description: company.description,
                 });
                 this.isUserAdmin = company.heads.find(head => head.externalId === user.displayName).isAdmin === true;
+                this.blockUIService.unblock();
             })
             .catch(error => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
                 ErrorType.getMessage(error.code)));

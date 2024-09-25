@@ -7,13 +7,14 @@ import {firstValueFrom} from 'rxjs';
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
 import {CachedService} from '../../../../shared/services/cached.service';
 import {DashboardModel} from '../../../../shared/models/aplicacao/dashboard.model';
+import {BlockUIService} from '../../../../shared/services/block-ui.service';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
     public dashboard: DashboardModel = new DashboardModel();
 
     public graficoBarraResolvidas: GraficoBarraModel = new GraficoBarraModel();
@@ -21,8 +22,10 @@ export class DashboardComponent implements OnInit{
 
     constructor(
         private reclamationService: ReclamationService,
-        private cachedService: CachedService
-    ) {}
+        private cachedService: CachedService,
+        private blockUIService: BlockUIService
+    ) {
+    }
 
     async ngOnInit() {
         await this.buildDashboard();
@@ -32,15 +35,15 @@ export class DashboardComponent implements OnInit{
 
     private inicializarGraficoResolvidas(): GraficoBarraModel {
         return new GraficoBarraModel('Percentual de Resoluções', '', [
-            new EntradaSimples('Resolvidas', "#D9FDD9", "#90CD93", this.dashboard.resolvedCount),
-            new EntradaSimples('Não Resolvidas', "#FF8980", "#FF5353", this.dashboard.unresolvedCount)
+            new EntradaSimples('Resolvidas', '#D9FDD9', '#90CD93', this.dashboard.resolvedCount),
+            new EntradaSimples('Não Resolvidas', '#FF8980', '#FF5353', this.dashboard.unresolvedCount)
         ]);
     }
 
     private inicializarGraficoRespondidas(): GraficoBarraModel {
         return new GraficoBarraModel('Percentual de Respostas', '', [
-            new EntradaSimples('Respondidas', "#FDF3DC", "#F9AE61", this.dashboard.answeredCount),
-            new EntradaSimples('Não Respondidas', "#FF8980", "#FF5353", this.dashboard.unansweredCount)
+            new EntradaSimples('Respondidas', '#FDF3DC', '#F9AE61', this.dashboard.answeredCount),
+            new EntradaSimples('Não Respondidas', '#FF8980', '#FF5353', this.dashboard.unansweredCount)
         ]);
     }
 
@@ -48,7 +51,11 @@ export class DashboardComponent implements OnInit{
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
         const filters = coverages.map(item =>
             new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+
+
+        this.blockUIService.block();
         this.dashboard = await firstValueFrom(this.reclamationService.buildDashboard({isAdmin: false, coverages: filters}));
+        this.blockUIService.unblock();
     }
 
 }
