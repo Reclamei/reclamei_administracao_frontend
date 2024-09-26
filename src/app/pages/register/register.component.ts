@@ -6,10 +6,12 @@ import {MapeamentoRota} from 'src/app/shared/constants/mapeamento-rota';
 import {PrimengFactory} from 'src/app/shared/factories/primeng.factory';
 import {ErrorType} from 'src/app/shared/auth/model/error-type.enum';
 import {AuthService} from 'src/app/shared/auth/auth.service';
-import {map, take, tap} from 'rxjs/operators';
+import {finalize, map, take, tap} from 'rxjs/operators';
 import {CompanyService} from '../../shared/services/company.service';
 import {v4 as uuidv4} from 'uuid';
 import {BlockUIService} from '../../shared/services/block-ui.service';
+import {firstValueFrom} from 'rxjs';
+import {HeadService} from '../../shared/services/head.service';
 
 @Component({
     selector: 'app-register',
@@ -30,7 +32,8 @@ export class RegisterComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private companyService: CompanyService,
-        private blockUIService: BlockUIService
+        private blockUIService: BlockUIService,
+        private headService: HeadService
     ) {
         this.registrationForm = this.initializeForm();
     }
@@ -39,35 +42,38 @@ export class RegisterComponent implements OnInit {
         this.checkLoggedInUser();
     }
 
-    public validateRegistration() {
+    public async validateRegistration() {
         if (this.registrationForm.value.hasEmailAccess) {
             this.companyService.create(this.registrationForm.value).subscribe({
                 next: () => this.sendSignInLinkToEmail(),
                 error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro', error.message)
             });
         } else {
-            // TODO: Salvar head com o status PENDING_APPROVAL, o mesmo deve aparecer para o admin aprovar
+            this.blockUIService.block();
+            await firstValueFrom(this.headService.requestApproval(this.registrationForm.value.heads[0].externalId));
+            this.blockUIService.unblock();
             this.step = this.steps.VALIDACAO_ANDAMENTO;
         }
     }
 
     public async getInformationByCnpj() {
         this.blockUIService.block();
-        this.companyService.findInformationByCnpj(this.registrationForm.value.cnpj).subscribe({
-            next: (company) => {
-                this.registrationForm.patchValue({
-                    cnpj: company.cnpj,
-                    name: company.name,
-                    // email: company.email, TODO: comentado apenas para teste
-                    description: company.description,
-                    phone: company.phone,
-                });
-                this.step = this.steps.VALIDAR_INFORMACOES;
-            },
-            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao buscar CNPJ',
-                'Não encontramos os detalhes para o CNPJ informado.'),
-            complete: () => this.blockUIService.unblock()
-        });
+        this.companyService.findInformationByCnpj(this.registrationForm.value.cnpj)
+            .pipe(finalize(() => this.blockUIService.unblock()))
+            .subscribe({
+                next: (company) => {
+                    this.registrationForm.patchValue({
+                        cnpj: company.cnpj,
+                        name: company.name,
+                        // email: company.email, TODO: comentado apenas para teste
+                        description: company.description,
+                        phone: company.phone,
+                    });
+                    this.step = this.steps.VALIDAR_INFORMACOES;
+                },
+                error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao buscar CNPJ',
+                    'Não encontramos os detalhes para o CNPJ informado.')
+            });
     }
 
     private sendSignInLinkToEmail() {

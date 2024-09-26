@@ -8,6 +8,7 @@ import {AuthService} from '../../../../shared/auth/auth.service';
 import {HeadService} from '../../../../shared/services/head.service';
 import {BlockUIService} from '../../../../shared/services/block-ui.service';
 import {firstValueFrom} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 @Component({
     selector: 'app-approvals',
@@ -66,14 +67,15 @@ export class ApprovalsComponent implements OnInit {
     refuse(record: CompanyModel) {
         this.blockUIService.block();
         const headAdmin = record.heads.find(head => head.isAdmin);
-        this.headService.denyUser(headAdmin.externalId).subscribe({
-            next: (res) => {
-                this.getFilteredApprovals();
-            },
-            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro em recusar cadastro',
-                ErrorType.getMessage(error.code)),
-            complete: () => this.blockUIService.unblock()
-        });
+        this.headService.denyUser(headAdmin.externalId)
+            .pipe(finalize(() => this.blockUIService.unblock()))
+            .subscribe({
+                next: (res) => {
+                    this.getFilteredApprovals();
+                },
+                error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro em recusar cadastro',
+                    ErrorType.getMessage(error.code))
+            });
     }
 
 }

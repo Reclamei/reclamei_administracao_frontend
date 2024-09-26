@@ -5,6 +5,7 @@ import {CompanyService} from './company.service';
 import {firstValueFrom} from 'rxjs';
 import {CoverageModel} from '../models/aplicacao/coverage.model';
 import {CompanyModel} from '../models/aplicacao/company.model';
+import {BlockUIService} from './block-ui.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,22 +17,9 @@ export class CachedService {
     constructor(
         private coverageService: CoverageService,
         private authService: AuthService,
-        private companyService: CompanyService
-    ) { }
-
-    private async loadCoverages() {
-        if (!this.company?.id) {
-            await this.getCompanyByExternalId();
-        }
-        this.coverages = await firstValueFrom(this.coverageService.findByCompanyId(this.company.id));
-    }
-
-    private async getCompanyByExternalId() {
-        const user = await this.authService.getCurrentUser();
-        if (!user || !user.displayName) {
-            throw new Error('Usuário não autenticado');
-        }
-        this.company = await firstValueFrom(this.companyService.getCompanyByHeadExternalId(user.displayName));
+        private companyService: CompanyService,
+        private blockUIService: BlockUIService,
+    ) {
     }
 
     public async getCoverages() {
@@ -51,6 +39,25 @@ export class CachedService {
     public invalidateCache() {
         this.company = new CompanyModel();
         this.coverages = [];
+    }
+
+    private async loadCoverages() {
+        if (!this.company?.id) {
+            await this.getCompanyByExternalId();
+        }
+        this.blockUIService.block();
+        this.coverages = await firstValueFrom(this.coverageService.findByCompanyId(this.company.id));
+        this.blockUIService.unblock();
+    }
+
+    private async getCompanyByExternalId() {
+        const user = await this.authService.getCurrentUser();
+        if (!user || !user.displayName) {
+            throw new Error('Usuário não autenticado');
+        }
+        this.blockUIService.block();
+        this.company = await firstValueFrom(this.companyService.getCompanyByHeadExternalId(user.displayName));
+        this.blockUIService.unblock();
     }
 
 }
