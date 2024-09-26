@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { UsuarioModel } from '../models/aplicacao/usuario.model';
 import { Observable, Subject } from 'rxjs';
+import { LoginModel } from '../models/autenticacao/login.model';
+import { RegistroModel } from '../models/autenticacao/registro.model';
 
 @Injectable()
 export class AuthService {
@@ -9,13 +11,11 @@ export class AuthService {
 
     constructor() { }
 
-    public autenticar(usuario: UsuarioModel): Observable<UsuarioModel | null> {
+    public autenticar(login: LoginModel): Observable<UsuarioModel | null> {
         let assuntoAutenticacao: Subject<UsuarioModel | null> = new Subject();
         this.interceptarAutenticacao(assuntoAutenticacao.asObservable())
         window.setTimeout(() => {
-            assuntoAutenticacao.next(
-                AuthService.usuariosRegistrados.find((usuarioProcurado: UsuarioModel) => this.compararUsuario(usuario, usuarioProcurado)) ?? null
-            );
+            assuntoAutenticacao.next(this.encontrarUsuario(new UsuarioModel('', login.getEmail(), login.getSenha())) ?? null);
             assuntoAutenticacao.complete();
         }, 1000);
         return assuntoAutenticacao.asObservable();
@@ -31,8 +31,27 @@ export class AuthService {
         return AuthService.usuarioLogado;
     }
 
+    public registrar(registro: RegistroModel): Observable<void> {
+        let assuntoRegistro: Subject<void> = new Subject();
+        window.setTimeout(() => {
+            let usuario: UsuarioModel = new UsuarioModel(registro.getNome(), registro.getEmail(), registro.getSenha());
+            if(this.encontrarUsuario(usuario)) {
+                assuntoRegistro.error('Usuário já registrado.');
+            } else {
+                AuthService.usuariosRegistrados.push(usuario);
+                assuntoRegistro.next();
+            }
+            assuntoRegistro.complete();
+        }, 1000);
+        return assuntoRegistro.asObservable();
+    }
+
     public sair(): void {
         AuthService.usuarioLogado = null;
+    }
+
+    private encontrarUsuario(usuario: UsuarioModel): UsuarioModel | undefined {
+        return AuthService.usuariosRegistrados.find((usuarioProcurado: UsuarioModel) => this.compararUsuario(usuario, usuarioProcurado));
     }
 
     private interceptarAutenticacao(autenticacao: Observable<UsuarioModel | null>): void {

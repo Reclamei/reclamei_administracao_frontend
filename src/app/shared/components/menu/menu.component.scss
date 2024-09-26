@@ -45,6 +45,10 @@
     }
 }
 
+.opcao-menu-selecionada {
+    background-color: var(--cor-tema-auxiliar);
+}
+
 .icone-opcao {
     display: flex;
     justify-content: center;

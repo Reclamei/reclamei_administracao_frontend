@@ -2,7 +2,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { OrgaoModel } from '../../models/aplicacao/orgao.model';
 import { OrgaoService } from '../../services/orgao.service';
 import { MenuItem, MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MapeamentoRota } from '../../constants/mapeamento-rota';
 import { PrimengFactory } from '../../factories/primeng.factory';
 import { AuthService } from '../../services/auth.service';

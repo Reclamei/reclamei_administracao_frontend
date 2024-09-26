@@ -33,9 +33,13 @@
         <h2 class="traco">Desempenho</h2>
     </div>
     <div class="col-12 md:col-6 p-2">
-        <app-grafico-barra [configuracaoGrafico]="graficoBarraResolvidas"></app-grafico-barra>
+        <h3>Reclamações Resolvidas</h3>
+        <app-grafico-barra *ngIf="graficoBarraResolvidas" [configuracaoGrafico]="graficoBarraResolvidas"></app-grafico-barra>
+        <p *ngIf="!graficoBarraResolvidas">Sem dados para mostrar atualmente.</p>
     </div>
     <div class="col-12 md:col-6 p-2">
-        <app-grafico-barra [configuracaoGrafico]="graficoBarraRespondidas"></app-grafico-barra>
+        <h3>Reclamações Respondidas</h3>
+        <app-grafico-barra *ngIf="graficoBarraRespondidas" [configuracaoGrafico]="graficoBarraRespondidas"></app-grafico-barra>
+        <p *ngIf="!graficoBarraRespondidas">Sem dados para mostrar atualmente.</p>
     </div>
 </div>

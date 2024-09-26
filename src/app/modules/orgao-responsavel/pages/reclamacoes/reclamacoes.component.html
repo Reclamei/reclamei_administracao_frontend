@@ -1,4 +1,4 @@
-<div class="p-2">
+<div class="p-2" *ngIf="!reclamacaoEmEdicao">
     <p-card>
         <div class="grid grid-nogutter">
             <div class="col-12 sm:col-12 md:col-12 lg:col-8">
@@ -24,7 +24,7 @@
                     <td><img class="miniatura-reclamacao" [src]="reclamacao.localImagem" /></td>
                     <td>{{reclamacao.tipo}}</td>
                     <td>{{reclamacao.subtipo}}</td>
-                    <td>{{reclamacao.descricao}}</td>
+                    <td>{{reclamacao.descricao | maxLength:256:'...' }}</td>
                     <td>{{reclamacao.data | date:"dd/MM/yyyy"}}</td>
                     <td>
                         <button pButton type="button "class="p-button-rounded p-button-text p-button-warning" icon="pi pi-map" (click)="mostrarLocalizacao(reclamacao)" pTooltip="Visualizar no Mapa" tooltipPosition="top"></button>
@@ -35,8 +35,59 @@
         </p-table>
     </p-card>
 </div>
+<div class="p-2" *ngIf="reclamacaoEmEdicao">
+    <p-card>
+        <div class="grid grid-nogutter">
+            <div class="col-12 sm:col-12 md:col-6 lg:col-6">
+                <div class="col-12">
+                    <img class="imagem-reclamacao" [src]="reclamacaoEmEdicao.localImagem" />
+                </div>
+            </div>
+            <div class="grid grid-nogutter col-12 sm:col-12 md:col-6 lg:col-6">
+                <div class="col-12">
+                    <label for="descricao" class="block mb-1">Descrição</label>
+                    <textarea pInputTextarea id="descricao" [(ngModel)]="reclamacaoEmEdicao.descricao" [rows]="5" class="mb-2 w-full"></textarea>
+                </div>
+                <div class="col-12">
+                    <label for="localizacao" class="block mb-1">Localização</label>
+                    <div class="flex">
+                        <input pInputText id="localizacao" [(ngModel)]="reclamacaoEmEdicao.localizacao" type="text" class="mb-2 w-full" />
+                        <button pButton type="button "class="p-button-rounded p-button-text p-button-warning ml-2" icon="pi pi-map" (click)="mostrarLocalizacao(reclamacaoEmEdicao)" pTooltip="Visualizar no Mapa" tooltipPosition="top"></button>
+                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6 flex flex-column align-items-center px-2">
+                    <label for="orgao-correto" class="block mb-1">Orgão Responsável Correto?</label>
+                    <p-selectButton id="orgao-correto" [options]="opcoesSimNao" [(ngModel)]="reclamacaoEmEdicao.orgaoResponsavelCorreto" optionLabel="label" optionValue="value"></p-selectButton>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6 flex flex-column align-items-center px-2">
+                    <label for="problema-veridico" class="block mb-1">Problema Verídico?</label>
+                    <p-selectButton id="problema-veridico" [options]="opcoesSimNao" [(ngModel)]="reclamacaoEmEdicao.problemaVeridico" optionLabel="label" optionValue="value"></p-selectButton>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="col-12">
+                    <label for="resposta" class="block mb-1">Resposta</label>
+                    <textarea pInputTextarea id="resposta" [(ngModel)]="reclamacaoEmEdicao.resposta" [rows]="3" class="mb-2 w-full"></textarea>
+                </div>
+                <div class="col-12">
+                    <label for="estado" class="block mb-1">Status</label>
+                    <p-dropdown class="p-fluid" [options]="opcoesStatusReclamacoes" optionValue="value" optionLabel="label" [(ngModel)]="reclamacaoEmEdicao.idStatus" (ngModelChange)="filtrarReclamacoes()"></p-dropdown>
+                </div>
+            </div>
+        </div>
+    </p-card>
+    <div class="flex justify-content-end my-4">
+        <div class="mr-2">
+            <button pButton class="p-button-warning" (click)="salvar(reclamacaoEmEdicao)">Salvar</button>
+        </div>
+        <div class="ml-2">
+            <button pButton class="p-button-warning" (click)="confirmarCancelamentoEdicao()">Voltar</button>
+        </div>
+    </div>
+</div>
 <p-dialog header="Localização" [(visible)]="modalLocalizacaoVisivel" [modal]="true" [draggable]="false" [resizable]="false">
     <google-map width="640px" height="480px" [center]="centralizarMapa" [zoom]="ampliacaoMapa" [options]="configuracaoMapa">
         <map-marker [position]="centralizarMapa"></map-marker>
     </google-map>
 </p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

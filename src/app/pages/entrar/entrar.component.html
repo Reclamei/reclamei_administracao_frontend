@@ -1,5 +1,6 @@
+<p-blockUI [blocked]="bloqueado" [target]="cardPrincipal"></p-blockUI>
 <div class="tela gradiente-cor-principal">
-    <p-card class="card-autenticacao" [ngSwitch]="modoAutenticacao">
+    <p-card #cardPrincipal class="card-autenticacao" [ngSwitch]="modoAutenticacao">
         <div class="flex justify-content-center">
             <h1 class="traco text-center">Canal do Cidadão</h1>
         </div>
@@ -14,6 +15,7 @@
                 <button pButton [disabled]="!formularioLogin.valid" class="p-button-warning mb-2 w-full" icon="pi pi-sign-in" label="ENTRAR" (click)="entrar()"></button>
                 <p>Esqueceu sua senha? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_ESQUECEU_SENHA">Redefina aqui</a></p>
                 <p>Não tem conta ainda? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_REGISTRAR">Registre-se aqui</a></p>
+                <p>É responsável por uma empresa? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_REGISTRO_RESPONSAVEL">Registre-se aqui</a></p>
             </form>
         </ng-container>
         <ng-container *ngSwitchCase="modosAutenticacao.MODO_REGISTRAR">
@@ -40,6 +42,16 @@
                 <input pInputText id="email-login" formControlName="email" type="email" class="mb-2 w-full" />
                 <button pButton [disabled]="!formularioEsqueceuSenha.valid" class="p-button-warning mb-2 w-full" icon="pi pi-envelope" label="ENVIAR" (click)="redefinirSenha()"></button>
                 <p>Lembrou da senha? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_ENTRAR">Entre por aqui</a></p>
+            </form>
+        </ng-container>
+        <ng-container *ngSwitchCase="modosAutenticacao.MODO_REGISTRO_RESPONSAVEL">
+            <h2 class="text-center">REGISTRO DE EMPRESA</h2>
+            <p class="text-center">Para continuar, informe o CNPJ da sua empresa.</p>
+            <form [formGroup]="formularioRegistroResponsavel">
+                <label for="campo-cnpj" class="block mb-1">CNPJ</label>
+                <input pInputText id="campo-cnpj" formControlName="cnpj" type="text" pattern="" class="mb-2 w-full" />
+                <button pButton [disabled]="!formularioEsqueceuSenha.valid" class="p-button-warning mb-2 w-full" icon="pi pi-envelope" label="CONTINUAR" (click)="verificarCNPJ()"></button>
+                <p>Não é responsável por uma empresa? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_ENTRAR">Entre por aqui como cidadão</a></p>
             </form>
         </ng-container>
     </p-card>

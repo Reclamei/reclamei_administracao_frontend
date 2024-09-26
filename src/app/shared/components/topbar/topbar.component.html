@@ -3,12 +3,14 @@
     <div class="separador"></div>
     <span class="p-input-icon-right">
         <i class="pi pi-search"></i>
-        <input type="text" class="campo-pesquisa" pInputText placeholder="Pesquisar reclamações" />
+        <input type="text" class="campo-pesquisa" pInputText placeholder="Pesquisar reclamações" [ngModel]="termoPesquisa" (ngModelChange)="pesquisar($event)" />
     </span>
     <button pButton type="button" icon="pi pi-bell" class="p-button-rounded p-button-warning p-button-text ml-2" (click)="painelNotif.toggle($event)"></button>
     <p-overlayPanel #painelNotif>
         <ng-template pTemplate>
-            <span>Ainda não há<br />notificações.</span>
+            <p *ngIf="notificacoes.length == 0">Não há notificações ainda.</p>
+            <button pButton *ngIf="notificacoes.length > 0" type="button "class="p-button-rounded p-button-text p-button-danger w-full" icon="pi pi-trash" (click)="notificacoes.splice(0); painelNotif.toggle($event)" label="Limpar Notificações" tooltipPosition="top"></button>
+            <p-messages *ngIf="notificacoes.length > 0" [(value)]="notificacoes" [enableService]="false"></p-messages>
         </ng-template>
     </p-overlayPanel>
 </div>

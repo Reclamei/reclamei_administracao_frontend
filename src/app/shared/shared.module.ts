@@ -7,17 +7,19 @@ import { TopbarComponent } from './components/topbar/topbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from "./services/auth.service";
-import { MessageService } from "primeng/api";
+import { ConfirmationService, MessageService } from "primeng/api";
 import { AuthGuard } from "./guards/auth.guard";
 import { GraficoBarraComponent } from './components/grafico-barra/grafico-barra.component';
 import { GOOGLE_IMPORTS } from "./imports/google.imports";
+import { MaxLengthPipe } from './pipes/max-length.pipe';
 
 const MODULE_PUBLIC: any[] = [
     ViewportComponent,
     TopbarComponent,
     FooterComponent,
     MenuComponent,
-    GraficoBarraComponent
+    GraficoBarraComponent,
+    MaxLengthPipe
 ];
 
 const MODULE_PRIVATE: any[] = [
@@ -26,7 +28,7 @@ const MODULE_PRIVATE: any[] = [
 @NgModule({
     declarations: [
         MODULE_PRIVATE,
-        MODULE_PUBLIC
+        MODULE_PUBLIC,
     ],
     imports: [
         ANGULAR_IMPORTS,
@@ -43,6 +45,7 @@ const MODULE_PRIVATE: any[] = [
     providers: [
         AuthService,
         MessageService,
+        ConfirmationService,
         AuthGuard
     ]
 })
