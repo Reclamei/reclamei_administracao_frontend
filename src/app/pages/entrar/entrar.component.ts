@@ -41,7 +41,7 @@ export class EntrarComponent implements OnInit {
             .signInWithEmailAndPassword(this.formularioLogin.get('email').value, this.formularioLogin.get('senha').value)
             .then((userCredential) => {
                 this.authService.setUserSubject(userCredential.user);
-                this.redirecionarPaginaInicial();
+                this.redirecionarPaginaInicial(this.formularioLogin.get('email').value);
             })
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Acesso Negado', ErrorType.getMessage(error.code)));
     }
@@ -56,7 +56,7 @@ export class EntrarComponent implements OnInit {
     }
 
     private inicializarFormulario(modoAutenticacao: number): FormGroup {
-        if(this.mapaCriacaoFormulario.has(modoAutenticacao)) {
+        if (this.mapaCriacaoFormulario.has(modoAutenticacao)) {
             return this.mapaCriacaoFormulario.get(modoAutenticacao)();
         }
         throw new Error('Não foi possível criar formulário, modo de autenticação: ' + modoAutenticacao);
@@ -70,7 +70,7 @@ export class EntrarComponent implements OnInit {
             });
         });
         this.mapaCriacaoFormulario.set(this.modosAutenticacao.MODO_ESQUECEU_SENHA, () =>
-            this.formBuilder.group({ email: new FormControl(null, [Validators.required, Validators.email])})
+            this.formBuilder.group({email: new FormControl(null, [Validators.required, Validators.email])})
         );
     }
 
@@ -80,12 +80,17 @@ export class EntrarComponent implements OnInit {
             map(user => !!user),
             tap(authenticated => {
                 if (!authenticated) {
-                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());                }
+                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
+                }
             })
         );
     }
 
-    private redirecionarPaginaInicial(): void {
+    private redirecionarPaginaInicial(email: string): void {
+        if (email.includes('admin@admin')) {
+            this.router.navigateByUrl(MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO_SYSTEM_ADMIN.obterCaminhoRota());
+            return;
+        }
         this.router.navigateByUrl(MapeamentoRota.ROTA_PAINEL_ADMINISTRATIVO.obterCaminhoRota());
     }
 }

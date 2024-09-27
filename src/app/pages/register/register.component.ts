@@ -43,11 +43,9 @@ export class RegisterComponent implements OnInit {
     }
 
     public async validateRegistration() {
+        await firstValueFrom(this.companyService.create(this.registrationForm.value));
         if (this.registrationForm.value.hasEmailAccess) {
-            this.companyService.create(this.registrationForm.value).subscribe({
-                next: () => this.sendSignInLinkToEmail(),
-                error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro', error.message)
-            });
+            this.sendSignInLinkToEmail();
         } else {
             this.blockUIService.block();
             await firstValueFrom(this.headService.requestApproval(this.registrationForm.value.heads[0].externalId));
