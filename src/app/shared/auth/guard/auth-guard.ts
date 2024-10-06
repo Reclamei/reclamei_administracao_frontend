@@ -9,7 +9,8 @@ import {AuthService} from '../auth.service';
     providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router) {
+    }
 
     canActivate(): Observable<boolean> {
         return this.authService.getAngularFireAuth().authState.pipe(
@@ -17,7 +18,8 @@ export class AuthGuard implements CanActivate {
             map(user => !!user),
             tap(authenticated => {
                 if (!authenticated) {
-                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());                }
+                    this.router.navigateByUrl(MapeamentoRota.ROTA_AUTENTICAR.obterCaminhoRota());
+                }
             })
         );
     }

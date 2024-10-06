@@ -9,17 +9,18 @@ import {MenuComponent} from './components/menu/menu.component';
 import {MessageService} from 'primeng/api';
 import {GraficoBarraComponent} from './components/grafico-barra/grafico-barra.component';
 import {GOOGLE_IMPORTS} from './imports/google.imports';
+import {MaxLengthPipe} from './pipes/max-length.pipe';
 
 const MODULE_PUBLIC: any[] = [
     ViewportComponent,
     TopbarComponent,
     FooterComponent,
     MenuComponent,
-    GraficoBarraComponent
+    GraficoBarraComponent,
+    MaxLengthPipe
 ];
 
-const MODULE_PRIVATE: any[] = [
-];
+const MODULE_PRIVATE: any[] = [];
 
 @NgModule({
     declarations: [
@@ -42,4 +43,5 @@ const MODULE_PRIVATE: any[] = [
         MessageService
     ]
 })
-export class SharedModule { }
+export class SharedModule {
+}

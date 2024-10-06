@@ -1,0 +1,57 @@
+div {
+  margin-top: 10px;
+}
+
+label {
+  margin-right: 5px;
+}
+
+.imagem-reclamacao {
+  width: 100%;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+.imagem-reclamacao:hover {
+  transform: scale(1.5); /* Aumenta o tamanho em 50% */
+  position: relative;
+  z-index: 9999; /* Para garantir que a imagem ampliada fique sobre outros elementos */
+}
+
+h3 {
+  color: #737373;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+::ng-deep .custom-select-button .p-button.p-highlight {
+  background-color: var(--cor-tema-auxiliar) !important;
+  border-color: var(--cor-tema-auxiliar) !important;
+}
+
+::ng-deep .p-selectbutton .p-button {
+  width: 100px;
+  margin-right: 10px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+}
+
+.question {
+  font-weight: bold;
+  color: #6c757d;
+}
+
+.floating-label-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.floating-label-container label {
+  position: absolute;
+  top: -1.5rem; /* Sempre acima do input */
+  left: 0.5rem;
+  font-size: 12px;
+  color: #6c757d;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}

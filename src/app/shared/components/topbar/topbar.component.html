@@ -1,14 +1,24 @@
 <div class="topbar">
-    <button pButton type="button" icon="pi pi-bars" class="p-button-rounded p-button-warning p-button-text botao-menu" (click)="aoExibirMenu.emit()"></button>
+    <button (click)="aoExibirMenu.emit()" class="p-button-rounded p-button-warning p-button-text botao-menu"
+            icon="pi pi-bars" pButton
+            type="button"></button>
     <div class="separador"></div>
     <span class="p-input-icon-right">
         <i class="pi pi-search"></i>
-        <input type="text" class="campo-pesquisa" pInputText placeholder="Pesquisar reclamações" />
+        <input (ngModelChange)="pesquisar($event)" [ngModel]="termoPesquisa" class="campo-pesquisa" pInputText
+               placeholder="Pesquisar reclamações" type="text"/>
     </span>
-    <button pButton type="button" icon="pi pi-bell" class="p-button-rounded p-button-warning p-button-text ml-2" (click)="painelNotif.toggle($event)"></button>
+    <button (click)="painelNotif.toggle($event)" class="p-button-rounded p-button-warning p-button-text ml-2"
+            icon="pi pi-bell" pButton
+            type="button"></button>
     <p-overlayPanel #painelNotif>
         <ng-template pTemplate>
-            <span>Ainda não há<br />notificações.</span>
+            <p *ngIf="notificacoes.length == 0">Não há notificações ainda.</p>
+            <button (click)="notificacoes.splice(0); painelNotif.toggle($event)" *ngIf="notificacoes.length > 0" class="p-button-rounded p-button-text p-button-danger w-full"
+                    icon="pi pi-trash" label="Limpar Notificações"
+                    pButton tooltipPosition="top"
+                    type="button "></button>
+            <p-messages *ngIf="notificacoes.length > 0" [(value)]="notificacoes" [enableService]="false"></p-messages>
         </ng-template>
     </p-overlayPanel>
 </div>

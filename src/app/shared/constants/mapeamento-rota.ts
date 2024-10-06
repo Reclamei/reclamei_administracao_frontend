@@ -5,6 +5,7 @@ export class MapeamentoRota {
     public static readonly ROTA_CONCLUIR_CADASTRO: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'finalizar-cadastro');
     public static readonly ROTA_PAINEL_ADMINISTRATIVO: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'painel-administrativo');
     public static readonly ROTA_RECLAMACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'reclamacoes');
+    public static readonly ROTA_RECLAMACOES_EDIT: MapeamentoRota = this.registrarRota(this.ROTA_RAIZ, 'reclamacoes/:id/edit');
     public static readonly ROTA_ABRANGENCIA: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'abrangencia');
     public static readonly ROTA_RELATORIOS: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'reports');
     public static readonly ROTA_CONFIGURACOES: MapeamentoRota = this.registrarRota(this.ROTA_PAINEL_ADMINISTRATIVO, 'configuracoes');

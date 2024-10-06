@@ -5,14 +5,16 @@ import {OrgaoResponsavelRoutingModule} from './orgao-responsavel-routing.module'
 import {SharedModule} from 'src/app/shared/shared.module';
 import {ReportsComponent} from './pages/reports/reports.component';
 import {ReclamacoesComponent} from './pages/reclamacoes/reclamacoes.component';
-import {ReclamacoesTableComponent} from './pages/reclamacoes/reclamacoes-table/reclamacoes-table.component';
+import {ReclamationsTableComponent} from './pages/reclamacoes/reclamations-table/reclamations-table.component';
 import {SettingsComponent} from './pages/settings/settings.component';
+import {ReclamationsEditComponent} from './pages/reclamacoes/reclamations-edit/reclamations-edit.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         ReclamacoesComponent,
-        ReclamacoesTableComponent,
+        ReclamationsEditComponent,
+        ReclamationsTableComponent,
         ReportsComponent,
         SettingsComponent
     ],

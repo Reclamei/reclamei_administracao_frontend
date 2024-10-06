@@ -7,6 +7,7 @@ import {CompanyFilter} from '../../../../shared/models/aplicacao/company-filter.
 import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model';
 import {CompanyModel} from '../../../../shared/models/aplicacao/company.model';
 import {CachedService} from '../../../../shared/services/cached.service';
+import {BlockUIService} from '../../../../shared/services/block-ui.service';
 
 @Component({
     selector: 'app-reclamacoes',
@@ -24,7 +25,9 @@ export class ReclamacoesComponent implements OnInit {
     constructor(
         private reclamacaoService: ReclamationService,
         private cachedService: CachedService,
-    ) { }
+        private blockUIService: BlockUIService,
+    ) {
+    }
 
     async ngOnInit() {
         await this.getCompanyByExternalId();
@@ -57,9 +60,11 @@ export class ReclamacoesComponent implements OnInit {
     private async loadReclamations() {
         const filters = this.coverages.map(item =>
             new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+        this.blockUIService.block();
         this.reclamations = await firstValueFrom(this.reclamacaoService.findByCompany(filters));
         // TODO: Remover
         this.reclamations.forEach(item => item.photo = '/assets/images/representative/reclamacoes/' +
             ['001.png', '002.png', '003.png'][Math.round(Math.random() * 10) % 3]);
+        this.blockUIService.unblock();
     }
 }

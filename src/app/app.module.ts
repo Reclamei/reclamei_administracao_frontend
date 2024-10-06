@@ -16,6 +16,7 @@ import {AngularFireAuthGuardModule} from '@angular/fire/compat/auth-guard';
 import {RegisterComponent} from './pages/register/register.component';
 import {CompleteRegistrationComponent} from './pages/complete-registration/complete-registration.component';
 import {GlobalBlockUIComponent} from './shared/components/block-ui/block-ui.component';
+import {ConfirmationService} from 'primeng/api';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import {GlobalBlockUIComponent} from './shared/components/block-ui/block-ui.comp
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,
             multi: true
-        }
+        },
+        ConfirmationService
     ],
     bootstrap: [AppComponent]
 })
