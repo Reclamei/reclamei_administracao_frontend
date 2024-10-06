@@ -1,38 +1,31 @@
 export class StatusReclamationEnum {
 
     public static readonly OPEN: StatusReclamationEnum = new StatusReclamationEnum('OPEN', 'Em aberto');
-    public static readonly REJECTED: StatusReclamationEnum = new StatusReclamationEnum('REJECTED', 'Rejeitada');
+    public static readonly REJECTED: StatusReclamationEnum = new StatusReclamationEnum('REJECTED', 'Rejeitado');
     public static readonly IN_ANALYSIS: StatusReclamationEnum = new StatusReclamationEnum('IN_ANALYSIS', 'Em análise');
-    public static readonly UNIDENTIFIED: StatusReclamationEnum = new StatusReclamationEnum('UNIDENTIFIED', 'Não identificada');
+    public static readonly UNIDENTIFIED: StatusReclamationEnum = new StatusReclamationEnum('UNIDENTIFIED', 'Não identificado');
     public static readonly NO_FORECAST: StatusReclamationEnum = new StatusReclamationEnum('NO_FORECAST', 'Sem previsão');
     public static readonly FORECAST: StatusReclamationEnum = new StatusReclamationEnum('FORECAST', 'Com previsão');
-    public static readonly RESOLVED: StatusReclamationEnum = new StatusReclamationEnum('RESOLVED', 'Resolvida');
+    public static readonly RESOLVED: StatusReclamationEnum = new StatusReclamationEnum('RESOLVED', 'Resolvido');
 
     private constructor(
-        private id: string,
-        private descricao: string
+        private value: string,
+        private label: string
     ) {
     }
 
     public static getAllStatus(): StatusReclamationEnum[] {
         return [
             StatusReclamationEnum.OPEN,
-            StatusReclamationEnum.REJECTED,
             StatusReclamationEnum.IN_ANALYSIS,
-            StatusReclamationEnum.UNIDENTIFIED,
-            StatusReclamationEnum.NO_FORECAST,
             StatusReclamationEnum.FORECAST,
-            StatusReclamationEnum.REJECTED,
+            StatusReclamationEnum.NO_FORECAST,
             StatusReclamationEnum.RESOLVED,
         ];
     }
 
-    public getId(): string {
-        return this.id;
-    }
-
-    public getDescricao(): string {
-        return this.descricao;
+    public getValue(): string {
+        return this.value;
     }
 
 }

@@ -15,7 +15,7 @@ label {
 .imagem-reclamacao:hover {
   transform: scale(1.5); /* Aumenta o tamanho em 50% */
   position: relative;
-  z-index: 9999; /* Para garantir que a imagem ampliada fique sobre outros elementos */
+  z-index: 9999;
 }
 
 h3 {
@@ -36,6 +36,45 @@ h3 {
   border-radius: 4px !important;
 }
 
+::ng-deep .button-save {
+  background-color: var(--cor-tema-auxiliar) !important;
+  border-color: var(--cor-tema-auxiliar) !important;
+  width: 100px;
+  margin-right: 10px !important;
+  border-radius: 4px !important;
+  justify-content: center;
+
+  .p-button-label {
+    flex: 0 0 auto;
+  }
+}
+
+::ng-deep .button-save:hover {
+  color: #ffffff !important;
+  background-color: var(--cor-tema-principal) !important;
+  border-color: var(--cor-tema-principal) !important;
+}
+
+::ng-deep .button-back {
+  width: 100px;
+  margin-right: 10px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  background: #ffffff;
+  color: #495057;
+  justify-content: center;
+
+  .p-button-label {
+    flex: 0 0 auto;
+  }
+}
+
+::ng-deep .button-back:hover {
+  color: #ffffff !important;
+  border-color: #6c757d !important;
+  background-color: #6c757d !important;
+}
+
 .question {
   font-weight: bold;
   color: #6c757d;
@@ -48,10 +87,22 @@ h3 {
 
 .floating-label-container label {
   position: absolute;
-  top: -1.5rem; /* Sempre acima do input */
+  top: -1.5rem;
   left: 0.5rem;
   font-size: 12px;
   color: #6c757d;
   pointer-events: none;
   transition: all 0.2s ease;
+}
+
+::ng-deep .p-confirm-dialog .p-button {
+  border: 1px solid #ccc !important;
+  background: #ffffff;
+  color: #495057;
+}
+
+::ng-deep .p-confirm-dialog .p-button:hover {
+  color: #ffffff !important;
+  border-color: #6c757d !important;
+  background-color: #6c757d !important;
 }

@@ -9,7 +9,7 @@
             </div>
             <div class="grid grid-nogutter col-12 sm:col-12 md:col-8 lg:col-8 pl-5 pr-4 pt-3">
                 <div class="col-12 floating-label-container">
-                    <textarea [(ngModel)]="selectedReclamation.description" [rows]="5" class="w-full"
+                    <textarea [(ngModel)]="selectedReclamation.description" [rows]="4" class="w-full"
                               id="description"
                               pInputTextarea></textarea>
                     <label for="description">Descrição</label>
@@ -29,9 +29,11 @@
                 </div>
                 <div class="col-12 md:col-12 lg:col-6 flex flex-column mt-0">
                     <label class="block mb-2 question" for="orgao-correto">ORGÃO RESPONSÁVEL CORRETO?</label>
-                    <p-selectButton [(ngModel)]="isCorrectResponsibleCompany" [options]="yesNoOptions"
-                                    class="pl-3 custom-select-button"
-                                    id="orgao-correto" optionLabel="label"
+                    <p-selectButton (onChange)="onOptionCorrectResponsibleCompanyChange($event.value)"
+                                    [(ngModel)]="isCorrectResponsibleCompany"
+                                    [options]="yesNoOptions"
+                                    class="pl-3 custom-select-button" id="orgao-correto"
+                                    optionLabel="label"
                                     optionValue="value"></p-selectButton>
                 </div>
             </div>
@@ -44,27 +46,29 @@
                 </div>
                 <div class="col-6 floating-label-container mb-3">
                     <p-dropdown [(ngModel)]="selectedReclamation.status"
-                                [options]="status"
-                                class="p-fluid" id="status"
-                                optionLabel="label" optionValue="value"></p-dropdown>
+                                [disabled]="!isCorrectResponsibleCompany || !isProblemReal"
+                                [options]="status" class="p-fluid"
+                                id="status" optionLabel="label"
+                                optionValue="value"></p-dropdown>
                     <label class="block mb-1" for="status">Status</label>
                 </div>
             </div>
             <div class="col-12 md:col-12 lg:col-6 flex flex-column pl-4">
                 <label class="block mb-1 question" for="problema-veridico">PROBLEMA VERÍDICO?</label>
-                <p-selectButton [(ngModel)]="isProblemReal" [options]="yesNoOptions"
+                <p-selectButton (onChange)="onOptionRealProblemChange($event.value)"
+                                [(ngModel)]="isProblemReal" [options]="yesNoOptions"
                                 class="pl-3 custom-select-button" id="problema-veridico"
                                 optionLabel="label"
                                 optionValue="value"></p-selectButton>
             </div>
         </div>
     </p-card>
-    <div class="flex justify-content-end my-4">
-        <div class="mr-2">
-            <button (click)="save(selectedReclamation)" class="p-button-warning" pButton>Salvar</button>
+    <div class="flex justify-content-end mb-4">
+        <div>
+            <button (click)="save(selectedReclamation)" class="button-save" pButton>Salvar</button>
         </div>
         <div class="ml-2">
-            <button (click)="cancel()" class="p-button-warning" pButton>Voltar</button>
+            <button (click)="cancel()" class="button-back" pButton>Voltar</button>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ import {BlockUIService} from '../../../../../shared/services/block-ui.service';
 import {finalize} from 'rxjs/operators';
 import {PrimengFactory} from '../../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../../shared/auth/model/error-type.enum';
+import {MapeamentoRota} from '../../../../../shared/constants/mapeamento-rota';
 
 @Component({
     selector: 'app-reclamations-edit',
@@ -66,10 +67,25 @@ export class ReclamationsEditComponent implements OnInit {
             message: 'Voltar agora descartará quaisquer edições não salvas, deseja prosseguir?',
             acceptLabel: 'Sim',
             rejectLabel: 'Não',
-            accept: () => this.selectedReclamation = null,
+            accept: () => {
+                this.selectedReclamation = null;
+                this.router.navigateByUrl(MapeamentoRota.ROTA_RECLAMACOES.obterCaminhoRota());
+            },
             reject: () => {
             }
         });
+    }
+
+    onOptionCorrectResponsibleCompanyChange(event: any) {
+        if (event === false) {
+            this.selectedReclamation.status = StatusReclamationEnum.REJECTED.getValue();
+        }
+    }
+
+    onOptionRealProblemChange(event: any) {
+        if (event === false) {
+            this.selectedReclamation.status = StatusReclamationEnum.UNIDENTIFIED.getValue();
+        }
     }
 
     private async getById(id: number) {

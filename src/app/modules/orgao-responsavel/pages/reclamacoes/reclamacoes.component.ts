@@ -41,10 +41,10 @@ export class ReclamacoesComponent implements OnInit {
                 this.filteredReclamations = [...this.reclamations];
                 break;
             case 1:
-                this.filteredReclamations = this.reclamations.filter(rec => rec.status === StatusReclamationEnum.OPEN.getId());
+                this.filteredReclamations = this.reclamations.filter(rec => rec.status === StatusReclamationEnum.OPEN.getValue());
                 break;
             case 2:
-                this.filteredReclamations = this.reclamations.filter(rec => rec.status !== StatusReclamationEnum.OPEN.getId());
+                this.filteredReclamations = this.reclamations.filter(rec => rec.status !== StatusReclamationEnum.OPEN.getValue());
                 break;
         }
     }
