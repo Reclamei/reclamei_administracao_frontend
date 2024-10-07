@@ -21,6 +21,8 @@ export class StatusReclamationEnum {
             StatusReclamationEnum.FORECAST,
             StatusReclamationEnum.NO_FORECAST,
             StatusReclamationEnum.RESOLVED,
+            StatusReclamationEnum.REJECTED,
+            StatusReclamationEnum.UNIDENTIFIED,
         ];
     }
 

@@ -2,14 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
 import {ConfirmationService, MessageService, SelectItem} from 'primeng/api';
 import {StatusReclamationEnum} from '../../../../../shared/models/aplicacao/status-reclamation.enum';
-import {ResponseModel} from '../../../../../shared/models/aplicacao/response.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ReclamationService} from '../../../../../shared/services/reclamation.service';
 import {BlockUIService} from '../../../../../shared/services/block-ui.service';
 import {finalize} from 'rxjs/operators';
 import {PrimengFactory} from '../../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../../shared/auth/model/error-type.enum';
 import {MapeamentoRota} from '../../../../../shared/constants/mapeamento-rota';
+import {ResponseModel} from '../../../../../shared/models/aplicacao/response.model';
 
 @Component({
     selector: 'app-reclamations-edit',
@@ -19,7 +19,6 @@ import {MapeamentoRota} from '../../../../../shared/constants/mapeamento-rota';
 export class ReclamationsEditComponent implements OnInit {
     public id: number = null;
     public selectedReclamation: ReclamationModel = new ReclamationModel();
-    public response: ResponseModel = new ResponseModel(this.selectedReclamation);
     public yesNoOptions: SelectItem<boolean>[] = [
         {value: true, label: 'Sim'},
         {value: false, label: 'Não'}
@@ -39,9 +38,12 @@ export class ReclamationsEditComponent implements OnInit {
         private reclamationService: ReclamationService,
         private blockUIService: BlockUIService,
         private messageService: MessageService,
+        private activatedRoute: ActivatedRoute,
         private router: Router
     ) {
-        this.id = this.router.getCurrentNavigation()?.id;
+        this.activatedRoute.paramMap.subscribe(params => {
+            this.id = Number(params.get('id'));
+        });
     }
 
     async ngOnInit() {
@@ -58,7 +60,15 @@ export class ReclamationsEditComponent implements OnInit {
     }
 
     save(selectedReclamation: ReclamationModel) {
-
+        this.blockUIService.block();
+        this.selectedReclamation.response.reclamationId = this.selectedReclamation.id;
+        return this.reclamationService.update(selectedReclamation)
+            .pipe(finalize(() => this.blockUIService.unblock()))
+            .subscribe({
+                next: () => this.router.navigateByUrl(MapeamentoRota.ROTA_RECLAMACOES.obterCaminhoRota()),
+                error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao obter os dados da reclamação.',
+                    ErrorType.getMessage(error.code))
+            });
     }
 
     cancel() {
@@ -95,11 +105,13 @@ export class ReclamationsEditComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.selectedReclamation = res;
+                    this.selectedReclamation.response = res.response ? res.response : new ResponseModel();
                     const loc = this.selectedReclamation.localization;
                     this.selectedReclamation.localization.localizationDescription = loc.street + ' - ' + loc.district + ', ' + loc.city;
                     //TODO: Remover
                     this.selectedReclamation.photo = '/assets/images/representative/reclamacoes/' +
                         ['001.png', '002.png', '003.png'][Math.round(Math.random() * 10) % 3];
+                    this.defineSelectedButtonByStatus();
                 },
                 error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao obter os dados da reclamação.',
                     ErrorType.getMessage(error.code))
@@ -112,5 +124,18 @@ export class ReclamationsEditComponent implements OnInit {
             mapTypeControl: false,
             clickableIcons: true
         };
+    }
+
+    private defineSelectedButtonByStatus() {
+        if (this.selectedReclamation.status === StatusReclamationEnum.REJECTED.getValue()) {
+            this.isCorrectResponsibleCompany = false;
+            this.isProblemReal = true;
+        } else if (this.selectedReclamation.status === StatusReclamationEnum.UNIDENTIFIED.getValue()) {
+            this.isCorrectResponsibleCompany = true;
+            this.isProblemReal = false;
+        } else {
+            this.isCorrectResponsibleCompany = true;
+            this.isProblemReal = true;
+        }
     }
 }

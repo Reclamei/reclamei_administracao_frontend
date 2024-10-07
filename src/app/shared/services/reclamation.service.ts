@@ -34,4 +34,10 @@ export class ReclamationService {
         const headers = new HttpHeaders({'Content-Type': 'application/json'});
         return this.http.post<ReportsModel>(`${this.baseUrl}/company/reports`, filters, {headers});
     }
+
+    update(reclamation: ReclamationModel) {
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        return this.http.put<ReclamationModel[]>(this.baseUrl, reclamation, {headers});
+    }
+
 }

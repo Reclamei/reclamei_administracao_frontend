@@ -39,7 +39,7 @@
             </div>
             <div class="grid grid-nogutter col-12 pl-4 pt-4">
                 <div class="col-12 pb-0 floating-label-container pr-4">
-                    <textarea [(ngModel)]="response.description" [rows]="3" class="w-full"
+                    <textarea [(ngModel)]="selectedReclamation.response.description" [rows]="3" class="w-full"
                               id="resposta"
                               pInputTextarea></textarea>
                     <label for="resposta">Resposta</label>
@@ -56,7 +56,8 @@
             <div class="col-12 md:col-12 lg:col-6 flex flex-column pl-4">
                 <label class="block mb-1 question" for="problema-veridico">PROBLEMA VERÍDICO?</label>
                 <p-selectButton (onChange)="onOptionRealProblemChange($event.value)"
-                                [(ngModel)]="isProblemReal" [options]="yesNoOptions"
+                                [(ngModel)]="isProblemReal"
+                                [disabled]="!isCorrectResponsibleCompany" [options]="yesNoOptions"
                                 class="pl-3 custom-select-button" id="problema-veridico"
                                 optionLabel="label"
                                 optionValue="value"></p-selectButton>
