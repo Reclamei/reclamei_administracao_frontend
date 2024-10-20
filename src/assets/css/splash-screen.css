@@ -1,0 +1,49 @@
+div.container-splash-screen {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(215deg, var(--cor-tema-principal), var(--cor-tema-auxiliar));
+}
+
+div.spinner-splash-screen {
+    --tamanho: 64px;
+    height: var(--tamanho);
+    width: var(--tamanho);
+    border-style: solid;
+    border-color: #0000 #fff #fff #fff;
+    border-width: 5px;
+    border-radius: 50%;
+    opacity: 0%;
+    animation: carregar-splash-screen 1s linear infinite, fade-splash-screen 0.5s linear forwards;
+}
+
+div.aviso-splash-screen {
+    color: #ffffff;
+    margin-top: 1rem;
+    font-family: Roboto;
+    text-align: center;
+    opacity: 0%;
+    animation: fade-splash-screen 1s linear forwards 5s;
+}
+
+@keyframes carregar-splash-screen {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fade-splash-screen {
+    from {
+        opacity: 0%;
+    }
+    to {
+        opacity: 100%;
+    }
+}

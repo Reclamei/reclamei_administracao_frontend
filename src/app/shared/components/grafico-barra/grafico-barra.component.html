@@ -1,0 +1,5 @@
+<div class="titulo mb-2" *ngIf="configuracaoGrafico.titulo">{{configuracaoGrafico.titulo}}</div>
+<div class="subtitulo mb-2" *ngIf="configuracaoGrafico.subtitulo">{{configuracaoGrafico.subtitulo}}</div>
+<div class="container-grafico">
+    <p-chart type="pie" [data]="data" [options]="options"></p-chart>
+</div>

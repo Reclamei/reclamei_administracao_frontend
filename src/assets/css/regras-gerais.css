@@ -1,0 +1,13 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Roboto, Verdana, Geneva, Tahoma, Liberation Sans, sans-serif;
+}

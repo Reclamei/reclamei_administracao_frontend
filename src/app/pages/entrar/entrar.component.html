@@ -1,0 +1,34 @@
+<div class="tela gradiente-cor-principal">
+    <p-card class="card-autenticacao" [ngSwitch]="modoAutenticacao">
+        <div class="flex justify-content-center">
+            <h1 class="traco text-center">Canal do Cidadão</h1>
+        </div>
+        <ng-container *ngSwitchCase="modosAutenticacao.MODO_ENTRAR">
+            <h2 class="text-center pt-5">ENTRAR</h2>
+            <p class="text-center pl-6 pr-6 pb-3">Informe suas credenciais para acessar o sistema.</p>
+            <form [formGroup]="formularioLogin" class="pl-3 pr-3">
+                <label for="email-login" class="block mb-1">E-mail</label>
+                <input pInputText id="email-login" formControlName="email" type="email" class="mb-3 w-full"/>
+                <label for="senha-login" class="block mb-1">Senha</label>
+                <input pInputText id="senha-login" formControlName="senha" type="password" class="mb-4 w-full" />
+                <button pButton [disabled]="!formularioLogin.valid" class="p-button-warning mb-3 w-full" icon="pi pi-sign-in" label="ENTRAR" (click)="entrar()"></button>
+                <p>Esqueceu sua senha? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_ESQUECEU_SENHA">Redefina aqui</a></p>
+                <p>Não tem conta ainda? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_REGISTRAR">Registre-se aqui</a></p>
+            </form>
+        </ng-container>
+        <ng-container *ngSwitchCase="modosAutenticacao.MODO_REGISTRAR">
+            <app-register [authenticationMode]="modoAutenticacao" (modeChanged)="modoAutenticacao = modosAutenticacao.MODO_ENTRAR"></app-register>
+        </ng-container>
+        <ng-container *ngSwitchCase="modosAutenticacao.MODO_ESQUECEU_SENHA">
+            <h2 class="text-center pt-5">REDEFINIR SENHA</h2>
+            <p class="text-center pl-6 pr-6 pb-3">Informe seu e-mail para redefinir sua senha.</p>
+            <form [formGroup]="formularioEsqueceuSenha" class="pl-3 pr-3">
+                <label for="email-login" class="block mb-1">E-mail</label>
+                <input pInputText id="email-login" formControlName="email" type="email" class="mb-3 w-full" />
+                <button pButton [disabled]="!formularioEsqueceuSenha.valid" class="p-button-warning mb-3 w-full" icon="pi pi-envelope" label="ENVIAR" (click)="redefinirSenha()"></button>
+                <p>Lembrou da senha? <a class="link-redefinir-senha" (click)="modoAutenticacao = modosAutenticacao.MODO_ENTRAR">Entre por aqui</a></p>
+            </form>
+        </ng-container>
+    </p-card>
+</div>
+<p-toast></p-toast>

@@ -1,0 +1,64 @@
+<div [ngSwitch]="step">
+    <ng-container *ngSwitchCase="steps.INFORMAR_CNPJ">
+        <p class="pl-3 pr-6 pb-3 pt-5">Para continuar, informe o CNPJ da sua empresa:</p>
+        <form [formGroup]="registrationForm" class="pl-3 pr-3 ">
+            <label for="cnpj-login" class="block mb-1">CNPJ</label>
+            <p-inputMask mask="99.999.999/9999-99" id="cnpj-cadastro" formControlName="cnpj" unmask="true" class="mb-7 w-full"></p-inputMask>
+            <button pButton [disabled]="!registrationForm.valid" class="p-button-warning mb-3 w-full mt-7" icon="pi pi-arrow-right" label="CONTINUAR"
+                    (click)="getInformationByCnpj()" iconPos="right"></button>
+            <p>Já tem conta? <a class="link-redefinir-senha" (click)="modeChanged.emit(authenticationModes.MODO_ENTRAR)">Entre por aqui</a></p>
+        </form>
+    </ng-container>
+    <ng-container *ngSwitchCase="steps.VALIDAR_INFORMACOES">
+        <p class="pl-3 pr-6 pb-3 pt-5">Veja as informações que encontramos a partir<br />do CNPJ que você informou:</p>
+        <form [formGroup]="registrationForm" class="pl-3 pr-3">
+            <label for="cnpj-login" class="block mb-1">CNPJ</label>
+            <input pInputText id="cnpj-login" formControlName="cnpj" type="text" class="mb-3 w-full" disabled/>
+            <label for="nome-login" class="block mb-1">NOME FANTASIA</label>
+            <input pInputText id="nome-login" formControlName="name" type="text" class="mb-3 w-full" disabled/>
+            <label for="site-login" class="block mb-1">SITE DA EMPRESA</label>
+            <input pInputText id="site-login" formControlName="site" type="text" class="mb-3 w-full" disabled/>
+            <label for="email-login" class="block mb-1">E-MAIL DO CNPJ</label>
+            <input pInputText id="email-login" formControlName="email" type="text" class="mb-4 w-full" disabled/>
+            <button pButton [disabled]="!registrationForm.valid" class="p-button-warning mb-3 w-full" icon="pi pi-arrow-right" label="CONTINUAR"
+                    (click)="step = steps.CONFIRMAR_EMAIL" iconPos="right"></button>
+        </form>
+    </ng-container>
+    <ng-container *ngSwitchCase="steps.CONFIRMAR_EMAIL">
+        <p class="pl-3 pr-6 pb-3 pt-5">Você tem acesso ao e-mail informado no CNPJ?</p>
+        <a class="pl-3">{{ registrationForm.value.email }}</a>
+        <form [formGroup]="registrationForm" class="pl-3 pr-3 pt-3">
+            <div class="pb-3">
+                <p-radioButton [value]="true" formControlName="hasEmailAccess" inputId="acesso"></p-radioButton>
+                <label class="ml-2">Tenho acesso</label>
+            </div>
+            <div class="pb-3">
+                <p-radioButton [value]="false" formControlName="hasEmailAccess" inputId="no-acesso"></p-radioButton>
+                <label class="ml-2">Não tenho acesso</label>
+            </div>
+
+            <div *ngIf="!this.registrationForm.value.hasEmailAccess">
+                <label for="email-login" class="block mb-1 mt-2">E-MAIL DE UM RESPONSÁVEL</label>
+                <input pInputText id="email-secundario-login" formControlName="secondaryEmail" type="text" class="mb-4 w-full"/>
+            </div>
+            <button pButton [disabled]="!registrationForm.valid" class="p-button-warning mb-3 w-full mt-4" icon="pi pi-arrow-right" label="CONTINUAR"
+                    (click)="validateRegistration()" iconPos="right"></button>
+        </form>
+    </ng-container>
+    <ng-container *ngSwitchCase="steps.VALIDACAO_ANDAMENTO">
+        <div *ngIf="!this.registrationForm.value.hasEmailAccess">
+            <h2 class="text-center pt-5">VALIDAÇÃO EM ANDAMENTO</h2>
+            <p class="pl-3 pr-6 pb-3 pt-5">Como não conseguimos validar o e-mail<br />informado no momento do cadastro,<br />nosso time fará uma verificação de segurança.
+                <br />Você receberá em sua caixa de e-mail o<br />nosso retorno em até 5 dias úteis.</p>
+            <button pButton class="p-button-warning mb-3 w-full mt-4" label="VOLTAR PARA A PÁGINA INICIAL"
+            (click)="modeChanged.emit(authenticationModes.MODO_ENTRAR)"></button>
+        </div>
+        <div *ngIf="this.registrationForm.value.hasEmailAccess">
+            <h2 class="text-center pt-5">VALIDAÇÃO EM ANDAMENTO</h2>
+            <p class="pl-3 pr-6 pb-3 pt-5">Uma confirmação foi enviada para o e-mail<br />informado no momento do cadastro.
+                <br />Verifique sua caixa de entrada e confirme<br />seu registro em nossa plataforma.</p>
+            <button pButton class="p-button-warning mb-3 w-full mt-4" label="VOLTAR PARA A PÁGINA INICIAL"
+            (click)="modeChanged.emit(authenticationModes.MODO_ENTRAR)"></button>
+        </div>
+    </ng-container>
+</div>

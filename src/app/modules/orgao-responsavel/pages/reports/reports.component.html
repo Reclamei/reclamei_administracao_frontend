@@ -1,0 +1,45 @@
+<div class="p-2">
+    <div class="grid grid-nogutter pb-2">
+        <div class="pr-1 col-12 sm:col-12 md:col-12 lg:col-6">
+            <p-card>
+                <div class="flex">
+                    <h2 class="traco flex-1">Reclamações por Região</h2>
+                </div>
+                <google-map [center]="mapCentering" [options]="mapConfig" [zoom]="zoomMap" height="59vh" width="100%">
+                    <map-heatmap-layer [data]="mapData" [options]="mapOptions"></map-heatmap-layer>
+                </google-map>
+            </p-card>
+        </div>
+        <div class="pl-1 col-12 sm:col-12 md:col-12 lg:col-6">
+            <p-card>
+                <div class="flex">
+                    <h2 class="traco flex-1">Principais Problemas</h2>
+                </div>
+                <p-accordion [multiple]="true">
+                    <p-accordionTab [(selected)]="detailVisibleProblems[0]" header="Tipos de problemas">
+                        <div class="pb-2"><b>{{ (mostCommonIssueType?.percentage * 100) | number:'1.2-2' }}
+                            % {{ mostCommonIssueType?.item.description }}</b></div>
+                        <div *ngFor="let tipo of mainProblems" class="flex pb-1">
+                            <div class="flex-1">{{ tipo.description }}</div>
+                            <div>({{ tipo.value }})</div>
+                        </div>
+                    </p-accordionTab>
+                    <p-accordionTab [(selected)]="detailVisibleProblems[1]" header="Cidades">
+                        <div class="pb-2"><b>{{ (cityWithMostIssues?.percentage * 100) | number:'1.2-2' }}
+                            % {{ cityWithMostIssues?.item.description }}</b></div>
+                        <div *ngFor="let cidade of mainCitiesProblems" class="flex pb-1">
+                            <div class="flex-1">{{ cidade.description }}</div>
+                            <div>({{ cidade.value }})</div>
+                        </div>
+                    </p-accordionTab>
+                </p-accordion>
+            </p-card>
+        </div>
+    </div>
+    <p-card>
+        <div class="flex">
+            <h2 class="traco flex-1">Tempo até a análise das Reclamações</h2>
+        </div>
+        <p-chart [data]="responseTimeGraph" type="line"></p-chart>
+    </p-card>
+</div>

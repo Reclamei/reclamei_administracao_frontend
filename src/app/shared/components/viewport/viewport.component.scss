@@ -1,0 +1,21 @@
+.viewport-base {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+.viewport-content {
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden auto;
+}
+
+.application-content {
+    flex: 1 1 0%;
+}
+
+.menu {
+    display: block;
+}

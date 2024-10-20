@@ -1,0 +1,92 @@
+<div class="p-2">
+    <p-card>
+        <h3>#{{ id }}</h3>
+        <div class="grid grid-nogutter mt-0">
+            <div class="col-12 sm:col-12 md:col-4 lg:col-4 mt-0">
+                <div class="col-12 pl-4">
+                    <img [src]="selectedReclamation.photo" class="imagem-reclamacao"/>
+                </div>
+            </div>
+            <div class="grid grid-nogutter col-12 sm:col-12 md:col-8 lg:col-8 pl-5 pr-4 pt-3">
+                <div class="col-12 floating-label-container">
+                    <textarea [(ngModel)]="selectedReclamation.description" [rows]="4" class="w-full"
+                              id="description"
+                              pInputTextarea></textarea>
+                    <label for="description">Descrição</label>
+                </div>
+                <div class="col-12 mt-0">
+                    <div class="flex floating-label-container">
+                        <input [disabled]="true" [ngModel]="selectedReclamation.localization.localizationDescription"
+                               class="w-full"
+                               id="localization"
+                               pInputText type="text"/>
+                        <label for="localization">Localização</label>
+                        <button (click)="showLocation()"
+                                class="p-button-rounded p-button-text p-button-warning ml-2" icon="pi pi-map"
+                                pButton pTooltip="Visualizar no Mapa"
+                                tooltipPosition="top" type="button"></button>
+                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6 flex flex-column mt-0">
+                    <label class="block mb-2 question" for="orgao-correto">ORGÃO RESPONSÁVEL CORRETO?</label>
+                    <p-selectButton (onChange)="onOptionCorrectResponsibleCompanyChange($event.value)"
+                                    [(ngModel)]="isCorrectResponsibleCompany"
+                                    [options]="yesNoOptions"
+                                    class="pl-3 custom-select-button" id="orgao-correto"
+                                    optionLabel="label"
+                                    optionValue="value"></p-selectButton>
+                </div>
+            </div>
+            <div class="grid grid-nogutter col-12 pl-4 pt-4">
+                <div class="col-12 pb-0 floating-label-container pr-4">
+                    <textarea [(ngModel)]="selectedReclamation.response.description" [rows]="3" class="w-full"
+                              id="resposta"
+                              pInputTextarea></textarea>
+                    <label for="resposta">Resposta</label>
+                </div>
+                <div class="col-6 floating-label-container mb-3">
+                    <p-dropdown [(ngModel)]="selectedReclamation.status"
+                                [disabled]="!isCorrectResponsibleCompany || !isProblemReal"
+                                [options]="status" class="p-fluid"
+                                id="status" optionLabel="label"
+                                optionValue="value"></p-dropdown>
+                    <label class="block mb-1" for="status">Status</label>
+                </div>
+            </div>
+            <div class="col-12 md:col-12 lg:col-6 flex flex-column pl-4">
+                <label class="block mb-1 question" for="problema-veridico">PROBLEMA VERÍDICO?</label>
+                <p-selectButton (onChange)="onOptionRealProblemChange($event.value)"
+                                [(ngModel)]="isProblemReal"
+                                [disabled]="!isCorrectResponsibleCompany" [options]="yesNoOptions"
+                                class="pl-3 custom-select-button" id="problema-veridico"
+                                optionLabel="label"
+                                optionValue="value"></p-selectButton>
+            </div>
+        </div>
+    </p-card>
+    <div class="flex justify-content-end mb-4">
+        <div>
+            <button (click)="save(selectedReclamation)" class="button-save" pButton>Salvar</button>
+        </div>
+        <div class="ml-2">
+            <button (click)="cancel()" class="button-back" pButton>Voltar</button>
+        </div>
+    </div>
+</div>
+<p-dialog [(visible)]="modalLocalizacaoVisivel" [draggable]="false" [modal]="true" [resizable]="false"
+          header="Localização">
+    <google-map [center]="mapCentering" [mapTypeId]="mapType" [options]="mapConfig" [zoom]="zoomMap"
+                height="480px" width="640px">
+        <map-marker [position]="mapCentering"></map-marker>
+    </google-map>
+    <div>
+        <label>Tipo de Mapa:</label>
+        <select [(ngModel)]="mapType">
+            <option value="roadmap">Estrada</option>
+            <option value="satellite">Satélite</option>
+            <option value="hybrid">Híbrido</option>
+            <option value="terrain">Terreno</option>
+        </select>
+    </div>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,134 @@
+<div class="p-2">
+    <p-card class="flex mb-2">
+        <div class="flex">
+            <h2 class="traco flex-1">Empresa</h2>
+        </div>
+        <form [formGroup]="companyForm" class="pl-2 pr-2">
+            <div class="grid grid-nogutter pb-0">
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="cnpj" class="block mb-1">CNPJ</label>
+                    <input pInputText id="cnpj" formControlName="cnpj" type="number" class="mb-3 w-full" disabled/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="name" class="block mb-1">Nome fantasia</label>
+                    <input pInputText id="name" formControlName="name" type="text" class="mb-3 w-full" disabled/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="email" class="block mb-1">E-mail</label>
+                    <input pInputText id="email" formControlName="email" type="email" class="mb-3 w-full" disabled/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="site" class="block mb-1">Site</label>
+                    <input pInputText id="site" formControlName="site" type="text" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="phone" class="block mb-1">Telefone</label>
+                    <input pInputText id="phone" formControlName="phone" type="tel" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                    <label for="sac-phone" class="block mb-1">Telefone SAC</label>
+                    <input pInputText id="sac-phone" formControlName="sacPhone" type="tel" class="mb-4 w-full"/>
+                </div>
+                <div class="col-12 pr-2 pl-2 mb-3">
+                    <label for="description" class="block mb-1">Descrição</label>
+                    <textarea pInputTextarea class="w-full" id="description" rows="2" formControlName="description"></textarea>
+                </div>
+
+                <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pr-2">
+                    <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full" [disabled]="!companyForm.valid"
+                            label="Salvar" (click)="updateCompany()"></button>
+                </div>
+            </div>
+        </form>
+    </p-card>
+    <p-card class="flex mb-2">
+        <div class="flex">
+            <h2 class="traco flex-1">Responsáveis</h2>
+        </div>
+        <div class="grid grid-nogutter pl-2 pr-2">
+            <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-2">
+                <button pButton type="button" icon="pi pi-user-plus" class="p-button-rounded p-button-warning w-full"
+                    label="Incluir responsável" (click)="addHead()"></button>
+            </div>
+        </div>
+        <div class="mr-3 ml-3">
+            <p-table [value]="company.heads" dataKey="id" editMode="row" [styleClass]="'p-datatable-sm'">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-head let-editing="editing" let-ri="rowIndex">
+                    <tr [pEditableRow]="head">
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="head.name">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{head.name}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="head.phone" required>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                     {{head.phone}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="head.email">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{head.email}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <div class="flex align-items-center justify-content-center gap-1">
+                                <button *ngIf="head.isAdmin" pButton type="button" icon="pi pi-user" class="p-button-rounded p-button-text p-button-warning" pTooltip="Usuário administrador" tooltipPosition="top" disabled></button>
+                                <button *ngIf="!editing && isUserAdmin" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(head)" class="p-button-rounded p-button-warning ml-2"></button>
+                                <button *ngIf="!editing && isUserAdmin" pButton type="button" icon="pi pi-trash" (click)="removeHead(head)" class="p-button-rounded p-button-danger ml-1"></button>
+                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(head)" class="p-button-rounded p-button-success ml-2 mr-2"></button>
+                                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(head, ri)" class="p-button-rounded p-button-danger"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </p-card>
+    <p-card class="flex">
+        <div class="flex">
+            <h2 class="traco flex-1">Alterar Senha</h2>
+        </div>
+        <div class="grid grid-nogutter pl-2 pr-2 pb-0">
+            <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                <label for="senha-atual" class="block mb-1">Senha atual</label>
+                <input pInputText id="senha-atual" type="password" [(ngModel)]="senhaAtual" class="mb-4 w-full"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                <label for="nova-senha" class="block mb-1">Nova senha</label>
+                <input pInputText id="nova-senha" type="password" [(ngModel)]="newPassword" class="mb-4 w-full"/>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
+                <label for="repetir-senha" class="block mb-1">Repetir senha</label>
+                <input pInputText id="repetir-senha" type="password" [(ngModel)]="repetirSenha" class="mb-3 w-full"/>
+            </div>
+
+            <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pr-2">
+                <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full"
+                    label="Salvar nova senha" (click)="changePassword()"></button>
+            </div>
+        </div>
+    </p-card>
+</div>

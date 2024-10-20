@@ -1,0 +1,40 @@
+.gradiente-cor-principal {
+    background: linear-gradient(215deg, var(--cor-tema-principal), var(--cor-tema-auxiliar));
+}
+
+.tela {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a.link-redefinir-senha {
+    color: var(--cor-tema-auxiliar);
+    cursor: pointer;
+}
+
+.card-autenticacao {
+    max-width: 200vw;
+    max-height: 100vh;
+    overflow-y: auto;
+    animation: card-fade 1s cubic-bezier(0.19, 1, 0.22, 1) normal;
+}
+
+@keyframes card-fade {
+    from {
+        translate: 0px -50px;
+        opacity: 0%;
+    }
+    to {
+        translate: 0 0;
+        opacity: 100%;
+    }
+}
+
+a {
+    color: #0029FF;
+}
+
+#cnpj-cadastro {
+    display: grid;
+}

@@ -1,0 +1,13 @@
+h2 {
+  color: #000;
+}
+
+:host ::ng-deep .p-card {
+  flex: 1; /* Crescer para preencher o espaço disponível */
+  height: 100%; /* 50% da altura do pai */
+}
+
+.full-width {
+  display: inline-grid;
+  width: 100% !important;
+}

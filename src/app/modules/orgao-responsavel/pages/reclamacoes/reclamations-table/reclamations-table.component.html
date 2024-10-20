@@ -1,0 +1,48 @@
+<p-table [paginator]="true" [rowsPerPageOptions]="[10,25,50]" [rows]="10" [showCurrentPageReport]="true"
+         [value]="reclamations" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} resultados.">
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th>Tipo</th>
+            <th>Subtipo</th>
+            <th>Descrição</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+    </ng-template>
+    <ng-template let-reclamation pTemplate="body">
+        <tr>
+            <td><img [src]="reclamation.photo" class="miniatura-reclamacao"/></td>
+            <td>{{ reclamation.serviceName }}</td>
+            <td>{{ reclamation.serviceSubtypeName }}</td>
+            <td>{{ reclamation.description | maxLength:256:'...' }}</td>
+            <td>{{ reclamation.createdAt | date:"dd/MM/yyyy" }}</td>
+            <td>
+                <button (click)="showLocation(reclamation)"
+                        class="p-button-rounded p-button-text p-button-warning" icon="pi pi-map" pButton
+                        pTooltip="Visualizar no Mapa" tooltipPosition="top"
+                        type="button "></button>
+                <button (click)="edit(reclamation)" class="p-button-rounded p-button-text p-button-warning"
+                        icon="pi pi-pencil"
+                        pButton pTooltip="Acessar Detalhes" tooltipPosition="top"
+                        type="button"></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<p-dialog [(visible)]="mapVisible" [draggable]="false" [modal]="true" [resizable]="false"
+          header="Localização">
+    <google-map [center]="mapCentering" [mapTypeId]="mapType" [options]="mapConfig" [zoom]="zoomMap"
+                height="480px" width="640px">
+        <map-marker [position]="mapCentering"></map-marker>
+    </google-map>
+    <div>
+        <label>Tipo de Mapa:</label>
+        <select [(ngModel)]="mapType">
+            <option value="roadmap">Estrada</option>
+            <option value="satellite">Satélite</option>
+            <option value="hybrid">Híbrido</option>
+            <option value="terrain">Terreno</option>
+        </select>
+    </div>
+</p-dialog>

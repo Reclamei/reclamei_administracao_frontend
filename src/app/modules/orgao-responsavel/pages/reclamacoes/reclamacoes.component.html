@@ -1,0 +1,18 @@
+<div class="p-2">
+    <p-card>
+        <div class="flex">
+            <h2 class="traco flex-1">Reclamações</h2>
+        </div>
+        <p-tabView (onChange)="filterReclamations($event.index)">
+            <p-tabPanel header="Últimas">
+                <app-reclamations-table [reclamations]="reclamations"></app-reclamations-table>
+            </p-tabPanel>
+            <p-tabPanel header="Não respondidas">
+                <app-reclamations-table [reclamations]="filteredReclamations"></app-reclamations-table>
+            </p-tabPanel>
+            <p-tabPanel header="Respondidas">
+                <app-reclamations-table [reclamations]="filteredReclamations"></app-reclamations-table>
+            </p-tabPanel>
+        </p-tabView>
+    </p-card>
+</div>
