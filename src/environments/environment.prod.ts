@@ -6,10 +6,12 @@ declare var RECLAMEI_FIREBASE_MESSAGING_SENDER_ID: string;
 declare var RECLAMEI_FIREBASE_APP_ID: string;
 declare var RECLAMEI_FIREBASE_MEASUREMENT_ID: string;
 declare var GATEWAY_ENDPOINT: string;
+declare var GOOGLE_MAPS_API_KEY: string;
 
 export const environment = {
     production: true,
     apiEndpoint: GATEWAY_ENDPOINT,
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     firebase: {
         apiKey: RECLAMEI_FIREBASE_API_KEY,
         authDomain: RECLAMEI_FIREBASE_AUTH_DOMAIN,
