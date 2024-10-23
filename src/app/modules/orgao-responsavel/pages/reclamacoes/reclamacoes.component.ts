@@ -62,9 +62,6 @@ export class ReclamacoesComponent implements OnInit {
             new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
         this.blockUIService.block();
         this.reclamations = await firstValueFrom(this.reclamacaoService.findByCompany(filters));
-        // TODO: Remover
-        this.reclamations.forEach(item => item.photo = '/assets/images/representative/reclamacoes/' +
-            ['001.png', '002.png', '003.png'][Math.round(Math.random() * 10) % 3]);
         this.blockUIService.unblock();
     }
 }

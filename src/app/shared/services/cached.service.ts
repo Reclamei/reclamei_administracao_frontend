@@ -32,6 +32,11 @@ export class CachedService {
     public async getCompany() {
         if (!this.company?.id) {
             await this.getCompanyByExternalId();
+            const user = await this.authService.getCurrentUser();
+            if (user) {
+                const isUserAdmin = this.company.heads.find(head => head.externalId === user.displayName).isAdmin === true;
+                this.company.role = isUserAdmin ? 'Administrador' : 'Usuário padrão';
+            }
         }
         return this.company;
     }

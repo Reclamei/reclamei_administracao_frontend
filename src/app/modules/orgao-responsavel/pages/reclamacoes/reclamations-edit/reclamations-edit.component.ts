@@ -108,9 +108,6 @@ export class ReclamationsEditComponent implements OnInit {
                     this.selectedReclamation.response = res.response ? res.response : new ResponseModel();
                     const loc = this.selectedReclamation.localization;
                     this.selectedReclamation.localization.localizationDescription = loc.street + ' - ' + loc.district + ', ' + loc.city;
-                    //TODO: Remover
-                    this.selectedReclamation.photo = '/assets/images/representative/reclamacoes/' +
-                        ['001.png', '002.png', '003.png'][Math.round(Math.random() * 10) % 3];
                     this.defineSelectedButtonByStatus();
                 },
                 error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao obter os dados da reclamação.',

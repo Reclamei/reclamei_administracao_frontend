@@ -1,14 +1,15 @@
 <div class="menu {{esconderMenuMobile ? 'escondido' : ''}}">
     <h3 class="traco">CANAL DO CIDADÃO</h3>
-    <button pButton label="Fechar" icon="pi pi-times" class="p-button-warning w-full mb-2 botao-esconder-menu" (click)="aoEsconderMenu.emit()"></button>
+    <button (click)="aoEsconderMenu.emit()" class="p-button-warning w-full mb-2 botao-esconder-menu" icon="pi pi-times" label="Fechar"
+            pButton></button>
     <div class="container-foto-orgao mb-2">
-        <img *ngIf="orgao" class="foto-orgao" [src]="orgao.localImage" />
+        <img *ngIf="company" [src]="company.localImage" class="foto-orgao"/>
     </div>
-    <h4 class="titulo-orgao">{{orgao.name}}</h4>
-    <h5 class="role-orgao">{{orgao.role}}</h5>
-    <div class="opcao-menu" *ngFor="let opcao of opcoes" (click)="selecionarOpcao(opcao)">
+    <h4 class="titulo-orgao">{{ company.name }}</h4>
+    <h5 class="role-orgao">{{ company.role }}</h5>
+    <div (click)="selecionarOpcao(opcao)" *ngFor="let opcao of opcoes" class="opcao-menu">
         <i class="icone-opcao {{opcao.icon}}"></i>
-        <div>{{opcao.label}}</div>
+        <div>{{ opcao.label }}</div>
     </div>
 </div>
 <p-toast></p-toast>

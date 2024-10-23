@@ -24,6 +24,8 @@
     "@angular/platform-browser": "~14.0.0",
     "@angular/platform-browser-dynamic": "~14.0.0",
     "@angular/router": "~14.0.0",
+    "@cloudinary/ng": "^2.0.2",
+    "@cloudinary/url-gen": "^1.21.0",
     "@fullcalendar/angular": "^5.8.0",
     "@fullcalendar/core": "^5.8.0",
     "@fullcalendar/daygrid": "^5.8.0",
