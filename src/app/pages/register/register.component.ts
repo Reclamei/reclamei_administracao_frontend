@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit {
     private sendSignInLinkToEmail() {
         const hash = this.registrationForm.value.heads[0].externalId;
         const actionCodeSettings = {
-            url: `http://localhost:4200/finalizar-cadastro?hash=${hash}`,
+            url: `${window.location.origin}/finalizar-cadastro?hash=${hash}`,
             handleCodeInApp: true
         };
         this.authService

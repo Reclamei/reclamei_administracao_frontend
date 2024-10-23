@@ -53,7 +53,7 @@ export class ApprovalsComponent implements OnInit {
         this.blockUIService.block();
         const headAdmin = record.heads.find(head => head.isAdmin);
         const actionCodeSettings = {
-            url: `http://localhost:4200/finalizar-cadastro?hash=${headAdmin.externalId}`,
+            url: `${window.location.origin}/finalizar-cadastro?hash=${headAdmin.externalId}`,
             handleCodeInApp: true
         };
         await firstValueFrom(this.headService.approveUser(headAdmin.externalId));

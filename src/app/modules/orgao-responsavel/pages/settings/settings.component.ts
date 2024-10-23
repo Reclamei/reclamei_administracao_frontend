@@ -136,7 +136,7 @@ export class SettingsComponent implements OnInit {
     private async createHead(head: HeadModel) {
         await this.createAsyncHead(head);
         const actionCodeSettings = {
-            url: `http://localhost:4200/finalizar-cadastro?hash=${head.externalId}`,
+            url: `${window.location.origin}/finalizar-cadastro?hash=${head.externalId}`,
             handleCodeInApp: true
         };
         await this.authService
