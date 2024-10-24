@@ -1,13 +1,17 @@
 .miniatura-reclamacao {
-    height: 60px;
-    width: 80px;
-    border-radius: 15%;
+  height: 60px;
+  width: 80px;
+  border-radius: 15%;
 }
 
 div {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 label {
-    margin-right: 5px;
+  margin-right: 5px;
+}
+
+::ng-deep .p-rating .p-rating-icon.pi-star-fill {
+  color: #FEAF00;
 }

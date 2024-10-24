@@ -7,6 +7,7 @@
             <th>Subtipo</th>
             <th>Descrição</th>
             <th>Data</th>
+            <th *ngIf="showRating">Avaliação</th>
             <th>Ações</th>
         </tr>
     </ng-template>
@@ -17,12 +18,17 @@
             <td>{{ reclamation.serviceSubtypeName }}</td>
             <td>{{ reclamation.description | maxLength:256:'...' }}</td>
             <td>{{ reclamation.createdAt | date:"dd/MM/yyyy" }}</td>
+            <td *ngIf="showRating">
+                <p-rating [(ngModel)]="reclamation.response.evaluation.rating" [cancel]="false"
+                          [readonly]="true"></p-rating>
+            </td>
             <td>
                 <button (click)="showLocation(reclamation)"
                         class="p-button-rounded p-button-text p-button-warning" icon="pi pi-map" pButton
                         pTooltip="Visualizar no Mapa" tooltipPosition="top"
                         type="button "></button>
-                <button (click)="edit(reclamation)" class="p-button-rounded p-button-text p-button-warning"
+                <button (click)="edit(reclamation)" *ngIf="!showRating"
+                        class="p-button-rounded p-button-text p-button-warning"
                         icon="pi pi-pencil"
                         pButton pTooltip="Acessar Detalhes" tooltipPosition="top"
                         type="button"></button>

@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 })
 export class ReclamationsTableComponent {
     @Input() reclamations: ReclamationModel[] = [];
+    @Input() showRating = false;
 
     public mapVisible = false;
     public selectedReclamation: ReclamationModel | null = null;

@@ -13,7 +13,7 @@ import {CachedService} from '../../services/cached.service';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-    public company: CompanyModel | null = null;
+    public company: CompanyModel = new CompanyModel();
     public opcoes: MenuItem[] = this.inicializarOpcoesMenu();
     @Input() public esconderMenuMobile = true;
     @Output() public aoEsconderMenu: EventEmitter<void> = new EventEmitter();
