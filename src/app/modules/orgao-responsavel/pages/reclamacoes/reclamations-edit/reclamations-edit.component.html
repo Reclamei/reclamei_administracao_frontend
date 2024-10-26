@@ -4,7 +4,11 @@
         <div class="grid grid-nogutter mt-0">
             <div class="col-12 sm:col-12 md:col-4 lg:col-4 mt-0">
                 <div class="col-12 pl-4">
-                    <img [src]="selectedReclamation.photo" class="imagem-reclamacao"/>
+                    <p-image
+                            [preview]="true"
+                            [src]="selectedReclamation.photo"
+                            alt="Image"
+                            width="300"></p-image>
                 </div>
             </div>
             <div class="grid grid-nogutter col-12 sm:col-12 md:col-8 lg:col-8 pl-5 pr-4 pt-3">
