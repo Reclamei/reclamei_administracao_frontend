@@ -1,0 +1,23 @@
+<div class="font-bold title mb-2">Avaliações</div>
+<div>
+    <div class="flex flex-column">
+        <h2 class="pt-6">
+            <span style="font-size: 1.5em;">{{ detailedEvaluation.averageRating.toFixed(1) }}</span>
+            <span style="font-size: 1em;"> /5</span>
+        </h2>
+        <p-rating [(ngModel)]="detailedEvaluation.averageRating" [cancel]="false" [readonly]="true"
+                  stars="5"></p-rating>
+        <p class="total-reviews">{{ detailedEvaluation.totalReviews }} avaliações</p>
+    </div>
+
+    <div class="rating-distribution">
+        <h3>Distribuição das Notas</h3>
+        <div *ngFor="let nota of detailedEvaluation.ratingDistribution" class="rating-bar">
+            <span class="pr-1">{{ nota.rating }}</span>
+            <i class="pi pi-star"></i>
+            <div [style.width.%]="(nota.count / detailedEvaluation.totalReviews) * 100" class="bar"></div>
+            <span>{{ nota.count }}</span>
+        </div>
+    </div>
+
+</div>

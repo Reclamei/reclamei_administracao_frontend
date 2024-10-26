@@ -1,50 +1,58 @@
 .card-estatistico {
-    padding: 1rem;
-    border-radius: 0.25rem;
-    box-shadow: 0 3px 3px #0002;
-    .titulo {
-        font-style: italic;
-    }
-    .quantidade {
-        font-weight: bold;
-        text-align: right;
-    }
-    .icone {
-        margin-bottom: 0.5rem;
-    }
-    .quantidade, .icone {
-        font-size: 1.75rem;
-    }
+  padding: 1rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 3px 3px #0002;
+
+  .titulo {
+    font-style: italic;
+  }
+
+  .quantidade {
+    font-weight: bold;
+    text-align: right;
+  }
+
+  .icone {
+    margin-bottom: 0.5rem;
+  }
+
+  .quantidade, .icone {
+    font-size: 1.75rem;
+  }
 }
 
 .card-reclamacoes {
-    background-color: #F0F9FF;
-    .icone {
-        color: #74C1ED;
-        font-size: xx-large;
-    }
+  background-color: #F0F9FF;
+
+  .icone {
+    color: #74C1ED;
+    font-size: xx-large;
+  }
 }
 
 .card-respondidas {
-    background-color: #FDF3DC;
-    .icone {
-        color: #FEAF00;
-        font-size: xx-large;
-    }
+  background-color: #FDF3DC;
+
+  .icone {
+    color: #FEAF00;
+    font-size: xx-large;
+  }
 }
 
 .card-sem-resposta {
-    background-color: #FDDCDC;
-    .icone {
-        color: #FF5353;
-        font-size: xx-large;
-    }
+  background-color: #FDDCDC;
+
+  .icone {
+    color: #FF5353;
+    font-size: xx-large;
+  }
 }
 
 .card-resolvidas {
-    background-color: #D9FDD9;
-    .icone {
-        color: #43FF40;
-        margin-bottom: 15px;
-    }
+  background-color: #D9FDD9;
+
+  .icone {
+    color: #43FF40;
+    margin-bottom: 15px;
+  }
 }

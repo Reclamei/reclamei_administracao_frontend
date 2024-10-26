@@ -1,0 +1,26 @@
+.title {
+  font-size: 1.5rem;
+  color: #888888;
+}
+
+::ng-deep .p-rating .p-rating-icon.pi-star-fill {
+  color: #FEAF00;
+}
+
+.total-reviews {
+  font-size: 14px;
+  color: #666;
+}
+
+.rating-distribution .rating-bar {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.rating-distribution .bar {
+  background-color: #ffc107;
+  height: 12px;
+  margin: 0 10px;
+  border-radius: 4px;
+}
