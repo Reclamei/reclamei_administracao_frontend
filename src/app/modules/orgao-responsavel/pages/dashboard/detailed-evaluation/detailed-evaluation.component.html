@@ -1,8 +1,8 @@
 <div class="font-bold title mb-2">Avaliações</div>
-<div>
+<div class="pl-5 pr-5">
     <div class="flex flex-column">
-        <h2 class="pt-6">
-            <span style="font-size: 1.5em;">{{ detailedEvaluation.averageRating.toFixed(1) }}</span>
+        <h2 class="pt-3">
+            <span style="font-size: 1.7em;">{{ detailedEvaluation.averageRating?.toFixed(1) }}</span>
             <span style="font-size: 1em;"> /5</span>
         </h2>
         <p-rating [(ngModel)]="detailedEvaluation.averageRating" [cancel]="false" [readonly]="true"
@@ -10,13 +10,19 @@
         <p class="total-reviews">{{ detailedEvaluation.totalReviews }} avaliações</p>
     </div>
 
-    <div class="rating-distribution">
+    <div>
         <h3>Distribuição das Notas</h3>
         <div *ngFor="let nota of detailedEvaluation.ratingDistribution" class="rating-bar">
             <span class="pr-1">{{ nota.rating }}</span>
             <i class="pi pi-star"></i>
-            <div [style.width.%]="(nota.count / detailedEvaluation.totalReviews) * 100" class="bar"></div>
-            <span>{{ nota.count }}</span>
+            <p-progressBar
+                    [showValue]="false"
+                    [value]="(nota.count / detailedEvaluation.totalReviews) * 100"
+                    class="progress-bar">
+            </p-progressBar>
+            <div class="progress-container">
+                <span>{{ ((nota.count / detailedEvaluation.totalReviews) * 100).toFixed(2) }}%</span>
+            </div>
         </div>
     </div>
 

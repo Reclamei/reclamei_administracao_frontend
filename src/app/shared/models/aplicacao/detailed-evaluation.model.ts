@@ -4,6 +4,7 @@ export class DetailedEvaluation {
         public totalReviews?: number,
         public ratingDistribution?: Rating[],
     ) {
+        this.ratingDistribution = [];
     }
 }
 

@@ -8,6 +8,7 @@ import {CoverageModel} from '../../../../shared/models/aplicacao/coverage.model'
 import {CachedService} from '../../../../shared/services/cached.service';
 import {DashboardModel} from '../../../../shared/models/aplicacao/dashboard.model';
 import {BlockUIService} from '../../../../shared/services/block-ui.service';
+import {DetailedEvaluation} from '../../../../shared/models/aplicacao/detailed-evaluation.model';
 
 @Component({
     selector: 'app-dashboard',
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
 
     public graficoBarraResolvidas: GraficoBarraModel = new GraficoBarraModel();
     public graficoBarraRespondidas: GraficoBarraModel = new GraficoBarraModel();
+    public detailedEvaluation: DetailedEvaluation = new DetailedEvaluation();
 
     constructor(
         private reclamationService: ReclamationService,
@@ -55,6 +57,8 @@ export class DashboardComponent implements OnInit {
 
         this.blockUIService.block();
         this.dashboard = await firstValueFrom(this.reclamationService.buildDashboard({isAdmin: false, coverages: filters}));
+        this.detailedEvaluation = this.dashboard.detailedEvaluation;
+        this.detailedEvaluation.ratingDistribution.sort((a, b) => b.rating - a.rating);
         this.blockUIService.unblock();
     }
 

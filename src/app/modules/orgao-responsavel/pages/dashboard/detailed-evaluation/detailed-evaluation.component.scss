@@ -1,5 +1,5 @@
 .title {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: #888888;
 }
 
@@ -8,19 +8,40 @@
 }
 
 .total-reviews {
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
 
-.rating-distribution .rating-bar {
+.rating-bar {
   display: flex;
   align-items: center;
   margin: 5px 0;
 }
 
-.rating-distribution .bar {
+.bar {
   background-color: #ffc107;
   height: 12px;
   margin: 0 10px;
   border-radius: 4px;
+}
+
+::ng-deep .progress-bar {
+  width: 75%;
+  padding: 3px 7px;
+
+  .p-progressbar {
+    border-radius: 10px;
+  }
+
+  .p-progressbar-value {
+    background-color: #ffc107;
+    border-radius: 10px;
+  }
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: end;
 }
