@@ -18,19 +18,13 @@
   margin: 5px 0;
 }
 
-.bar {
-  background-color: #ffc107;
-  height: 12px;
-  margin: 0 10px;
-  border-radius: 4px;
-}
-
 ::ng-deep .progress-bar {
   width: 75%;
   padding: 3px 7px;
 
   .p-progressbar {
     border-radius: 10px;
+    height: 15px;
   }
 
   .p-progressbar-value {
