@@ -77,20 +77,5 @@
         </div>
     </div>
 </div>
-<p-dialog [(visible)]="modalLocalizacaoVisivel" [draggable]="false" [modal]="true" [resizable]="false"
-          header="Localização">
-    <google-map [center]="mapCentering" [mapTypeId]="mapType" [options]="mapConfig" [zoom]="zoomMap"
-                height="480px" width="640px">
-        <map-marker [position]="mapCentering"></map-marker>
-    </google-map>
-    <div>
-        <label>Tipo de Mapa:</label>
-        <select [(ngModel)]="mapType">
-            <option value="roadmap">Estrada</option>
-            <option value="satellite">Satélite</option>
-            <option value="hybrid">Híbrido</option>
-            <option value="terrain">Terreno</option>
-        </select>
-    </div>
-</p-dialog>
+<app-map></app-map>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

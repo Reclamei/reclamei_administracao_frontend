@@ -10,6 +10,8 @@ import {MessageService} from 'primeng/api';
 import {GraficoBarraComponent} from './components/grafico-barra/grafico-barra.component';
 import {GOOGLE_IMPORTS} from './imports/google.imports';
 import {MaxLengthPipe} from './pipes/max-length.pipe';
+import {MapComponent} from './components/map/map.component';
+import {EmailComponent} from './components/email/email.component';
 
 const MODULE_PUBLIC: any[] = [
     ViewportComponent,
@@ -17,7 +19,9 @@ const MODULE_PUBLIC: any[] = [
     FooterComponent,
     MenuComponent,
     GraficoBarraComponent,
-    MaxLengthPipe
+    MaxLengthPipe,
+    MapComponent,
+    EmailComponent
 ];
 
 const MODULE_PRIVATE: any[] = [];
