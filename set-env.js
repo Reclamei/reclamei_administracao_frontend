@@ -8,6 +8,10 @@ const targetPath = join(__dirname, 'src/environments/environment.prod.ts');
 const envConfigFile = `
 export const environment = {
     production: true,
+    googleMapsApiKey: '${process.env.GOOGLE_MAPS_API_KEY}',
+    emailServiceId: '${process.env.EMAIL_SERVICE_ID}',
+    emailTemplateId: '${process.env.EMAIL_TEMPLATE_ID}',
+    emailPrivateKey: '${process.env.EMAIL_PRIVATE_KEY}',
     firebase: {
         apiKey: '${process.env.RECLAMEI_FIREBASE_API_KEY}',
         authDomain: '${process.env.RECLAMEI_FIREBASE_AUTH_DOMAIN}',
