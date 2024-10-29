@@ -5,6 +5,38 @@
                 <div class="flex">
                     <h2 class="traco flex-1">Reclamações por Região</h2>
                 </div>
+                <div class="grid grid-nogutter pb-3">
+                    <div class="col-6">
+                        <p-calendar
+                                (onClearClick)="onFilter()"
+                                (onSelect)="onFilter()"
+                                [(ngModel)]="rangeDatesFilter"
+                                [readonlyInput]="true"
+                                [showButtonBar]="true"
+                                [showIcon]="true"
+                                selectionMode="range"></p-calendar>
+                    </div>
+                    <div class="col-6">
+                        <p-dropdown
+                                (onChange)="onFilter()"
+                                [(ngModel)]="subtypeFilter"
+                                [filter]="true"
+                                [group]="true"
+                                [options]="groupedServiceTypes"
+                                [showClear]="true"
+                                class="full-width"
+                                optionGroupChildren="subtypes"
+                                optionGroupLabel="name"
+                                optionLabel="name"
+                                placeholder="Selecione um tipo de serviço">
+                            <ng-template let-group pTemplate="group">
+                                <div class="flex align-items-center">
+                                    <span>{{ group.name }}</span>
+                                </div>
+                            </ng-template>
+                        </p-dropdown>
+                    </div>
+                </div>
                 <google-map [center]="mapCentering" [options]="mapConfig" [zoom]="zoomMap" height="59vh" width="100%">
                     <map-heatmap-layer [data]="mapData" [options]="mapOptions"></map-heatmap-layer>
                 </google-map>

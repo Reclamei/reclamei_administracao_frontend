@@ -6,16 +6,28 @@ label {
   margin-right: 5px;
 }
 
-.imagem-reclamacao {
+::ng-deep .p-image-preview-container {
+  position: relative;
+  display: inline-block;
   width: 100%;
   border-radius: 1rem;
   object-fit: cover;
+
+  > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    object-fit: cover;
+  }
 }
 
-.imagem-reclamacao:hover {
-  transform: scale(1.5); /* Aumenta o tamanho em 50% */
-  position: relative;
-  z-index: 9999;
+::ng-deep .p-image-preview-container:hover > .p-image-preview-indicator {
+  opacity: 1;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 1rem;
+  object-fit: cover;
+  height: 98.5%;
 }
 
 h3 {

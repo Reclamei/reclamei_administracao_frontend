@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
 import {Router} from '@angular/router';
+import {MapComponent} from '../../../../../shared/components/map/map.component';
 
 @Component({
     selector: 'app-reclamations-table',
@@ -9,13 +10,9 @@ import {Router} from '@angular/router';
 })
 export class ReclamationsTableComponent {
     @Input() reclamations: ReclamationModel[] = [];
+    @Input() showRating = false;
 
-    public mapVisible = false;
-    public selectedReclamation: ReclamationModel | null = null;
-    public mapCentering: Record<string, any> = {};
-    public zoomMap = 15;
-    public mapConfig: google.maps.MapOptions = this.initializeMapConfig();
-    public mapType: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
+    @ViewChild(MapComponent) mapComponent!: MapComponent;
 
     constructor(
         private router: Router
@@ -23,24 +20,10 @@ export class ReclamationsTableComponent {
     }
 
     public showLocation(reclamation: ReclamationModel): void {
-        this.selectedReclamation = reclamation;
-        this.mapCentering = {
-            lat: Number(this.selectedReclamation.localization.latitude),
-            lng: Number(this.selectedReclamation.localization.longitude)
-        };
-        this.zoomMap = 15;
-        this.mapVisible = true;
+        this.mapComponent.showLocation(reclamation);
     }
 
     edit(reclamation: ReclamationModel) {
         this.router.navigateByUrl(`painel-administrativo/reclamacoes/${reclamation.id.toString()}/edit`);
-    }
-
-    private initializeMapConfig(): google.maps.MapOptions {
-        return {
-            streetViewControl: false,
-            mapTypeControl: false,
-            clickableIcons: true
-        };
     }
 }

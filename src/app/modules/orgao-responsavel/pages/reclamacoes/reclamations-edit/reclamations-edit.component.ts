@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ReclamationModel} from 'src/app/shared/models/aplicacao/reclamation.model';
 import {ConfirmationService, MessageService, SelectItem} from 'primeng/api';
 import {StatusReclamationEnum} from '../../../../../shared/models/aplicacao/status-reclamation.enum';
@@ -10,6 +10,7 @@ import {PrimengFactory} from '../../../../../shared/factories/primeng.factory';
 import {ErrorType} from '../../../../../shared/auth/model/error-type.enum';
 import {MapeamentoRota} from '../../../../../shared/constants/mapeamento-rota';
 import {ResponseModel} from '../../../../../shared/models/aplicacao/response.model';
+import {MapComponent} from '../../../../../shared/components/map/map.component';
 
 @Component({
     selector: 'app-reclamations-edit',
@@ -17,6 +18,8 @@ import {ResponseModel} from '../../../../../shared/models/aplicacao/response.mod
     styleUrls: ['./reclamations-edit.component.scss']
 })
 export class ReclamationsEditComponent implements OnInit {
+    @ViewChild(MapComponent) mapComponent!: MapComponent;
+
     public id: number = null;
     public selectedReclamation: ReclamationModel = new ReclamationModel();
     public yesNoOptions: SelectItem<boolean>[] = [
@@ -26,12 +29,6 @@ export class ReclamationsEditComponent implements OnInit {
     public status: StatusReclamationEnum[] = StatusReclamationEnum.getAllStatus();
     public isCorrectResponsibleCompany: boolean = true;
     public isProblemReal: boolean = true;
-
-    public modalLocalizacaoVisivel = false;
-    public mapCentering: google.maps.LatLngLiteral = {lat: -19.551675, lng: -40.580482};
-    public zoomMap = 15;
-    public mapConfig: google.maps.MapOptions = this.initializeMapConfig();
-    public mapType: google.maps.MapTypeId = google.maps.MapTypeId.ROADMAP;
 
     constructor(
         private confirmationService: ConfirmationService,
@@ -51,12 +48,7 @@ export class ReclamationsEditComponent implements OnInit {
     }
 
     public showLocation(): void {
-        this.mapCentering = {
-            lat: Number(this.selectedReclamation.localization.latitude),
-            lng: Number(this.selectedReclamation.localization.longitude)
-        };
-        this.zoomMap = 15;
-        this.modalLocalizacaoVisivel = true;
+        this.mapComponent.showLocation(this.selectedReclamation);
     }
 
     save(selectedReclamation: ReclamationModel) {

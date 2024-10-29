@@ -5,13 +5,19 @@
         </div>
         <p-tabView (onChange)="filterReclamations($event.index)">
             <p-tabPanel header="Últimas">
-                <app-reclamations-table [reclamations]="reclamations"></app-reclamations-table>
+                <app-reclamations-table [reclamations]="reclamations" [showRating]="false"></app-reclamations-table>
             </p-tabPanel>
             <p-tabPanel header="Não respondidas">
-                <app-reclamations-table [reclamations]="filteredReclamations"></app-reclamations-table>
+                <app-reclamations-table [reclamations]="filteredReclamations"
+                                        [showRating]="false"></app-reclamations-table>
             </p-tabPanel>
             <p-tabPanel header="Respondidas">
-                <app-reclamations-table [reclamations]="filteredReclamations"></app-reclamations-table>
+                <app-reclamations-table [reclamations]="filteredReclamations"
+                                        [showRating]="false"></app-reclamations-table>
+            </p-tabPanel>
+            <p-tabPanel header="Avaliadas">
+                <app-reclamations-table [reclamations]="filteredReclamations"
+                                        [showRating]="true"></app-reclamations-table>
             </p-tabPanel>
         </p-tabView>
     </p-card>

@@ -1,0 +1,41 @@
+.title {
+  font-size: 1.3rem;
+  color: #888888;
+}
+
+::ng-deep .p-rating .p-rating-icon.pi-star-fill {
+  color: #FEAF00;
+}
+
+.total-reviews {
+  font-size: 13px;
+  color: #666;
+}
+
+.rating-bar {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+::ng-deep .progress-bar {
+  width: 75%;
+  padding: 3px 7px;
+
+  .p-progressbar {
+    border-radius: 10px;
+    height: 15px;
+  }
+
+  .p-progressbar-value {
+    background-color: #ffc107;
+    border-radius: 10px;
+  }
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: end;
+}

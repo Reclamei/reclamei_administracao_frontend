@@ -1,3 +1,5 @@
+import {DetailedEvaluation} from './detailed-evaluation.model';
+
 export class DashboardModel {
     constructor(
         public totalCount?: number,
@@ -5,5 +7,7 @@ export class DashboardModel {
         public unansweredCount?: number,
         public resolvedCount?: number,
         public unresolvedCount?: number,
-    ) {}
+        public detailedEvaluation?: DetailedEvaluation,
+    ) {
+    }
 }

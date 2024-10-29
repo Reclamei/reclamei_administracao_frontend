@@ -6,7 +6,7 @@ import {ActionCodeSettings, user} from '@angular/fire/auth';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
 
     private userSubject = new BehaviorSubject<any>(null);

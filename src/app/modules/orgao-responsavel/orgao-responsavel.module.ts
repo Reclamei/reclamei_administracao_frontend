@@ -8,10 +8,12 @@ import {ReclamacoesComponent} from './pages/reclamacoes/reclamacoes.component';
 import {ReclamationsTableComponent} from './pages/reclamacoes/reclamations-table/reclamations-table.component';
 import {SettingsComponent} from './pages/settings/settings.component';
 import {ReclamationsEditComponent} from './pages/reclamacoes/reclamations-edit/reclamations-edit.component';
+import {DetailedEvaluationComponent} from './pages/dashboard/detailed-evaluation/detailed-evaluation.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
+        DetailedEvaluationComponent,
         ReclamacoesComponent,
         ReclamationsEditComponent,
         ReclamationsTableComponent,
