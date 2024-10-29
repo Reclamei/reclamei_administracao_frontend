@@ -6,3 +6,18 @@ h2 {
   flex: 1; /* Crescer para preencher o espaço disponível */
   height: 100%; /* 50% da altura do pai */
 }
+
+::ng-deep .p-calendar {
+  width: 100%;
+  padding-right: 10px;
+
+  .p-datepicker-trigger {
+    background-color: var(--cor-tema-auxiliar) !important;
+    border-color: var(--cor-tema-auxiliar) !important;
+  }
+}
+
+::ng-deep .p-dropdown {
+  width: 100%;
+  padding-left: 10px;
+}

@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 .idea
 sassdoc
+package-lock.json
 
 src/assets/theme/*.css
 src/assets/layout/css/*.css

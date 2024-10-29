@@ -32,6 +32,9 @@ export class ReportsComponent implements OnInit {
     public mapConfig: google.maps.MapOptions = this.initializeMapConfig();
     public mapOptions: Partial<google.maps.visualization.HeatmapLayerOptions> = {radius: 5};
     public mapData: google.maps.LatLngLiteral[] = [];
+    public groupedServiceTypes: any[] = [];
+    public subtypeFilter: any;
+    public rangeDatesFilter: Date[] = [];
 
     constructor(
         private reclamationService: ReclamationService,
@@ -44,6 +47,23 @@ export class ReportsComponent implements OnInit {
     public async ngOnInit() {
         await this.fillReports();
         this.calcularPorcentagens();
+    }
+
+    async onFilter() {
+        const coverages: CoverageModel[] = await this.cachedService.getCoverages();
+        const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+
+        this.blockUIService.block();
+        const data = await firstValueFrom(this.reclamationService.buildReports(
+            {
+                coverages: filters,
+                serviceSubtypeId: this.subtypeFilter?.id,
+                startDate: this.rangeDatesFilter?.length > 0 ? this.rangeDatesFilter[0] : null,
+                endDate: this.rangeDatesFilter?.length > 1 ? this.rangeDatesFilter[1] : null,
+            }
+        ));
+        this.fillHeatmap(data);
+        this.blockUIService.unblock();
     }
 
     private calcularPorcentagens(): void {
@@ -70,6 +90,7 @@ export class ReportsComponent implements OnInit {
     private async fillReports() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
         const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+        this.groupedServiceTypes = coverages.map(item => item.serviceType);
 
         this.blockUIService.block();
         const data = await firstValueFrom(this.reclamationService.buildReports({coverages: filters}));
@@ -151,7 +172,6 @@ export class ReportsComponent implements OnInit {
         const sumLng = this.mapData.reduce((sum, item) => sum + item.lng, 0);
         const averageLng = this.mapData.length ? sumLng / this.mapData.length : 0;
 
-        this.mapCentering = {lat: averageLat, lng: averageLng};
+        this.mapCentering = averageLat === 0 && averageLng === 0 ? {lat: -19.551675, lng: -40.580482} : {lat: averageLat, lng: averageLng};
     }
-
 }
