@@ -51,9 +51,11 @@ export class DashboardComponent implements OnInit {
 
     private async buildDashboard() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
-        const filters = coverages.map(item =>
-            new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
 
+        const filters: CompanyFilter[] = coverages.reduce((acc, item) => {
+            const subFilters = item.serviceType.subtypes.map(sub => new CompanyFilter(sub.id, item.locations.map(loc => loc.id)));
+            return acc.concat(subFilters);
+        }, []);
 
         this.blockUIService.block();
         this.dashboard = await firstValueFrom(this.reclamationService.buildDashboard({isAdmin: false, coverages: filters}));

@@ -62,8 +62,10 @@ export class ReclamacoesComponent implements OnInit {
     }
 
     private async loadReclamations() {
-        const filters = this.coverages.map(item =>
-            new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+        const filters: CompanyFilter[] = this.coverages.reduce((acc, item) => {
+            const subFilters = item.serviceType.subtypes.map(sub => new CompanyFilter(sub.id, item.locations.map(loc => loc.id)));
+            return acc.concat(subFilters);
+        }, []);
         this.blockUIService.block();
         this.reclamations = await firstValueFrom(this.reclamacaoService.findByCompany(filters));
         this.blockUIService.unblock();

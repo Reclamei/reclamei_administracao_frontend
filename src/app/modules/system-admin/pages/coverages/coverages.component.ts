@@ -32,7 +32,8 @@ export class CoveragesComponent implements OnInit {
         private serviceTypesService: ServiceTypesService,
         private locationService: LocationService,
         private messageService: MessageService,
-    ) { }
+    ) {
+    }
 
     async ngOnInit() {
         await this.loadCoverages();
@@ -73,7 +74,7 @@ export class CoveragesComponent implements OnInit {
     }
 
     private async loadCompanies() {
-        return this.companyService.findAll().subscribe(data => this.companies = data);
+        return this.companyService.findAll().subscribe(data => this.companies = data.filter(item => !item.name.includes('ADMIN')));
     }
 
     private async loadServiceTypes() {

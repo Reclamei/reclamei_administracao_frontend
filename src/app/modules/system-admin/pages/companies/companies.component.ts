@@ -18,7 +18,8 @@ export class CompaniesComponent implements OnInit {
     constructor(
         private messageService: MessageService,
         private companyService: CompanyService
-    ) { }
+    ) {
+    }
 
     async ngOnInit(): Promise<void> {
         await this.getCompanies();
@@ -29,7 +30,7 @@ export class CompaniesComponent implements OnInit {
     }
 
     onRowEditInit(company: CompanyModel) {
-        this.clonedCompanies[company.id] = { ...company };
+        this.clonedCompanies[company.id] = {...company};
     }
 
     removeCompany(company: CompanyModel) {
@@ -53,16 +54,8 @@ export class CompaniesComponent implements OnInit {
         this.saveCompany(() => this.companyService.update(company));
     }
 
-    private saveCompany(saveMethod: () => Observable<any>) {
-        saveMethod().subscribe({
-            next: () => this.getCompanies(),
-            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
-                ErrorType.getMessage(error.code))
-        });
-    }
-
     public getInformationByCnpj(company: CompanyModel) {
-         this.companyService.findInformationByCnpj(company.cnpj).subscribe({
+        this.companyService.findInformationByCnpj(company.cnpj).subscribe({
             next: (companyInformation: CompanyModel) => {
                 company.name = companyInformation.name;
                 company.email = companyInformation.email;
@@ -75,10 +68,18 @@ export class CompaniesComponent implements OnInit {
         });
     }
 
+    private saveCompany(saveMethod: () => Observable<any>) {
+        saveMethod().subscribe({
+            next: () => this.getCompanies(),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
+                ErrorType.getMessage(error.code))
+        });
+    }
+
     private async getCompanies() {
         return this.companyService.findAll().subscribe({
             next: (company: CompanyModel[]) => {
-                this.filteredCompanies = company;
+                this.filteredCompanies = company.filter(item => !item.name.includes('ADMIN'));
             },
             error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro na obtenção dos dados',
                 ErrorType.getMessage(error.code))

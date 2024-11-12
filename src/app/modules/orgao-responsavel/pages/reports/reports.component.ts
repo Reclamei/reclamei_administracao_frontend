@@ -51,8 +51,10 @@ export class ReportsComponent implements OnInit {
 
     async onFilter() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
-        const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
-
+        const filters: CompanyFilter[] = coverages.reduce((acc, item) => {
+            const subFilters = item.serviceType.subtypes.map(sub => new CompanyFilter(sub.id, item.locations.map(loc => loc.id)));
+            return acc.concat(subFilters);
+        }, []);
         this.blockUIService.block();
         const data = await firstValueFrom(this.reclamationService.buildReports(
             {
@@ -89,7 +91,10 @@ export class ReportsComponent implements OnInit {
 
     private async fillReports() {
         const coverages: CoverageModel[] = await this.cachedService.getCoverages();
-        const filters = coverages.map(item => new CompanyFilter(item.serviceType.id, item.locations.map(loc => loc.id)));
+        const filters: CompanyFilter[] = coverages.reduce((acc, item) => {
+            const subFilters = item.serviceType.subtypes.map(sub => new CompanyFilter(sub.id, item.locations.map(loc => loc.id)));
+            return acc.concat(subFilters);
+        }, []);
         this.groupedServiceTypes = coverages.map(item => item.serviceType);
 
         this.blockUIService.block();
