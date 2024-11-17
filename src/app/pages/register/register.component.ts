@@ -43,11 +43,13 @@ export class RegisterComponent implements OnInit {
     }
 
     public async validateRegistration() {
-        await firstValueFrom(this.companyService.create(this.registrationForm.value));
         if (this.registrationForm.value.hasEmailAccess) {
+            await firstValueFrom(this.companyService.create(this.registrationForm.value));
             this.sendSignInLinkToEmail();
         } else {
             this.blockUIService.block();
+            this.registrationForm.value.heads[0].email = this.registrationForm.value.secondaryEmail;
+            await firstValueFrom(this.companyService.create(this.registrationForm.value));
             await firstValueFrom(this.headService.requestApproval(this.registrationForm.value.heads[0].externalId));
             this.blockUIService.unblock();
             this.step = this.steps.VALIDACAO_ANDAMENTO;
@@ -63,7 +65,7 @@ export class RegisterComponent implements OnInit {
                     this.registrationForm.patchValue({
                         cnpj: company.cnpj,
                         name: company.name,
-                        // email: company.email, TODO: comentado apenas para teste
+                        email: company.email,
                         description: company.description,
                         phone: company.phone,
                     });
