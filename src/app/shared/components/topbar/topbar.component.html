@@ -3,18 +3,19 @@
             icon="pi pi-bars" pButton
             type="button"></button>
     <div class="separador"></div>
-    <span class="p-input-icon-right">
-        <i class="pi pi-search"></i>
-        <input (ngModelChange)="pesquisar($event)" [ngModel]="termoPesquisa" class="campo-pesquisa" pInputText
-               placeholder="Pesquisar reclamações" type="text"/>
-    </span>
+    <!--    <span class="p-input-icon-right">-->
+    <!--        <i class="pi pi-search"></i>-->
+    <!--        <input (ngModelChange)="pesquisar($event)" [ngModel]="termoPesquisa" class="campo-pesquisa" pInputText-->
+    <!--               placeholder="Pesquisar reclamações" type="text"/>-->
+    <!--    </span>-->
     <button (click)="painelNotif.toggle($event)" class="p-button-rounded p-button-warning p-button-text ml-2"
             icon="pi pi-bell" pButton
             type="button"></button>
     <p-overlayPanel #painelNotif>
         <ng-template pTemplate>
             <p *ngIf="notificacoes.length == 0">Não há notificações ainda.</p>
-            <button (click)="notificacoes.splice(0); painelNotif.toggle($event)" *ngIf="notificacoes.length > 0" class="p-button-rounded p-button-text p-button-danger w-full"
+            <button (click)="notificacoes.splice(0); painelNotif.toggle($event)" *ngIf="notificacoes.length > 0"
+                    class="p-button-rounded p-button-text p-button-danger w-full"
                     icon="pi pi-trash" label="Limpar Notificações"
                     pButton tooltipPosition="top"
                     type="button "></button>

@@ -9,6 +9,7 @@ import {ReclamationsTableComponent} from './pages/reclamacoes/reclamations-table
 import {SettingsComponent} from './pages/settings/settings.component';
 import {ReclamationsEditComponent} from './pages/reclamacoes/reclamations-edit/reclamations-edit.component';
 import {DetailedEvaluationComponent} from './pages/dashboard/detailed-evaluation/detailed-evaluation.component';
+import {CoveragesComponent} from './pages/coverages/coverages.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import {DetailedEvaluationComponent} from './pages/dashboard/detailed-evaluation
         ReclamationsEditComponent,
         ReclamationsTableComponent,
         ReportsComponent,
-        SettingsComponent
+        SettingsComponent,
+        CoveragesComponent
     ],
     imports: [
         CommonModule,

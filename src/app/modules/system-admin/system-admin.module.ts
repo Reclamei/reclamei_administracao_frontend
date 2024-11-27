@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ApprovalsComponent} from './pages/approvals/approvals.component';
-import {CoveragesComponent} from './pages/coverages/coverages.component';
+import {CoveragesAdminComponent} from './pages/coverages-admin/coverages-admin.component';
 import {SharedModule} from '../../shared/shared.module';
 import {SystemAdminRoutingModule} from './system-admin-routing.module';
 import {ServiceTypesComponent} from './pages/service-types/service-types.component';
@@ -14,7 +14,7 @@ import {DashboardAdminComponent} from './pages/dashboard-admin/dashboard-admin.c
     declarations: [
         DashboardAdminComponent,
         ApprovalsComponent,
-        CoveragesComponent,
+        CoveragesAdminComponent,
         ServiceTypesComponent,
         LocationComponent,
         CompaniesComponent,
@@ -26,4 +26,5 @@ import {DashboardAdminComponent} from './pages/dashboard-admin/dashboard-admin.c
         SharedModule
     ]
 })
-export class SystemAdminModule { }
+export class SystemAdminModule {
+}

@@ -13,11 +13,11 @@ import {ErrorType} from '../../../../shared/auth/model/error-type.enum';
 import {MessageService} from 'primeng/api';
 
 @Component({
-    selector: 'app-coverages',
-    templateUrl: './coverages.component.html',
-    styleUrls: ['./coverages.component.scss']
+    selector: 'app-coverages-admin',
+    templateUrl: './coverages-admin.component.html',
+    styleUrls: ['./coverages-admin.component.scss']
 })
-export class CoveragesComponent implements OnInit {
+export class CoveragesAdminComponent implements OnInit {
     coverages: CoverageModel[] = [];
 
     coverage: CoverageModel = new CoverageModel();
@@ -43,7 +43,15 @@ export class CoveragesComponent implements OnInit {
     }
 
     async apply() {
-        this.saveCoverages(() => this.coverageService.create(this.coverage));
+        const restriction = this.coverages.find(item => item.company.id !== this.coverage.company.id
+            && item.serviceType.id === this.coverage.serviceType.id
+            && !!item.locations.find(loc => !!this.coverage.locations.find(cl => cl.id = loc.id)));
+        if (restriction) {
+            PrimengFactory.mensagemErro(this.messageService,
+                'Não é possível vincular uma determinada localidade e tipo de serviço com mais de uma organização.', '');
+        } else {
+            this.saveCoverages(() => this.coverageService.create(this.coverage));
+        }
     }
 
     selectLocations() {
@@ -56,6 +64,14 @@ export class CoveragesComponent implements OnInit {
                 error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao salvar registro.',
                     ErrorType.getMessage(error.code))
             });
+    }
+
+    removeCoverage(coverage: CoverageModel) {
+        this.coverageService.delete(coverage.serviceType.id, coverage.company.id).subscribe({
+            next: () => this.loadCoverages(),
+            error: (error) => PrimengFactory.mensagemErro(this.messageService, 'Erro ao remover abrangência.',
+                ErrorType.getMessage(error.code))
+        });
     }
 
     private saveCoverages(saveMethod: () => Observable<any>) {

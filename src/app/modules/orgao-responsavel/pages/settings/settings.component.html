@@ -6,37 +6,39 @@
         <form [formGroup]="companyForm" class="pl-2 pr-2">
             <div class="grid grid-nogutter pb-0">
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="cnpj" class="block mb-1">CNPJ</label>
-                    <input pInputText id="cnpj" formControlName="cnpj" type="number" class="mb-3 w-full" disabled/>
+                    <label class="block mb-1" for="cnpj">CNPJ</label>
+                    <input class="mb-3 w-full" disabled formControlName="cnpj" id="cnpj" pInputText type="number"/>
                 </div>
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="name" class="block mb-1">Nome fantasia</label>
-                    <input pInputText id="name" formControlName="name" type="text" class="mb-3 w-full" disabled/>
+                    <label class="block mb-1" for="name">Nome fantasia</label>
+                    <input class="mb-3 w-full" disabled formControlName="name" id="name" pInputText type="text"/>
                 </div>
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="email" class="block mb-1">E-mail</label>
-                    <input pInputText id="email" formControlName="email" type="email" class="mb-3 w-full" disabled/>
+                    <label class="block mb-1" for="email">E-mail</label>
+                    <input class="mb-3 w-full" disabled formControlName="email" id="email" pInputText type="email"/>
                 </div>
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="site" class="block mb-1">Site</label>
-                    <input pInputText id="site" formControlName="site" type="text" class="mb-4 w-full"/>
+                    <label class="block mb-1" for="site">Site</label>
+                    <input class="mb-4 w-full" formControlName="site" id="site" pInputText type="text"/>
                 </div>
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="phone" class="block mb-1">Telefone</label>
-                    <input pInputText id="phone" formControlName="phone" type="tel" class="mb-4 w-full"/>
+                    <label class="block mb-1" for="phone">Telefone</label>
+                    <input class="mb-4 w-full" formControlName="phone" id="phone" pInputText type="tel"/>
                 </div>
                 <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                    <label for="sac-phone" class="block mb-1">Telefone SAC</label>
-                    <input pInputText id="sac-phone" formControlName="sacPhone" type="tel" class="mb-4 w-full"/>
+                    <label class="block mb-1" for="sac-phone">Telefone SAC</label>
+                    <input class="mb-4 w-full" formControlName="sacPhone" id="sac-phone" pInputText type="tel"/>
                 </div>
                 <div class="col-12 pr-2 pl-2 mb-3">
-                    <label for="description" class="block mb-1">Descrição</label>
-                    <textarea pInputTextarea class="w-full" id="description" rows="2" formControlName="description"></textarea>
+                    <label class="block mb-1" for="description">Descrição</label>
+                    <textarea class="w-full" formControlName="description" id="description" pInputTextarea
+                              rows="2"></textarea>
                 </div>
 
                 <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pr-2">
-                    <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full" [disabled]="!companyForm.valid"
-                            label="Salvar" (click)="updateCompany()"></button>
+                    <button (click)="updateCompany()" [disabled]="!companyForm.valid" class="p-button-rounded p-button-warning w-full" icon="pi pi-check"
+                            label="Salvar"
+                            pButton type="button"></button>
                 </div>
             </div>
         </form>
@@ -45,14 +47,14 @@
         <div class="flex">
             <h2 class="traco flex-1">Responsáveis</h2>
         </div>
-        <div class="grid grid-nogutter pl-2 pr-2">
+        <div *ngIf="isUserAdmin" class="grid grid-nogutter pl-2 pr-2">
             <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pb-3 pr-2">
-                <button pButton type="button" icon="pi pi-user-plus" class="p-button-rounded p-button-warning w-full"
-                    label="Incluir responsável" (click)="addHead()"></button>
+                <button (click)="addHead()" class="p-button-rounded p-button-warning w-full" icon="pi pi-user-plus" label="Incluir responsável"
+                        pButton type="button"></button>
             </div>
         </div>
         <div class="mr-3 ml-3">
-            <p-table [value]="company.heads" dataKey="id" editMode="row" [styleClass]="'p-datatable-sm'">
+            <p-table [styleClass]="'p-datatable-sm'" [value]="company.heads" dataKey="id" editMode="row">
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Nome</th>
@@ -61,45 +63,55 @@
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-head let-editing="editing" let-ri="rowIndex">
+                <ng-template let-editing="editing" let-head let-ri="rowIndex" pTemplate="body">
                     <tr [pEditableRow]="head">
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="head.name">
+                                    <input [(ngModel)]="head.name" pInputText type="text">
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{head.name}}
+                                    {{ head.name }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="head.phone" required>
+                                    <input [(ngModel)]="head.phone" pInputText required type="text">
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                     {{head.phone}}
+                                    {{ head.phone }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td>
                             <p-cellEditor>
                                 <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="head.email">
+                                    <input [(ngModel)]="head.email" pInputText type="text">
                                 </ng-template>
                                 <ng-template pTemplate="output">
-                                    {{head.email}}
+                                    {{ head.email }}
                                 </ng-template>
                             </p-cellEditor>
                         </td>
                         <td>
                             <div class="flex align-items-center justify-content-center gap-1">
-                                <button *ngIf="head.isAdmin" pButton type="button" icon="pi pi-user" class="p-button-rounded p-button-text p-button-warning" pTooltip="Usuário administrador" tooltipPosition="top" disabled></button>
-                                <button *ngIf="!editing && isUserAdmin" pButton type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(head)" class="p-button-rounded p-button-warning ml-2"></button>
-                                <button *ngIf="!editing && isUserAdmin" pButton type="button" icon="pi pi-trash" (click)="removeHead(head)" class="p-button-rounded p-button-danger ml-1"></button>
-                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(head)" class="p-button-rounded p-button-success ml-2 mr-2"></button>
-                                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(head, ri)" class="p-button-rounded p-button-danger"></button>
+                                <button *ngIf="head.isAdmin" class="p-button-rounded p-button-text p-button-warning" disabled icon="pi pi-user"
+                                        pButton
+                                        pTooltip="Usuário administrador" tooltipPosition="top" type="button"></button>
+                                <button (click)="onRowEditInit(head)" *ngIf="!editing && isUserAdmin" class="p-button-rounded p-button-warning ml-2" icon="pi pi-pencil"
+                                        pButton pInitEditableRow
+                                        type="button"></button>
+                                <button (click)="removeHead(head)" *ngIf="!editing && isUserAdmin" class="p-button-rounded p-button-danger ml-1" icon="pi pi-trash"
+                                        pButton
+                                        type="button"></button>
+                                <button (click)="onRowEditSave(head)" *ngIf="editing" class="p-button-rounded p-button-success ml-2 mr-2" icon="pi pi-check" pButton
+                                        pSaveEditableRow
+                                        type="button"></button>
+                                <button (click)="onRowEditCancel(head, ri)" *ngIf="editing" class="p-button-rounded p-button-danger" icon="pi pi-times" pButton
+                                        pCancelEditableRow
+                                        type="button"></button>
                             </div>
                         </td>
                     </tr>
@@ -113,21 +125,21 @@
         </div>
         <div class="grid grid-nogutter pl-2 pr-2 pb-0">
             <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                <label for="senha-atual" class="block mb-1">Senha atual</label>
-                <input pInputText id="senha-atual" type="password" [(ngModel)]="senhaAtual" class="mb-4 w-full"/>
+                <label class="block mb-1" for="senha-atual">Senha atual</label>
+                <input [(ngModel)]="senhaAtual" class="mb-4 w-full" id="senha-atual" pInputText type="password"/>
             </div>
             <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                <label for="nova-senha" class="block mb-1">Nova senha</label>
-                <input pInputText id="nova-senha" type="password" [(ngModel)]="newPassword" class="mb-4 w-full"/>
+                <label class="block mb-1" for="nova-senha">Nova senha</label>
+                <input [(ngModel)]="newPassword" class="mb-4 w-full" id="nova-senha" pInputText type="password"/>
             </div>
             <div class="col-12 md:col-6 lg:col-4 pr-2 pl-2">
-                <label for="repetir-senha" class="block mb-1">Repetir senha</label>
-                <input pInputText id="repetir-senha" type="password" [(ngModel)]="repetirSenha" class="mb-3 w-full"/>
+                <label class="block mb-1" for="repetir-senha">Repetir senha</label>
+                <input [(ngModel)]="repetirSenha" class="mb-3 w-full" id="repetir-senha" pInputText type="password"/>
             </div>
 
             <div class="col-2 md:col-4 md:col-offset-8 lg:col-2 lg:col-offset-10 col-offset-10 pt-0 pr-2">
-                <button pButton type="button" icon="pi pi-check" class="p-button-rounded p-button-warning w-full"
-                    label="Salvar nova senha" (click)="changePassword()"></button>
+                <button (click)="changePassword()" class="p-button-rounded p-button-warning w-full" icon="pi pi-check" label="Salvar nova senha"
+                        pButton type="button"></button>
             </div>
         </div>
     </p-card>

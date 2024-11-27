@@ -53,7 +53,7 @@ export class MenuComponent {
             {
                 icon: 'pi pi-map-marker',
                 label: 'Abrangência',
-                command: () => PrimengFactory.mensagemErro(this.messageService, 'Erro!', 'Funcionalidade não implementada.')
+                command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_ABRANGENCIA.obterCaminhoRota())
             },
             {
                 icon: 'pi pi-chart-bar',
@@ -102,7 +102,7 @@ export class MenuComponent {
                 },
                 {
                     icon: 'pi pi-building',
-                    label: 'Empresas',
+                    label: 'Órgãos',
                     command: () => this.router.navigateByUrl(MapeamentoRota.ROTA_EMPRESAS_SYSTEM_ADMIN.obterCaminhoRota())
                 },
                 {

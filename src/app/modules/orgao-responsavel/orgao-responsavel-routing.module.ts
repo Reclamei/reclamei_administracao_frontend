@@ -7,6 +7,7 @@ import {MapeamentoRota} from 'src/app/shared/constants/mapeamento-rota';
 import {ReportsComponent} from './pages/reports/reports.component';
 import {SettingsComponent} from './pages/settings/settings.component';
 import {ReclamationsEditComponent} from './pages/reclamacoes/reclamations-edit/reclamations-edit.component';
+import {CoveragesComponent} from './pages/coverages/coverages.component';
 
 const routes: Routes = [
     {
@@ -14,6 +15,7 @@ const routes: Routes = [
             {path: '', component: DashboardComponent},
             {path: MapeamentoRota.ROTA_RECLAMACOES.obterRota(), component: ReclamacoesComponent},
             {path: MapeamentoRota.ROTA_RECLAMACOES_EDIT.obterRota(), component: ReclamationsEditComponent},
+            {path: MapeamentoRota.ROTA_ABRANGENCIA.obterRota(), component: CoveragesComponent},
             {path: MapeamentoRota.ROTA_RELATORIOS.obterRota(), component: ReportsComponent},
             {path: MapeamentoRota.ROTA_CONFIGURACOES.obterRota(), component: SettingsComponent}
         ]
