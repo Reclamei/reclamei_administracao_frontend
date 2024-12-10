@@ -21,7 +21,9 @@
                     class="progress-bar">
             </p-progressBar>
             <div class="progress-container">
-                <span>{{ ((nota.count / detailedEvaluation.totalReviews) * 100).toFixed(2) }}%</span>
+                <span *ngIf="detailedEvaluation.totalReviews !== 0">{{ ((nota.count / detailedEvaluation.totalReviews) * 100).toFixed(2) }}
+                    %</span>
+                <span *ngIf="detailedEvaluation.totalReviews == 0">0.00 %</span>
             </div>
         </div>
     </div>

@@ -70,6 +70,7 @@ export class MenuComponent {
     }
 
     private deslogar(): void {
+        this.cachedService.invalidateCache();
         this.authService
             .signOut()
             .catch((error) => PrimengFactory.mensagemErro(this.messageService, 'Erro no registro', error.message));

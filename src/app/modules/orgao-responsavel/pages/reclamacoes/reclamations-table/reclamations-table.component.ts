@@ -23,7 +23,9 @@ export class ReclamationsTableComponent {
         this.mapComponent.showLocation(reclamation);
     }
 
-    edit(reclamation: ReclamationModel) {
-        this.router.navigateByUrl(`painel-administrativo/reclamacoes/${reclamation.id.toString()}/edit`);
+    edit(reclamation: ReclamationModel, editMode: boolean = true) {
+        this.router.navigateByUrl(`painel-administrativo/reclamacoes/${reclamation.id.toString()}/edit`, {
+            state: {editMode}
+        });
     }
 }

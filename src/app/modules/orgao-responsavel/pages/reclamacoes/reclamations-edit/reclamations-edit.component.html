@@ -13,8 +13,8 @@
             </div>
             <div class="grid grid-nogutter col-12 sm:col-12 md:col-8 lg:col-8 pl-5 pr-4 pt-3">
                 <div class="col-12 floating-label-container">
-                    <textarea [(ngModel)]="selectedReclamation.description" [rows]="4" class="w-full"
-                              id="description"
+                    <textarea [(ngModel)]="selectedReclamation.description" [disabled]="!editMode" [rows]="4"
+                              class="w-full" id="description"
                               pInputTextarea></textarea>
                     <label for="description">Descrição</label>
                 </div>
@@ -35,6 +35,7 @@
                     <label class="block mb-2 question" for="orgao-correto">ORGÃO RESPONSÁVEL CORRETO?</label>
                     <p-selectButton (onChange)="onOptionCorrectResponsibleCompanyChange($event.value)"
                                     [(ngModel)]="isCorrectResponsibleCompany"
+                                    [disabled]="!editMode"
                                     [options]="yesNoOptions"
                                     class="pl-3 custom-select-button" id="orgao-correto"
                                     optionLabel="label"
@@ -43,14 +44,14 @@
             </div>
             <div class="grid grid-nogutter col-12 pl-4 pt-4">
                 <div class="col-12 pb-0 floating-label-container pr-4">
-                    <textarea [(ngModel)]="selectedReclamation.response.description" [rows]="3" class="w-full"
-                              id="resposta"
+                    <textarea [(ngModel)]="selectedReclamation.response.description" [disabled]="!editMode" [rows]="3"
+                              class="w-full" id="resposta"
                               pInputTextarea></textarea>
                     <label for="resposta">Resposta</label>
                 </div>
                 <div class="col-6 floating-label-container mb-3">
                     <p-dropdown [(ngModel)]="selectedReclamation.status"
-                                [disabled]="!isCorrectResponsibleCompany || !isProblemReal"
+                                [disabled]="!isCorrectResponsibleCompany || !isProblemReal || !editMode"
                                 [options]="status" class="p-fluid"
                                 id="status" optionLabel="label"
                                 optionValue="value"></p-dropdown>
@@ -61,7 +62,7 @@
                 <label class="block mb-1 question" for="problema-veridico">PROBLEMA VERÍDICO?</label>
                 <p-selectButton (onChange)="onOptionRealProblemChange($event.value)"
                                 [(ngModel)]="isProblemReal"
-                                [disabled]="!isCorrectResponsibleCompany" [options]="yesNoOptions"
+                                [disabled]="!isCorrectResponsibleCompany || !editMode" [options]="yesNoOptions"
                                 class="pl-3 custom-select-button" id="problema-veridico"
                                 optionLabel="label"
                                 optionValue="value"></p-selectButton>
@@ -69,7 +70,7 @@
         </div>
     </p-card>
     <div class="flex justify-content-end mb-4">
-        <div>
+        <div *ngIf="editMode">
             <button (click)="save(selectedReclamation)" class="button-save" pButton>Salvar</button>
         </div>
         <div class="ml-2">

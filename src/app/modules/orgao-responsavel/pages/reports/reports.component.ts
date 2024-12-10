@@ -147,7 +147,7 @@ export class ReportsComponent implements OnInit {
             datasets: [
                 {
                     type: 'line',
-                    label: 'Tempo de Resposta',
+                    label: 'Tempo de Resposta (em dias)',
                     data: averages,
                     borderColor: '#a6a6a6',
                     backgroundColor: '#a6a6a6',
