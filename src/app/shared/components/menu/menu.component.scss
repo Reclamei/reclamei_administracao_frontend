@@ -7,6 +7,11 @@
   overflow: hidden auto;
 }
 
+.opcao-selecionada {
+  background-color: var(--cor-tema-auxiliar);
+  border: 1px solid var(--cor-tema-auxiliar);
+}
+
 .container-foto-orgao {
   display: flex;
   justify-content: center;
@@ -39,16 +44,12 @@
   display: flex;
   align-items: center;
   padding: 0.75rem;
-  border-radius: 0.5rem;
+  border-radius: 1.5rem;
 
   &:hover {
     animation: fade-opcao 0.25s linear forwards;
     cursor: pointer;
   }
-}
-
-.opcao-menu-selecionada {
-  background-color: var(--cor-tema-auxiliar);
 }
 
 .icone-opcao {

@@ -15,6 +15,7 @@ import {CachedService} from '../../services/cached.service';
 export class MenuComponent {
     public company: CompanyModel = new CompanyModel();
     public opcoes: MenuItem[] = this.inicializarOpcoesMenu();
+    opcaoSelecionada: any;
     @Input() public esconderMenuMobile = true;
     @Output() public aoEsconderMenu: EventEmitter<void> = new EventEmitter();
 
@@ -33,13 +34,14 @@ export class MenuComponent {
     }
 
     public selecionarOpcao(opcao: MenuItem): void {
+        this.opcaoSelecionada = opcao;
         if (!opcao.disabled) {
             opcao.command();
         }
     }
 
     public inicializarOpcoesMenu(): MenuItem[] {
-        return [
+        const opcoes = [
             {
                 icon: 'pi pi-home',
                 label: 'Início',
@@ -67,6 +69,8 @@ export class MenuComponent {
             },
             {icon: 'pi pi-sign-out', label: 'Sair', command: () => this.deslogar()},
         ];
+        this.selecionarOpcao(opcoes.find(item => item.label === 'Início'));
+        return opcoes;
     }
 
     private deslogar(): void {
@@ -113,6 +117,7 @@ export class MenuComponent {
                 },
                 {icon: 'pi pi-sign-out', label: 'Sair', command: () => this.deslogar()},
             ];
+            this.selecionarOpcao(this.opcoes.find(item => item.label === 'Início'));
         }
     }
 }

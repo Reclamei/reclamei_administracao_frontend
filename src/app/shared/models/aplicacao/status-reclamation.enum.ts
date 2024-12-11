@@ -14,6 +14,10 @@ export class StatusReclamationEnum {
     ) {
     }
 
+    public static getLabelByValue(value) {
+        return StatusReclamationEnum.getAllStatus().find(status => status.value === value).label;
+    }
+
     public static getAllStatus(): StatusReclamationEnum[] {
         return [
             StatusReclamationEnum.OPEN,
